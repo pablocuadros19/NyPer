@@ -1,4 +1,0 @@
-python-chess
-flask
-google-genai
-python-dotenv
