@@ -226,6 +226,11 @@ with col_hdr2:
         else:
             st.session_state["sucursal_sel"] = SUCURSAL_DEFAULT
 
+    def _seleccionar_suc(opcion):
+        _guardar_config({"sucursal_sel": opcion})
+        st.session_state["sucursal_sel"] = opcion
+        st.session_state["suc_search"] = ""
+
     busq_suc = st.text_input(
         "suc_input",
         placeholder="Código o nombre de sucursal...",
@@ -236,11 +241,8 @@ with col_hdr2:
     if _q:
         coincidencias = [k for k in todas_keys if _q in k.lower()]
         for i, opcion in enumerate(coincidencias[:8]):
-            if st.button(opcion, key=f"suc_btn_{i}", use_container_width=True):
-                _guardar_config({"sucursal_sel": opcion})
-                st.session_state["sucursal_sel"] = opcion
-                st.session_state["suc_search"] = ""
-                st.rerun()
+            st.button(opcion, key=f"suc_btn_{i}", use_container_width=True,
+                      on_click=_seleccionar_suc, args=(opcion,))
         if not coincidencias:
             st.caption("Sin coincidencias")
     else:
