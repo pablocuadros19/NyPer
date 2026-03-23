@@ -83,20 +83,15 @@ else:
     }
 
 SUCURSAL_DEFAULT = "5155 — VILLA BALLESTER"
-_CONFIG_PATH = os.path.join(DATOS_DIR, "config.json")
+from services.storage import storage_get, storage_set
 
 def _cargar_config():
-    if os.path.exists(_CONFIG_PATH):
-        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return storage_get("config", {})
 
 def _guardar_config(nuevos):
-    os.makedirs(DATOS_DIR, exist_ok=True)
     cfg = _cargar_config()
     cfg.update(nuevos)
-    with open(_CONFIG_PATH, "w", encoding="utf-8") as f:
-        json.dump(cfg, f, ensure_ascii=False, indent=2)
+    storage_set("config", cfg)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -280,18 +275,13 @@ with _col_nombre:
 # ── Helpers de persistencia ───────────────────────────────────────────────────
 
 def cargar_leads(codigo_suc=None):
-    path = datos_path_sucursal(codigo_suc) if codigo_suc else os.path.join(DATOS_DIR, "prospectos.json")
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    key = f"leads_{codigo_suc}" if codigo_suc else "leads"
+    return storage_get(key, [])
 
 
 def guardar_leads(leads, codigo_suc=None):
-    os.makedirs(DATOS_DIR, exist_ok=True)
-    path = datos_path_sucursal(codigo_suc) if codigo_suc else os.path.join(DATOS_DIR, "prospectos.json")
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(leads, f, ensure_ascii=False, indent=2)
+    key = f"leads_{codigo_suc}" if codigo_suc else "leads"
+    storage_set(key, leads)
 
 
 def guardar_historial(leads):
