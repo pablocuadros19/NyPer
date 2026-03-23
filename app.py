@@ -73,13 +73,12 @@ if os.path.exists(SUCURSALES_JSON_PATH):
             "lat": s["lat"], "lng": s["lng"],
             "dir": f"{s['domicilio']}, {s['localidad']}",
             "partido": s.get("partido", ""),
-            "email": s.get("email", ""),
         }
         for s in _suc_data
     }
 else:
     SUCURSALES = {
-        "5155 — VILLA BALLESTER": {"lat": -34.5453, "lng": -58.5519, "dir": "Pacífico Rodríguez 40, Villa Ballester", "partido": "General San Martin", "email": ""},
+        "5155 — VILLA BALLESTER": {"lat": -34.5453, "lng": -58.5519, "dir": "Pacífico Rodríguez 40, Villa Ballester", "partido": "General San Martin"},
     }
 
 SUCURSAL_DEFAULT = "5155 — VILLA BALLESTER"
@@ -229,16 +228,18 @@ with col_hdr2:
 
     busq_suc = st.text_input(
         "suc_input",
-        placeholder="Sucursal o código de ubicación...",
+        placeholder="Código o nombre de sucursal...",
         label_visibility="collapsed",
         key="suc_search",
     )
-    if busq_suc:
-        coincidencias = [k for k in todas_keys if busq_suc.lower() in k.lower()]
-        for opcion in coincidencias[:6]:
-            if st.button(opcion, key=f"suc_btn_{opcion}", use_container_width=True):
+    _q = busq_suc.strip().lower() if busq_suc else ""
+    if _q:
+        coincidencias = [k for k in todas_keys if _q in k.lower()]
+        for i, opcion in enumerate(coincidencias[:8]):
+            if st.button(opcion, key=f"suc_btn_{i}", use_container_width=True):
                 _guardar_config({"sucursal_sel": opcion})
                 st.session_state["sucursal_sel"] = opcion
+                st.session_state["suc_search"] = ""
                 st.rerun()
         if not coincidencias:
             st.caption("Sin coincidencias")

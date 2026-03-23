@@ -1,5 +1,6 @@
 # Datos sensibles — nunca subir
-data/
+data/*
+!data/sucursales.json
 
 # Credenciales
 .env
