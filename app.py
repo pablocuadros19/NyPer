@@ -229,19 +229,20 @@ with col_hdr2:
 
     idx_default = todas_keys.index(st.session_state["sucursal_sel"]) if st.session_state["sucursal_sel"] in todas_keys else None
 
-    suc_sel = st.selectbox(
-        "Sucursal",
-        todas_keys,
-        label_visibility="collapsed",
-        index=idx_default,
-        placeholder="Ingresá sucursal o código de ubicación...",
-        key="suc_picker",
-    )
-    if suc_sel:
-        if suc_sel != st.session_state.get("sucursal_sel"):
-            # Guardar en disco para que persista entre sesiones
+    st.caption(f"📍 {st.session_state['sucursal_sel']}")
+    with st.expander("Cambiar sucursal", expanded=False):
+        suc_sel = st.selectbox(
+            "Sucursal",
+            todas_keys,
+            label_visibility="collapsed",
+            index=idx_default,
+            placeholder="Buscá por nombre o código...",
+            key="suc_picker",
+        )
+        if suc_sel and suc_sel != st.session_state.get("sucursal_sel"):
             _guardar_config({"sucursal_sel": suc_sel})
-        st.session_state["sucursal_sel"] = suc_sel
+            st.session_state["sucursal_sel"] = suc_sel
+            st.rerun()
 
 SUC = SUCURSALES[st.session_state["sucursal_sel"]]
 SUCURSAL_LAT = SUC["lat"]
@@ -920,15 +921,41 @@ with tab_bandeja:
 
 with tab_exportar:
     st.markdown("### Exportar")
-    leads = st.session_state.get("leads", [])
+    leads_todos = st.session_state.get("leads", [])
 
-    if not leads:
+    if not leads_todos:
         st.warning("No hay leads.")
     else:
         from services.campaign_exporter import (
             exportar_excel_completo,
             exportar_excel_canal, exportar_seleccion, nombre_archivo
         )
+
+        # ── Filtros de segmentación ────────────────────────────────────────────
+        with st.expander("🔽 Filtrar antes de exportar", expanded=True):
+            ef1, ef2, ef3 = st.columns(3)
+            rubros_exp = sorted(set(l.get("rubro_operativo", "Otro") for l in leads_todos if l.get("rubro_operativo")))
+            with ef1:
+                f_rubros_exp = st.multiselect("Rubro", rubros_exp, default=rubros_exp, key="exp_f_rubro")
+            zonas_exp = sorted(set(l.get("zona", "") for l in leads_todos if l.get("zona")))
+            with ef2:
+                f_zonas_exp = st.multiselect("Zona", zonas_exp, default=zonas_exp, key="exp_f_zona")
+            with ef3:
+                f_quality_exp = st.multiselect(
+                    "Calidad contacto",
+                    ["alta", "media", "baja", "sin_contacto"],
+                    default=["alta", "media", "baja", "sin_contacto"],
+                    key="exp_f_quality"
+                )
+
+        leads = [
+            l for l in leads_todos
+            if l.get("rubro_operativo", "Otro") in (f_rubros_exp or rubros_exp)
+            and l.get("zona", "") in (f_zonas_exp or zonas_exp)
+            and l.get("contact_quality", "sin_contacto") in (f_quality_exp or ["alta", "media", "baja", "sin_contacto"])
+        ]
+        st.caption(f"{len(leads)} leads seleccionados de {len(leads_todos)} totales")
+        st.markdown("---")
 
         col_e1, col_e2 = st.columns(2)
 
