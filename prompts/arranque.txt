@@ -1,0 +1,11 @@
+Antes de tocar cualquier cosa, leé estos archivos en orden:
+1. CLAUDE_HANDOFF.md — estado actual del proyecto
+2. CLAUDE.md — contexto permanente del proyecto
+3. TASKS.md — tareas en curso y pendientes
+
+Cuando termines, decime en 3-4 líneas:
+- qué entendés que está en curso
+- cuál es el próximo paso concreto
+- si hay algo que no quedó claro en el handoff
+
+No escribas código ni toques archivos hasta que yo confirme.
