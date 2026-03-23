@@ -1,491 +1,5 @@
 [
   {
-    "codigo": "6406",
-    "nombre": "25 DE MAYO",
-    "domicilio": "Calle 9 Nº 901 Esquina 28",
-    "localidad": "25 De Mayo",
-    "partido": "25 De Mayo",
-    "lat": -35.431864,
-    "lng": -60.170512
-  },
-  {
-    "codigo": "7003",
-    "nombre": "NORBERTO DE LA RIESTRA",
-    "domicilio": "Belgrano 365",
-    "localidad": "Norberto De La Riestra",
-    "partido": "25 De Mayo",
-    "lat": -35.273404,
-    "lng": -59.770747
-  },
-  {
-    "codigo": "7004",
-    "nombre": "PEDERNALES",
-    "domicilio": "Sarmiento S/Nº esquina Yapeyú",
-    "localidad": "Pedernales",
-    "partido": "25 De Mayo",
-    "lat": -35.266232,
-    "lng": -59.632791
-  },
-  {
-    "codigo": "6478",
-    "nombre": "9 DE JULIO",
-    "domicilio": "Av. Mitre 1305",
-    "localidad": "9 De Julio",
-    "partido": "9 De Julio",
-    "lat": -35.444532,
-    "lng": -60.884131
-  },
-  {
-    "codigo": "6436",
-    "nombre": "DUDIGNAC",
-    "domicilio": "Av. Belgrano S/Nº",
-    "localidad": "Dudignac",
-    "partido": "9 De Julio",
-    "lat": -35.649211,
-    "lng": -60.71109
-  },
-  {
-    "codigo": "6823",
-    "nombre": "CARHUE",
-    "domicilio": "San Martín Esquina Mitre",
-    "localidad": "Carhue",
-    "partido": "Adolfo Alsina",
-    "lat": -37.179297,
-    "lng": -62.758019
-  },
-  {
-    "codigo": "6892",
-    "nombre": "RIVERA",
-    "domicilio": "Tucumán 1",
-    "localidad": "Rivera",
-    "partido": "Adolfo Alsina",
-    "lat": -37.159926,
-    "lng": -63.24506
-  },
-  {
-    "codigo": "6358",
-    "nombre": "GONZALES CHAVES",
-    "domicilio": "Bartolomé Mitre 299",
-    "localidad": "Adolfo Gonzales Chaves",
-    "partido": "Adolfo Gonzales Chaves",
-    "lat": -38.032323,
-    "lng": -60.098303
-  },
-  {
-    "codigo": "6376",
-    "nombre": "DE LA GARMA",
-    "domicilio": "Dr. Víctor H. Barrera 297",
-    "localidad": "De La Garma",
-    "partido": "Adolfo Gonzales Chaves",
-    "lat": -37.963846,
-    "lng": -60.414055
-  },
-  {
-    "codigo": "6424",
-    "nombre": "ALBERTI",
-    "domicilio": "Av. Vacarezza 202",
-    "localidad": "Alberti",
-    "partido": "Alberti",
-    "lat": -35.030533,
-    "lng": -60.27986
-  },
-  {
-    "codigo": "5025",
-    "nombre": "ADROGUE",
-    "domicilio": "Bartolomé Mitre y Somellera 599",
-    "localidad": "Adrogue",
-    "partido": "Almirante Brown",
-    "lat": -34.798103,
-    "lng": -58.393295
-  },
-  {
-    "codigo": "5029",
-    "nombre": "BURZACO",
-    "domicilio": "General Roca 1161",
-    "localidad": "Burzaco",
-    "partido": "Almirante Brown",
-    "lat": -34.822569,
-    "lng": -58.392417
-  },
-  {
-    "codigo": "5079",
-    "nombre": "PARQUE INDUSTRIAL ALMIRANTE BROWN",
-    "domicilio": "Avenida Hipólito Irigoyen Nº 16101",
-    "localidad": "Burzaco",
-    "partido": "Almirante Brown",
-    "lat": -34.841701,
-    "lng": -58.403292
-  },
-  {
-    "codigo": "5048",
-    "nombre": "GLEW",
-    "domicilio": "Patria 69",
-    "localidad": "Glew",
-    "partido": "Almirante Brown",
-    "lat": -34.887175,
-    "lng": -58.38466
-  },
-  {
-    "codigo": "5046",
-    "nombre": "RAFAEL CALZADA",
-    "domicilio": "Altamira 1779",
-    "localidad": "Rafael Calzada",
-    "partido": "Almirante Brown",
-    "lat": -34.794869,
-    "lng": -58.357573
-  },
-  {
-    "codigo": "6532",
-    "nombre": "ARRECIFES",
-    "domicilio": "Ricardo Gutierrez 399",
-    "localidad": "Arrecifes",
-    "partido": "Arrecifes",
-    "lat": -34.064086,
-    "lng": -60.10603
-  },
-  {
-    "codigo": "5026",
-    "nombre": "AVELLANEDA",
-    "domicilio": "Avenida Mitre 498",
-    "localidad": "Avellaneda",
-    "partido": "Avellaneda",
-    "lat": -34.660129,
-    "lng": -58.367723
-  },
-  {
-    "codigo": "5031",
-    "nombre": "DOCK SUD",
-    "domicilio": "Manuel Estévez 1451/55",
-    "localidad": "Dock Sud",
-    "partido": "Avellaneda",
-    "lat": -34.649331,
-    "lng": -58.353671
-  },
-  {
-    "codigo": "5005",
-    "nombre": "PIÑEYRO",
-    "domicilio": "Av. Galicia 776",
-    "localidad": "Piñeyro",
-    "partido": "Avellaneda",
-    "lat": -34.671221,
-    "lng": -58.39039
-  },
-  {
-    "codigo": "5049",
-    "nombre": "SARANDI",
-    "domicilio": "Av. Mitre 2567",
-    "localidad": "Sarandi",
-    "partido": "Avellaneda",
-    "lat": -34.676008,
-    "lng": -58.349187
-  },
-  {
-    "codigo": "5173",
-    "nombre": "WILDE",
-    "domicilio": "Av. Mitre 6458",
-    "localidad": "Wilde",
-    "partido": "Avellaneda",
-    "lat": -34.706188,
-    "lng": -58.31473
-  },
-  {
-    "codigo": "6927",
-    "nombre": "AYACUCHO",
-    "domicilio": "9 de Julio 1121",
-    "localidad": "Ayacucho",
-    "partido": "Ayacucho",
-    "lat": -37.151769,
-    "lng": -58.488849
-  },
-  {
-    "codigo": "6304",
-    "nombre": "TRIBUNALES AZUL",
-    "domicilio": "Humberto 1º 525",
-    "localidad": "Azul",
-    "partido": "Azul",
-    "lat": -34.620533,
-    "lng": -58.373307
-  },
-  {
-    "codigo": "6328",
-    "nombre": "AZUL",
-    "domicilio": "San Martín 499",
-    "localidad": "Azul",
-    "partido": "Azul",
-    "lat": -36.778756,
-    "lng": -59.862668
-  },
-  {
-    "codigo": "6345",
-    "nombre": "CACHARI",
-    "domicilio": "Av. San Martín 1640",
-    "localidad": "Cacharí",
-    "partido": "Azul",
-    "lat": -36.37737,
-    "lng": -59.505619
-  },
-  {
-    "codigo": "6301",
-    "nombre": "CHILLAR",
-    "domicilio": "M.T.Cortázar 1100",
-    "localidad": "Chillar",
-    "partido": "Azul",
-    "lat": -37.310872,
-    "lng": -59.984716
-  },
-  {
-    "codigo": "6200",
-    "nombre": "VILLA MITRE",
-    "domicilio": "Alberdi 1462",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.727669,
-    "lng": -62.246472
-  },
-  {
-    "codigo": "6202",
-    "nombre": "ALMAFUERTE",
-    "domicilio": "Almafuerte 750",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.719784,
-    "lng": -62.284418
-  },
-  {
-    "codigo": "6206",
-    "nombre": "TRIBUNALES BAHIA BLANCA",
-    "domicilio": "Estomba 32",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.718244,
-    "lng": -62.267109
-  },
-  {
-    "codigo": "6207",
-    "nombre": "BARRIO UNIVERSITARIO",
-    "domicilio": "Av. Alem 979",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.704622,
-    "lng": -62.267877
-  },
-  {
-    "codigo": "6228",
-    "nombre": "CENTRO",
-    "domicilio": "Hipólito Yrigoyen 128/132",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.69008,
-    "lng": -62.232802
-  },
-  {
-    "codigo": "6229",
-    "nombre": "BAHIA BLANCA",
-    "domicilio": "Chiclana Esquina Undiano",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.723417,
-    "lng": -62.259722
-  },
-  {
-    "codigo": "6256",
-    "nombre": "CABILDO",
-    "domicilio": "La Plata Esquina Pringles",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.485084,
-    "lng": -61.892839
-  },
-  {
-    "codigo": "6232",
-    "nombre": "INGENIERO WHITE",
-    "domicilio": "Av. San Martín 3666",
-    "localidad": "Bahía Blanca",
-    "partido": "Bahía Blanca",
-    "lat": -38.72036,
-    "lng": -62.260395
-  },
-  {
-    "codigo": "6130",
-    "nombre": "BALCARCE",
-    "domicilio": "Av. Gonzáles Chaves 501",
-    "localidad": "Balcarce",
-    "partido": "Balcarce",
-    "lat": -37.845222,
-    "lng": -58.253524
-  },
-  {
-    "codigo": "6531",
-    "nombre": "BARADERO",
-    "domicilio": "Laprida 1036",
-    "localidad": "Baradero",
-    "partido": "Baradero",
-    "lat": -33.80856,
-    "lng": -59.501105
-  },
-  {
-    "codigo": "6361",
-    "nombre": "BARKER",
-    "domicilio": "Ordaz 550",
-    "localidad": "Barker",
-    "partido": "Benito Juarez",
-    "lat": -37.640073,
-    "lng": -59.3905
-  },
-  {
-    "codigo": "5032",
-    "nombre": "BERAZATEGUI",
-    "domicilio": "Av. Pte. Juan D. Perón (14) 4928",
-    "localidad": "Berazategui",
-    "partido": "Berazategui",
-    "lat": -34.726258,
-    "lng": -58.259248
-  },
-  {
-    "codigo": "5081",
-    "nombre": "EL PATO",
-    "domicilio": "Calle Colectora y 613",
-    "localidad": "Berazategui",
-    "partido": "Berazategui",
-    "lat": -34.877559,
-    "lng": -58.17859
-  },
-  {
-    "codigo": "5086",
-    "nombre": "HUDSON",
-    "domicilio": "Calle 55 NRO 5308 esquina Calle 153",
-    "localidad": "Hudson",
-    "partido": "Berazategui",
-    "lat": -34.793903,
-    "lng": -58.167159
-  },
-  {
-    "codigo": "5033",
-    "nombre": "BERISSO",
-    "domicilio": "Montevideo 501 / esquina 7",
-    "localidad": "Berisso",
-    "partido": "Berisso",
-    "lat": -34.867155,
-    "lng": -57.886497
-  },
-  {
-    "codigo": "6734",
-    "nombre": "BOLIVAR",
-    "domicilio": "Av. San Martín 601",
-    "localidad": "San Carlos De Bolivar",
-    "partido": "Bolivar",
-    "lat": -36.231397,
-    "lng": -61.112721
-  },
-  {
-    "codigo": "6435",
-    "nombre": "BRAGADO",
-    "domicilio": "Av. Pellegrini 1399",
-    "localidad": "Bragado",
-    "partido": "Bragado",
-    "lat": -35.116725,
-    "lng": -60.488233
-  },
-  {
-    "codigo": "7031",
-    "nombre": "BRANDSEN",
-    "domicilio": "Pedro J. Ferrari Esquina Las Heras",
-    "localidad": "Coronel Brandsen",
-    "partido": "Brandsen",
-    "lat": -35.179899,
-    "lng": -58.229887
-  },
-  {
-    "codigo": "7136",
-    "nombre": "CAMPANA",
-    "domicilio": "Av. Ing. A. Roca 98",
-    "localidad": "Campana",
-    "partido": "Campana",
-    "lat": -34.158482,
-    "lng": -58.958562
-  },
-  {
-    "codigo": "7037",
-    "nombre": "CAÑUELAS",
-    "domicilio": "Libertad 702",
-    "localidad": "Cañuelas",
-    "partido": "Cañuelas",
-    "lat": -35.054424,
-    "lng": -58.760813
-  },
-  {
-    "codigo": "6546",
-    "nombre": "CAPITAN SARMIENTO",
-    "domicilio": "Bartolomé Mitre y Mármol",
-    "localidad": "Capitan Sarmiento",
-    "partido": "Capitan Sarmiento",
-    "lat": -34.173589,
-    "lng": -59.790986
-  },
-  {
-    "codigo": "6738",
-    "nombre": "CARLOS CASARES",
-    "domicilio": "San Martín y Rivadavia",
-    "localidad": "Carlos Casares",
-    "partido": "Carlos Casares",
-    "lat": -35.625103,
-    "lng": -61.364928
-  },
-  {
-    "codigo": "6639",
-    "nombre": "CARLOS TEJEDOR",
-    "domicilio": "Alberto H. Almirón 201 Esquina Garré",
-    "localidad": "Carlos Tejedor",
-    "partido": "Carlos Tejedor",
-    "lat": -35.398528,
-    "lng": -62.425234
-  },
-  {
-    "codigo": "7140",
-    "nombre": "CARMEN DE ARECO",
-    "domicilio": "Belgrano Esquina San Martín",
-    "localidad": "Carmen De Areco",
-    "partido": "Carmen De Areco",
-    "lat": -34.377116,
-    "lng": -59.822294
-  },
-  {
-    "codigo": "6908",
-    "nombre": "CASTELLI",
-    "domicilio": "Maipú 2 y Av. 25 de Mayo",
-    "localidad": "Castelli",
-    "partido": "Castelli",
-    "lat": -36.091792,
-    "lng": -57.80798
-  },
-  {
-    "codigo": "6441",
-    "nombre": "CHACABUCO",
-    "domicilio": "Av. Alsina y Rivadavia",
-    "localidad": "Chacabuco",
-    "partido": "Chacabuco",
-    "lat": -34.643392,
-    "lng": -60.469533
-  },
-  {
-    "codigo": "6942",
-    "nombre": "CHASCOMUS",
-    "domicilio": "Libres del Sur 149",
-    "localidad": "Chascomus",
-    "partido": "Chascomus",
-    "lat": -35.574863,
-    "lng": -58.014334
-  },
-  {
-    "codigo": "6443",
-    "nombre": "CHIVILCOY",
-    "domicilio": "C.Pellegrini 52 y Rivadavia",
-    "localidad": "Chivilcoy",
-    "partido": "Chivilcoy",
-    "lat": -34.895221,
-    "lng": -60.019104
-  },
-  {
     "codigo": "1000",
     "nombre": "BUENOS AIRES",
     "domicilio": "San Martín 137",
@@ -493,6 +7,15 @@
     "partido": "Caba",
     "lat": -34.606442,
     "lng": -58.373216
+  },
+  {
+    "codigo": "2050",
+    "nombre": "CASA MATRIZ LA PLATA",
+    "domicilio": "Av. 7 (Ing. Luis Monteverde Nº 726)",
+    "localidad": "La Plata",
+    "partido": "La Plata",
+    "lat": -34.916187,
+    "lng": -57.947868
   },
   {
     "codigo": "4001",
@@ -801,94 +324,13 @@
     "lng": -58.511833
   },
   {
-    "codigo": "6544",
-    "nombre": "COLON",
-    "domicilio": "Calle 47 Nº 1048",
-    "localidad": "Colon",
-    "partido": "Colon",
-    "lat": -33.891175,
-    "lng": -61.097529
-  },
-  {
-    "codigo": "6245",
-    "nombre": "CORONEL DORREGO",
-    "domicilio": "San Martín 602",
-    "localidad": "Coronel Dorrego",
-    "partido": "Coronel Dorrego",
-    "lat": -38.716565,
-    "lng": -61.290145
-  },
-  {
-    "codigo": "6846",
-    "nombre": "CORONEL PRINGLES",
-    "domicilio": "Bartolomé Mitre 901 Esquina Stegman",
-    "localidad": "Coronel Pringles",
-    "partido": "Coronel Pringles",
-    "lat": -37.986355,
-    "lng": -61.353796
-  },
-  {
-    "codigo": "6201",
-    "nombre": "PUNTA ALTA",
-    "domicilio": "Bernardo de Irigoyen 645",
-    "localidad": "Punta Alta",
-    "partido": "Coronel Rosales",
-    "lat": -38.880986,
-    "lng": -62.073435
-  },
-  {
-    "codigo": "6847",
-    "nombre": "CORONEL SUAREZ",
-    "domicilio": "Belgrano Esquina Alsina 99",
-    "localidad": "Coronel Suarez",
-    "partido": "Coronel Suarez",
-    "lat": -37.459987,
-    "lng": -61.931712
-  },
-  {
-    "codigo": "6824",
-    "nombre": "DAIREAUX",
-    "domicilio": "Av. Julio A. Roca Esquina Rivadavia",
-    "localidad": "Daireaux",
-    "partido": "Daireaux",
-    "lat": -36.600311,
-    "lng": -61.747689
-  },
-  {
-    "codigo": "6949",
-    "nombre": "DOLORES",
-    "domicilio": "Belgrano 235 y Rico 102",
-    "localidad": "Dolores",
-    "partido": "Dolores",
-    "lat": -36.317681,
-    "lng": -57.676265
-  },
-  {
-    "codigo": "5017",
-    "nombre": "ENSENADA",
-    "domicilio": "La Merced 186",
-    "localidad": "Ensenada",
-    "partido": "Ensenada",
-    "lat": -34.860901,
-    "lng": -57.902903
-  },
-  {
-    "codigo": "7159",
-    "nombre": "ESCOBAR",
-    "domicilio": "Eugenia Tapia de Cruz 510",
-    "localidad": "Belen De Escobar",
-    "partido": "Escobar",
-    "lat": -34.346181,
-    "lng": -58.793527
-  },
-  {
-    "codigo": "7102",
-    "nombre": "GARIN",
-    "domicilio": "M. Belgrano 555",
-    "localidad": "Garin",
-    "partido": "Escobar",
-    "lat": -34.813588,
-    "lng": -58.203273
+    "codigo": "4200",
+    "nombre": "MAR DEL PLATA",
+    "domicilio": "San Martín 2563",
+    "localidad": "Mar Del Plata",
+    "partido": "General Pueyrredon",
+    "lat": -37.999547,
+    "lng": -57.546564
   },
   {
     "codigo": "5001",
@@ -900,400 +342,22 @@
     "lng": -58.459719
   },
   {
-    "codigo": "7134",
-    "nombre": "CAPILLA DEL SEÑOR",
-    "domicilio": "Esteban Urcelay 502 Esquina M. Casco",
-    "localidad": "Capilla Del Señor",
-    "partido": "Exaltacion De La Cruz",
-    "lat": -34.292457,
-    "lng": -59.100543
+    "codigo": "5002",
+    "nombre": "SAN ANTONIO DE PADUA",
+    "domicilio": "Rivadavia Esquina Directorio",
+    "localidad": "San Antonio De Padua",
+    "partido": "Merlo",
+    "lat": -34.665672,
+    "lng": -58.697709
   },
   {
-    "codigo": "5184",
-    "nombre": "JOSE MARIA EZEIZA",
-    "domicilio": "Esteban Echeverría 62",
-    "localidad": "Jose Maria Ezeiza",
-    "partido": "Ezeiza",
-    "lat": -34.851957,
-    "lng": -58.521211
-  },
-  {
-    "codigo": "5042",
-    "nombre": "CRUCE DE FLORENCIO VARELA",
-    "domicilio": "Av. Calchaquí Esquina Balcarce",
-    "localidad": "Florencio Varela",
-    "partido": "Florencio Varela",
-    "lat": -34.785862,
-    "lng": -58.256919
-  },
-  {
-    "codigo": "5114",
-    "nombre": "FLORENCIO VARELA",
-    "domicilio": "Monteagudo 96",
-    "localidad": "Florencio Varela",
-    "partido": "Florencio Varela",
-    "lat": -34.809266,
-    "lng": -58.27471
-  },
-  {
-    "codigo": "6176",
-    "nombre": "MIRAMAR",
-    "domicilio": "Calle 21 Nº 1209 Esquina Calle 24",
-    "localidad": "Miramar",
-    "partido": "General Alvarado",
-    "lat": -38.27032,
-    "lng": -57.838105
-  },
-  {
-    "codigo": "6350",
-    "nombre": "GENERAL ALVEAR",
-    "domicilio": "San Martín 802",
-    "localidad": "General Alvear",
-    "partido": "General Alvear",
-    "lat": -36.021374,
-    "lng": -60.015352
-  },
-  {
-    "codigo": "7025",
-    "nombre": "GENERAL BELGRANO",
-    "domicilio": "Julio Llanos y Av. San Martín",
-    "localidad": "General Belgrano",
-    "partido": "General Belgrano",
-    "lat": -35.76702,
-    "lng": -58.494597
-  },
-  {
-    "codigo": "6851",
-    "nombre": "GENERAL LAMADRID",
-    "domicilio": "Bartolomé Mitre 599",
-    "localidad": "General Lamadrid",
-    "partido": "General Lamadrid",
-    "lat": -37.248275,
-    "lng": -61.260954
-  },
-  {
-    "codigo": "7012",
-    "nombre": "GENERAL LAS HERAS",
-    "domicilio": "25 de Mayo Esquina Villamayor",
-    "localidad": "General Las Heras",
-    "partido": "General Las Heras",
-    "lat": -34.927915,
-    "lng": -58.945536
-  },
-  {
-    "codigo": "6952",
-    "nombre": "GENERAL MADARIAGA",
-    "domicilio": "Avellaneda 199 Esquina Sarmiento",
-    "localidad": "General Juan Madariaga",
-    "partido": "General Madariaga",
-    "lat": -36.995145,
-    "lng": -57.139038
-  },
-  {
-    "codigo": "4200",
-    "nombre": "MAR DEL PLATA",
-    "domicilio": "San Martín 2563",
-    "localidad": "Mar Del Plata",
-    "partido": "General Pueyrredon",
-    "lat": -37.999547,
-    "lng": -57.546564
-  },
-  {
-    "codigo": "6100",
-    "nombre": "LURO",
-    "domicilio": "Av. Pedro Luro 3869",
-    "localidad": "Mar Del Plata",
-    "partido": "General Pueyrredon",
-    "lat": -37.991945,
-    "lng": -57.558896
-  },
-  {
-    "codigo": "7137",
-    "nombre": "GENERAL RODRIGUEZ",
-    "domicilio": "Av. San Martín 205",
-    "localidad": "General Rodriguez",
-    "partido": "General Rodriguez",
-    "lat": -34.607267,
-    "lng": -58.950511
-  },
-  {
-    "codigo": "5097",
-    "nombre": "SAN MARTIN",
-    "domicilio": "Int. Campos 2001",
-    "localidad": "General San Martin",
-    "partido": "General San Martin",
-    "lat": -34.577122,
-    "lng": -58.536829
-  },
-  {
-    "codigo": "5100",
-    "nombre": "TRIBUNALES SAN MARTIN",
-    "domicilio": "Dr. R. Balbín 1753",
-    "localidad": "General San Martin",
-    "partido": "General San Martin",
-    "lat": -34.583271,
-    "lng": -58.538752
-  },
-  {
-    "codigo": "5006",
-    "nombre": "JOSE LEON SUAREZ",
-    "domicilio": "Av. Brig. Gral. J.M. Rosas 2500",
-    "localidad": "Jose Leon Suarez",
-    "partido": "General San Martin",
-    "lat": -34.534875,
-    "lng": -58.577431
-  },
-  {
-    "codigo": "5155",
-    "nombre": "VILLA BALLESTER",
-    "domicilio": "Pacífico Rodríguez 40",
-    "localidad": "Villa Ballester",
-    "partido": "General San Martin",
-    "lat": -34.544427,
-    "lng": -58.560505
-  },
-  {
-    "codigo": "5016",
-    "nombre": "VILLA LYNCH",
-    "domicilio": "Av. 10 República del Líbano 4055",
-    "localidad": "Villa Lynch",
-    "partido": "General San Martin",
-    "lat": -34.591736,
-    "lng": -58.52565
-  },
-  {
-    "codigo": "5041",
-    "nombre": "VILLA MAIPU",
-    "domicilio": "Estrada 1201/05 Esquina Saavedra",
-    "localidad": "Villa Maipu",
-    "partido": "General San Martin",
-    "lat": -34.566159,
-    "lng": -58.522419
-  },
-  {
-    "codigo": "6657",
-    "nombre": "GENERAL VILLEGAS",
-    "domicilio": "Belgrano 424/430",
-    "localidad": "General Villegas",
-    "partido": "General Villegas",
-    "lat": -35.034123,
-    "lng": -63.019603
-  },
-  {
-    "codigo": "6859",
-    "nombre": "GUAMINI",
-    "domicilio": "Freyre 99",
-    "localidad": "Guaminí",
-    "partido": "Guamini",
-    "lat": -37.012623,
-    "lng": -62.418261
-  },
-  {
-    "codigo": "6760",
-    "nombre": "HENDERSON",
-    "domicilio": "Florida 501",
-    "localidad": "Henderson",
-    "partido": "Hipolito Yrigoyen",
-    "lat": -36.301379,
-    "lng": -61.717211
-  },
-  {
-    "codigo": "5101",
-    "nombre": "VILLA TESEI",
-    "domicilio": "La Patria 3005 Esquina Poeta Risso",
-    "localidad": "Ciudad Villa Santos Tesei",
-    "partido": "Hurlingham",
-    "lat": -34.59858,
-    "lng": -58.652304
-  },
-  {
-    "codigo": "5040",
-    "nombre": "HURLINGHAM",
-    "domicilio": "Arturo Jauretche 1550",
-    "localidad": "Hurlingham",
-    "partido": "Hurlingham",
-    "lat": -34.592543,
-    "lng": -58.635726
-  },
-  {
-    "codigo": "5023",
-    "nombre": "ITUZAINGO",
-    "domicilio": "Soler 310",
-    "localidad": "Ituzaingo",
-    "partido": "Ituzaingo",
-    "lat": -34.657173,
-    "lng": -58.668777
-  },
-  {
-    "codigo": "5018",
-    "nombre": "JOSE C. PAZ",
-    "domicilio": "Av. Altube 1932",
-    "localidad": "Jose C. Paz",
-    "partido": "Jose C. Paz",
-    "lat": -34.522377,
-    "lng": -58.752419
-  },
-  {
-    "codigo": "6662",
-    "nombre": "JUNIN",
-    "domicilio": "Bartolomé Mitre 52",
-    "localidad": "Junin",
-    "partido": "Junin",
-    "lat": -34.594214,
-    "lng": -60.945388
-  },
-  {
-    "codigo": "5011",
-    "nombre": "ALDO BONZI",
-    "domicilio": "Av. Lino Lagos 1928",
-    "localidad": "Aldo Bonzi",
-    "partido": "La Matanza",
-    "lat": -34.709027,
-    "lng": -58.514745
-  },
-  {
-    "codigo": "5067",
-    "nombre": "GONZALEZ CATAN",
-    "domicilio": "Puerto Argentino 4182",
-    "localidad": "Gonzalez Catan",
-    "partido": "La Matanza",
-    "lat": -34.769028,
-    "lng": -58.647206
-  },
-  {
-    "codigo": "5058",
-    "nombre": "GREGORIO DE LAFERRERE",
-    "domicilio": "Rafael Obligado 3146",
-    "localidad": "Gregorio De Laferrere",
-    "partido": "La Matanza",
-    "lat": -34.736113,
-    "lng": -58.612313
-  },
-  {
-    "codigo": "5010",
-    "nombre": "ISIDRO CASANOVA",
-    "domicilio": "Avda. Juan Manuel de Rosas 6699",
-    "localidad": "Isidro Casanova",
-    "partido": "La Matanza",
-    "lat": -34.701976,
-    "lng": -58.581302
-  },
-  {
-    "codigo": "5129",
-    "nombre": "RAMOS MEJIA",
-    "domicilio": "Belgrano 34",
-    "localidad": "Ramos Mejia",
-    "partido": "La Matanza",
-    "lat": -34.641786,
-    "lng": -58.564411
-  },
-  {
-    "codigo": "5120",
-    "nombre": "SAN JUSTO",
-    "domicilio": "Av. Presidente Perón 2751/57",
-    "localidad": "San Justo",
-    "partido": "La Matanza",
-    "lat": -34.67519,
-    "lng": -58.558325
-  },
-  {
-    "codigo": "2050",
-    "nombre": "CASA MATRIZ LA PLATA",
-    "domicilio": "Av. 7 (Ing. Luis Monteverde Nº 726)",
-    "localidad": "La Plata",
-    "partido": "La Plata",
-    "lat": -34.916187,
-    "lng": -57.947868
-  },
-  {
-    "codigo": "5200",
-    "nombre": "PLAZA SAN MARTIN",
-    "domicilio": "Av. 7 Nº 1031 esq. Calle 54",
-    "localidad": "La Plata",
-    "partido": "La Plata",
-    "lat": -34.916782,
-    "lng": -57.947532
-  },
-  {
-    "codigo": "5063",
-    "nombre": "LANUS",
-    "domicilio": "Av. 9 de Julio 1165",
-    "localidad": "Lanus",
-    "partido": "Lanus",
-    "lat": -34.708452,
-    "lng": -58.389986
-  },
-  {
-    "codigo": "5054",
-    "nombre": "LANUS OESTE",
-    "domicilio": "Av. San Martín 3425",
-    "localidad": "Lanus",
-    "partido": "Lanus",
-    "lat": -34.706353,
-    "lng": -58.417716
-  },
-  {
-    "codigo": "6816",
-    "nombre": "LAPRIDA",
-    "domicilio": "Av. San Martín 1102",
-    "localidad": "Laprida",
-    "partido": "Laprida",
-    "lat": -37.54429,
-    "lng": -60.799972
-  },
-  {
-    "codigo": "7064",
-    "nombre": "LAS FLORES",
-    "domicilio": "Av. San Martín y Gral. Paz",
-    "localidad": "Las Flores",
-    "partido": "Las Flores",
-    "lat": -34.589567,
-    "lng": -58.51828
-  },
-  {
-    "codigo": "6665",
-    "nombre": "LINCOLN",
-    "domicilio": "Bartolomé Mitre 125",
-    "localidad": "Lincoln",
-    "partido": "Lincoln",
-    "lat": -34.868226,
-    "lng": -61.527685
-  },
-  {
-    "codigo": "6166",
-    "nombre": "LOBERIA",
-    "domicilio": "Av. Sarmiento Nº 1 Esquina Mitre",
-    "localidad": "Loberia",
-    "partido": "Loberia",
-    "lat": -38.163455,
-    "lng": -58.783498
-  },
-  {
-    "codigo": "7067",
-    "nombre": "LOBOS",
-    "domicilio": "9 de Julio y Rivadavia",
-    "localidad": "Lobos",
-    "partido": "Lobos",
-    "lat": -35.184894,
-    "lng": -59.096229
-  },
-  {
-    "codigo": "5038",
-    "nombre": "BANFIELD",
-    "domicilio": "Av. Alsina 653/59",
-    "localidad": "Banfield",
-    "partido": "Lomas De Zamora",
-    "lat": -34.743256,
-    "lng": -58.393181
-  },
-  {
-    "codigo": "5068",
-    "nombre": "LOMAS DE ZAMORA",
-    "domicilio": "Laprida 200 Esquina España",
-    "localidad": "Lomas De Zamora",
-    "partido": "Lomas De Zamora",
-    "lat": -34.760799,
-    "lng": -58.399768
+    "codigo": "5003",
+    "nombre": "CASEROS",
+    "domicilio": "Urquiza 4719/25",
+    "localidad": "Caseros",
+    "partido": "Tres De Febrero",
+    "lat": -34.648268,
+    "lng": -58.571736
   },
   {
     "codigo": "5004",
@@ -1305,85 +369,94 @@
     "lng": -58.393869
   },
   {
-    "codigo": "7169",
-    "nombre": "LUJAN",
-    "domicilio": "San Martín 498 Esquina Colón",
-    "localidad": "Lujan",
-    "partido": "Lujan",
-    "lat": -34.565406,
-    "lng": -59.115338
+    "codigo": "5005",
+    "nombre": "PIÑEYRO",
+    "domicilio": "Av. Galicia 776",
+    "localidad": "Piñeyro",
+    "partido": "Avellaneda",
+    "lat": -34.671221,
+    "lng": -58.39039
   },
   {
-    "codigo": "5044",
-    "nombre": "LOS POLVORINES",
-    "domicilio": "25 de Mayo 2631",
-    "localidad": "Los Polvorines",
-    "partido": "Malvinas Argentinas",
-    "lat": -34.500155,
-    "lng": -58.695211
+    "codigo": "5006",
+    "nombre": "JOSE LEON SUAREZ",
+    "domicilio": "Av. Brig. Gral. J.M. Rosas 2500",
+    "localidad": "Jose Leon Suarez",
+    "partido": "General San Martin",
+    "lat": -34.534875,
+    "lng": -58.577431
   },
   {
-    "codigo": "5060",
-    "nombre": "TORTUGUITAS",
-    "domicilio": "Directorio 341",
-    "localidad": "Tortuguitas",
-    "partido": "Malvinas Argentinas",
-    "lat": -34.459545,
-    "lng": -58.73669
+    "codigo": "5008",
+    "nombre": "GENERAL PACHECO",
+    "domicilio": "Hipólito Yrigoyen 714",
+    "localidad": "General Pacheco",
+    "partido": "Tigre",
+    "lat": -34.459006,
+    "lng": -58.631493
   },
   {
-    "codigo": "7101",
-    "nombre": "MARCOS PAZ",
-    "domicilio": "Sarmiento 2132",
-    "localidad": "Marcos Paz",
-    "partido": "Marcos Paz",
-    "lat": -34.783889,
-    "lng": -58.839328
+    "codigo": "5010",
+    "nombre": "ISIDRO CASANOVA",
+    "domicilio": "Avda. Juan Manuel de Rosas 6699",
+    "localidad": "Isidro Casanova",
+    "partido": "La Matanza",
+    "lat": -34.701976,
+    "lng": -58.581302
   },
   {
-    "codigo": "7175",
-    "nombre": "MERCEDES",
-    "domicilio": "Av. 29 Nº 521",
-    "localidad": "Mercedes",
-    "partido": "Mercedes",
-    "lat": -34.659884,
-    "lng": -59.434695
+    "codigo": "5011",
+    "nombre": "ALDO BONZI",
+    "domicilio": "Av. Lino Lagos 1928",
+    "localidad": "Aldo Bonzi",
+    "partido": "La Matanza",
+    "lat": -34.709027,
+    "lng": -58.514745
   },
   {
-    "codigo": "5047",
-    "nombre": "LIBERTAD",
-    "domicilio": "Av. Eva Perón Esquina Mario Bravo",
-    "localidad": "Libertad",
-    "partido": "Merlo",
-    "lat": -34.690628,
-    "lng": -58.689661
+    "codigo": "5012",
+    "nombre": "BOULOGNE SUR MER",
+    "domicilio": "Bulnes 21",
+    "localidad": "Boulogne Sur Mer",
+    "partido": "San Isidro",
+    "lat": -34.511311,
+    "lng": -58.567424
   },
   {
-    "codigo": "5002",
-    "nombre": "SAN ANTONIO DE PADUA",
-    "domicilio": "Rivadavia Esquina Directorio",
-    "localidad": "San Antonio De Padua",
-    "partido": "Merlo",
-    "lat": -34.665672,
-    "lng": -58.697709
+    "codigo": "5014",
+    "nombre": "BELLA VISTA",
+    "domicilio": "Senador Morón 1276",
+    "localidad": "Bella Vista",
+    "partido": "San Miguel",
+    "lat": -34.562127,
+    "lng": -58.681447
   },
   {
-    "codigo": "7013",
-    "nombre": "MONTE",
-    "domicilio": "Alem Nº 605 e Hipólito Yrigoyen",
-    "localidad": "San Miguel Del Monte",
-    "partido": "Monte",
-    "lat": -35.441399,
-    "lng": -58.804624
+    "codigo": "5016",
+    "nombre": "VILLA LYNCH",
+    "domicilio": "Av. 10 República del Líbano 4055",
+    "localidad": "Villa Lynch",
+    "partido": "General San Martin",
+    "lat": -34.591736,
+    "lng": -58.52565
   },
   {
-    "codigo": "5126",
-    "nombre": "MORENO",
-    "domicilio": "Av. Libertador 310 Esquina Independencia",
-    "localidad": "Moreno",
-    "partido": "Moreno",
-    "lat": -34.646304,
-    "lng": -58.790391
+    "codigo": "5017",
+    "nombre": "ENSENADA",
+    "domicilio": "La Merced 186",
+    "localidad": "Ensenada",
+    "partido": "Ensenada",
+    "lat": -34.860901,
+    "lng": -57.902903
+  },
+  {
+    "codigo": "5018",
+    "nombre": "JOSE C. PAZ",
+    "domicilio": "Av. Altube 1932",
+    "localidad": "Jose C. Paz",
+    "partido": "Jose C. Paz",
+    "lat": -34.522377,
+    "lng": -58.752419
   },
   {
     "codigo": "5022",
@@ -1395,94 +468,310 @@
     "lng": -58.642714
   },
   {
-    "codigo": "5098",
-    "nombre": "MORON",
-    "domicilio": "Rivadavia 18101",
-    "localidad": "Morón",
-    "partido": "Moron",
-    "lat": -34.649359,
-    "lng": -58.618658
+    "codigo": "5023",
+    "nombre": "ITUZAINGO",
+    "domicilio": "Soler 310",
+    "localidad": "Ituzaingo",
+    "partido": "Ituzaingo",
+    "lat": -34.657173,
+    "lng": -58.668777
   },
   {
-    "codigo": "7072",
-    "nombre": "NAVARRO",
-    "domicilio": "Calle 24 Nº 301",
-    "localidad": "Navarro",
-    "partido": "Navarro",
-    "lat": -35.005511,
-    "lng": -59.279176
+    "codigo": "5024",
+    "nombre": "FLORIDA",
+    "domicilio": "Av. San Martín 2870/80",
+    "localidad": "Florida",
+    "partido": "Vicente Lopez",
+    "lat": -34.528724,
+    "lng": -58.493526
   },
   {
-    "codigo": "6177",
-    "nombre": "NECOCHEA",
-    "domicilio": "Calle 64 Nº 3000",
-    "localidad": "Necochea",
-    "partido": "Necochea",
-    "lat": -38.552872,
-    "lng": -58.743315
+    "codigo": "5025",
+    "nombre": "ADROGUE",
+    "domicilio": "Bartolomé Mitre y Somellera 599",
+    "localidad": "Adrogue",
+    "partido": "Almirante Brown",
+    "lat": -34.798103,
+    "lng": -58.393295
   },
   {
-    "codigo": "6379",
-    "nombre": "OLAVARRIA",
-    "domicilio": "Vicente López 3006",
-    "localidad": "Olavarría",
-    "partido": "Olavarria",
-    "lat": -36.891851,
-    "lng": -60.321158
+    "codigo": "5026",
+    "nombre": "AVELLANEDA",
+    "domicilio": "Avenida Mitre 498",
+    "localidad": "Avellaneda",
+    "partido": "Avellaneda",
+    "lat": -34.660129,
+    "lng": -58.367723
   },
   {
-    "codigo": "6902",
-    "nombre": "MAR DE AJO",
-    "domicilio": "Hipólito Yrigoyen 303/09",
-    "localidad": "Mar De Ajó",
-    "partido": "Partido De La Costa",
-    "lat": -36.731818,
-    "lng": -56.675139
+    "codigo": "5028",
+    "nombre": "JOSE INGENIEROS",
+    "domicilio": "Eduardo Comesaña 2520",
+    "localidad": "Jose Ingenieros",
+    "partido": "Tres De Febrero",
+    "lat": -34.619332,
+    "lng": -58.533473
   },
   {
-    "codigo": "6782",
-    "nombre": "PEHUAJO",
-    "domicilio": "Hipólito Yrigoyen 500",
-    "localidad": "Pehuajo",
-    "partido": "Pehuajo",
-    "lat": -35.811027,
-    "lng": -61.897937
+    "codigo": "5029",
+    "nombre": "BURZACO",
+    "domicilio": "General Roca 1161",
+    "localidad": "Burzaco",
+    "partido": "Almirante Brown",
+    "lat": -34.822569,
+    "lng": -58.392417
   },
   {
-    "codigo": "6584",
-    "nombre": "PERGAMINO",
-    "domicilio": "San Nicolás y Pueyrredón",
-    "localidad": "Pergamino",
-    "partido": "Pergamino",
-    "lat": -33.893913,
-    "lng": -60.572821
+    "codigo": "5031",
+    "nombre": "DOCK SUD",
+    "domicilio": "Manuel Estévez 1451/55",
+    "localidad": "Dock Sud",
+    "partido": "Avellaneda",
+    "lat": -34.649331,
+    "lng": -58.353671
   },
   {
-    "codigo": "7185",
-    "nombre": "PILAR",
-    "domicilio": "Av. Rivadavia Esquina L. López",
-    "localidad": "Pilar",
-    "partido": "Pilar",
-    "lat": -34.649161,
-    "lng": -58.630685
+    "codigo": "5032",
+    "nombre": "BERAZATEGUI",
+    "domicilio": "Av. Pte. Juan D. Perón (14) 4928",
+    "localidad": "Berazategui",
+    "partido": "Berazategui",
+    "lat": -34.726258,
+    "lng": -58.259248
   },
   {
-    "codigo": "6904",
-    "nombre": "PINAMAR",
-    "domicilio": "Rivadavia 944 entre Av. Shaw y M.Polo",
-    "localidad": "Pinamar",
-    "partido": "Pinamar",
-    "lat": -37.11057,
-    "lng": -56.86624
+    "codigo": "5033",
+    "nombre": "BERISSO",
+    "domicilio": "Montevideo 501 / esquina 7",
+    "localidad": "Berisso",
+    "partido": "Berisso",
+    "lat": -34.867155,
+    "lng": -57.886497
   },
   {
-    "codigo": "5175",
-    "nombre": "BERNAL",
-    "domicilio": "Belgrano 347",
-    "localidad": "Bernal",
-    "partido": "Quilmes",
-    "lat": -34.711905,
-    "lng": -58.28088
+    "codigo": "5034",
+    "nombre": "CIUDADELA",
+    "domicilio": "Av. Rivadavia 12802",
+    "localidad": "Ciudadela",
+    "partido": "Tres De Febrero",
+    "lat": -34.640466,
+    "lng": -58.543803
+  },
+  {
+    "codigo": "5035",
+    "nombre": "SANTOS LUGARES",
+    "domicilio": "Av. La Plata 3722",
+    "localidad": "Santos Lugares",
+    "partido": "Tres De Febrero",
+    "lat": -34.599181,
+    "lng": -58.545767
+  },
+  {
+    "codigo": "5037",
+    "nombre": "VILLA ADELINA",
+    "domicilio": "Paraná 6647",
+    "localidad": "Villa Adelina",
+    "partido": "San Isidro",
+    "lat": -34.526765,
+    "lng": -58.549945
+  },
+  {
+    "codigo": "5038",
+    "nombre": "BANFIELD",
+    "domicilio": "Av. Alsina 653/59",
+    "localidad": "Banfield",
+    "partido": "Lomas De Zamora",
+    "lat": -34.743256,
+    "lng": -58.393181
+  },
+  {
+    "codigo": "5040",
+    "nombre": "HURLINGHAM",
+    "domicilio": "Arturo Jauretche 1550",
+    "localidad": "Hurlingham",
+    "partido": "Hurlingham",
+    "lat": -34.592543,
+    "lng": -58.635726
+  },
+  {
+    "codigo": "5041",
+    "nombre": "VILLA MAIPU",
+    "domicilio": "Estrada 1201/05 Esquina Saavedra",
+    "localidad": "Villa Maipu",
+    "partido": "General San Martin",
+    "lat": -34.566159,
+    "lng": -58.522419
+  },
+  {
+    "codigo": "5042",
+    "nombre": "CRUCE DE FLORENCIO VARELA",
+    "domicilio": "Av. Calchaquí Esquina Balcarce",
+    "localidad": "Florencio Varela",
+    "partido": "Florencio Varela",
+    "lat": -34.785862,
+    "lng": -58.256919
+  },
+  {
+    "codigo": "5044",
+    "nombre": "LOS POLVORINES",
+    "domicilio": "25 de Mayo 2631",
+    "localidad": "Los Polvorines",
+    "partido": "Malvinas Argentinas",
+    "lat": -34.500155,
+    "lng": -58.695211
+  },
+  {
+    "codigo": "5046",
+    "nombre": "RAFAEL CALZADA",
+    "domicilio": "Altamira 1779",
+    "localidad": "Rafael Calzada",
+    "partido": "Almirante Brown",
+    "lat": -34.794869,
+    "lng": -58.357573
+  },
+  {
+    "codigo": "5047",
+    "nombre": "LIBERTAD",
+    "domicilio": "Av. Eva Perón Esquina Mario Bravo",
+    "localidad": "Libertad",
+    "partido": "Merlo",
+    "lat": -34.690628,
+    "lng": -58.689661
+  },
+  {
+    "codigo": "5048",
+    "nombre": "GLEW",
+    "domicilio": "Patria 69",
+    "localidad": "Glew",
+    "partido": "Almirante Brown",
+    "lat": -34.887175,
+    "lng": -58.38466
+  },
+  {
+    "codigo": "5049",
+    "nombre": "SARANDI",
+    "domicilio": "Av. Mitre 2567",
+    "localidad": "Sarandi",
+    "partido": "Avellaneda",
+    "lat": -34.676008,
+    "lng": -58.349187
+  },
+  {
+    "codigo": "5054",
+    "nombre": "LANUS OESTE",
+    "domicilio": "Av. San Martín 3425",
+    "localidad": "Lanus",
+    "partido": "Lanus",
+    "lat": -34.706353,
+    "lng": -58.417716
+  },
+  {
+    "codigo": "5055",
+    "nombre": "SAN MIGUEL",
+    "domicilio": "Sarmiento 1343",
+    "localidad": "San Miguel",
+    "partido": "San Miguel",
+    "lat": -34.545197,
+    "lng": -58.710197
+  },
+  {
+    "codigo": "5058",
+    "nombre": "GREGORIO DE LAFERRERE",
+    "domicilio": "Rafael Obligado 3146",
+    "localidad": "Gregorio De Laferrere",
+    "partido": "La Matanza",
+    "lat": -34.736113,
+    "lng": -58.612313
+  },
+  {
+    "codigo": "5060",
+    "nombre": "TORTUGUITAS",
+    "domicilio": "Directorio 341",
+    "localidad": "Tortuguitas",
+    "partido": "Malvinas Argentinas",
+    "lat": -34.459545,
+    "lng": -58.73669
+  },
+  {
+    "codigo": "5063",
+    "nombre": "LANUS",
+    "domicilio": "Av. 9 de Julio 1165",
+    "localidad": "Lanus",
+    "partido": "Lanus",
+    "lat": -34.708452,
+    "lng": -58.389986
+  },
+  {
+    "codigo": "5064",
+    "nombre": "DON TORCUATO",
+    "domicilio": "Angel T. De Alvear 708",
+    "localidad": "Don Torcuato",
+    "partido": "Tigre",
+    "lat": -34.498531,
+    "lng": -58.639986
+  },
+  {
+    "codigo": "5065",
+    "nombre": "BECCAR",
+    "domicilio": "Av. Centenario 1940/52",
+    "localidad": "Beccar",
+    "partido": "San Isidro",
+    "lat": -34.46036,
+    "lng": -58.52814
+  },
+  {
+    "codigo": "5067",
+    "nombre": "GONZALEZ CATAN",
+    "domicilio": "Puerto Argentino 4182",
+    "localidad": "Gonzalez Catan",
+    "partido": "La Matanza",
+    "lat": -34.769028,
+    "lng": -58.647206
+  },
+  {
+    "codigo": "5068",
+    "nombre": "LOMAS DE ZAMORA",
+    "domicilio": "Laprida 200 Esquina España",
+    "localidad": "Lomas De Zamora",
+    "partido": "Lomas De Zamora",
+    "lat": -34.760799,
+    "lng": -58.399768
+  },
+  {
+    "codigo": "5079",
+    "nombre": "PARQUE INDUSTRIAL ALMIRANTE BROWN",
+    "domicilio": "Avenida Hipólito Irigoyen Nº 16101",
+    "localidad": "Burzaco",
+    "partido": "Almirante Brown",
+    "lat": -34.841701,
+    "lng": -58.403292
+  },
+  {
+    "codigo": "5080",
+    "nombre": "OLIVOS",
+    "domicilio": "Av. Maipú 2598",
+    "localidad": "Olivos",
+    "partido": "Vicente Lopez",
+    "lat": -34.511579,
+    "lng": -58.490463
+  },
+  {
+    "codigo": "5081",
+    "nombre": "EL PATO",
+    "domicilio": "Calle Colectora y 613",
+    "localidad": "Berazategui",
+    "partido": "Berazategui",
+    "lat": -34.877559,
+    "lng": -58.17859
+  },
+  {
+    "codigo": "5086",
+    "nombre": "HUDSON",
+    "domicilio": "Calle 55 NRO 5308 esquina Calle 153",
+    "localidad": "Hudson",
+    "partido": "Berazategui",
+    "lat": -34.793903,
+    "lng": -58.167159
   },
   {
     "codigo": "5087",
@@ -1494,6 +783,537 @@
     "lng": -58.256381
   },
   {
+    "codigo": "5095",
+    "nombre": "SAN FERNANDO",
+    "domicilio": "Constitución 899",
+    "localidad": "San Fernando",
+    "partido": "San Fernando",
+    "lat": -34.439936,
+    "lng": -58.558376
+  },
+  {
+    "codigo": "5096",
+    "nombre": "SAN ISIDRO",
+    "domicilio": "9 de Julio 302",
+    "localidad": "San Isidro",
+    "partido": "San Isidro",
+    "lat": -34.46961,
+    "lng": -58.511478
+  },
+  {
+    "codigo": "5097",
+    "nombre": "SAN MARTIN",
+    "domicilio": "Int. Campos 2001",
+    "localidad": "General San Martin",
+    "partido": "General San Martin",
+    "lat": -34.577122,
+    "lng": -58.536829
+  },
+  {
+    "codigo": "5098",
+    "nombre": "MORON",
+    "domicilio": "Rivadavia 18101",
+    "localidad": "Morón",
+    "partido": "Moron",
+    "lat": -34.649359,
+    "lng": -58.618658
+  },
+  {
+    "codigo": "5099",
+    "nombre": "TRIBUNALES SAN ISIDRO",
+    "domicilio": "Ituzaingó 340",
+    "localidad": "San Isidro",
+    "partido": "San Isidro",
+    "lat": -34.47226,
+    "lng": -58.51178
+  },
+  {
+    "codigo": "5100",
+    "nombre": "TRIBUNALES SAN MARTIN",
+    "domicilio": "Dr. R. Balbín 1753",
+    "localidad": "General San Martin",
+    "partido": "General San Martin",
+    "lat": -34.583271,
+    "lng": -58.538752
+  },
+  {
+    "codigo": "5101",
+    "nombre": "VILLA TESEI",
+    "domicilio": "La Patria 3005 Esquina Poeta Risso",
+    "localidad": "Ciudad Villa Santos Tesei",
+    "partido": "Hurlingham",
+    "lat": -34.59858,
+    "lng": -58.652304
+  },
+  {
+    "codigo": "5114",
+    "nombre": "FLORENCIO VARELA",
+    "domicilio": "Monteagudo 96",
+    "localidad": "Florencio Varela",
+    "partido": "Florencio Varela",
+    "lat": -34.809266,
+    "lng": -58.27471
+  },
+  {
+    "codigo": "5120",
+    "nombre": "SAN JUSTO",
+    "domicilio": "Av. Presidente Perón 2751/57",
+    "localidad": "San Justo",
+    "partido": "La Matanza",
+    "lat": -34.67519,
+    "lng": -58.558325
+  },
+  {
+    "codigo": "5126",
+    "nombre": "MORENO",
+    "domicilio": "Av. Libertador 310 Esquina Independencia",
+    "localidad": "Moreno",
+    "partido": "Moreno",
+    "lat": -34.646304,
+    "lng": -58.790391
+  },
+  {
+    "codigo": "5129",
+    "nombre": "RAMOS MEJIA",
+    "domicilio": "Belgrano 34",
+    "localidad": "Ramos Mejia",
+    "partido": "La Matanza",
+    "lat": -34.641786,
+    "lng": -58.564411
+  },
+  {
+    "codigo": "5138",
+    "nombre": "TIGRE",
+    "domicilio": "Av. Cazón 1279 Esquina Albarellos",
+    "localidad": "Tigre",
+    "partido": "Tigre",
+    "lat": -34.425066,
+    "lng": -58.57709
+  },
+  {
+    "codigo": "5151",
+    "nombre": "MARTINEZ",
+    "domicilio": "Av. Santa Fé 1527",
+    "localidad": "Martinez",
+    "partido": "San Isidro",
+    "lat": -34.486038,
+    "lng": -58.502949
+  },
+  {
+    "codigo": "5153",
+    "nombre": "MUNRO",
+    "domicilio": "Av. Vélez Sarfield 4448",
+    "localidad": "Munro",
+    "partido": "Vicente Lopez",
+    "lat": -34.529309,
+    "lng": -58.521668
+  },
+  {
+    "codigo": "5154",
+    "nombre": "CARAPACHAY",
+    "domicilio": "Independencia 2992 Esquina Ituzaingó",
+    "localidad": "Carapachay",
+    "partido": "Vicente Lopez",
+    "lat": -34.528087,
+    "lng": -58.536265
+  },
+  {
+    "codigo": "5155",
+    "nombre": "VILLA BALLESTER",
+    "domicilio": "Pacífico Rodríguez 40",
+    "localidad": "Villa Ballester",
+    "partido": "General San Martin",
+    "lat": -34.544427,
+    "lng": -58.560505
+  },
+  {
+    "codigo": "5173",
+    "nombre": "WILDE",
+    "domicilio": "Av. Mitre 6458",
+    "localidad": "Wilde",
+    "partido": "Avellaneda",
+    "lat": -34.706188,
+    "lng": -58.31473
+  },
+  {
+    "codigo": "5174",
+    "nombre": "VICENTE LOPEZ",
+    "domicilio": "Av. Maipú 741",
+    "localidad": "Vicente Lopez",
+    "partido": "Vicente Lopez",
+    "lat": -34.531094,
+    "lng": -58.479568
+  },
+  {
+    "codigo": "5175",
+    "nombre": "BERNAL",
+    "domicilio": "Belgrano 347",
+    "localidad": "Bernal",
+    "partido": "Quilmes",
+    "lat": -34.711905,
+    "lng": -58.28088
+  },
+  {
+    "codigo": "5184",
+    "nombre": "JOSE MARIA EZEIZA",
+    "domicilio": "Esteban Echeverría 62",
+    "localidad": "Jose Maria Ezeiza",
+    "partido": "Ezeiza",
+    "lat": -34.851957,
+    "lng": -58.521211
+  },
+  {
+    "codigo": "5200",
+    "nombre": "PLAZA SAN MARTIN",
+    "domicilio": "Av. 7 Nº 1031 esq. Calle 54",
+    "localidad": "La Plata",
+    "partido": "La Plata",
+    "lat": -34.916782,
+    "lng": -57.947532
+  },
+  {
+    "codigo": "6100",
+    "nombre": "LURO",
+    "domicilio": "Av. Pedro Luro 3869",
+    "localidad": "Mar Del Plata",
+    "partido": "General Pueyrredon",
+    "lat": -37.991945,
+    "lng": -57.558896
+  },
+  {
+    "codigo": "6130",
+    "nombre": "BALCARCE",
+    "domicilio": "Av. Gonzáles Chaves 501",
+    "localidad": "Balcarce",
+    "partido": "Balcarce",
+    "lat": -37.845222,
+    "lng": -58.253524
+  },
+  {
+    "codigo": "6166",
+    "nombre": "LOBERIA",
+    "domicilio": "Av. Sarmiento Nº 1 Esquina Mitre",
+    "localidad": "Loberia",
+    "partido": "Loberia",
+    "lat": -38.163455,
+    "lng": -58.783498
+  },
+  {
+    "codigo": "6176",
+    "nombre": "MIRAMAR",
+    "domicilio": "Calle 21 Nº 1209 Esquina Calle 24",
+    "localidad": "Miramar",
+    "partido": "General Alvarado",
+    "lat": -38.27032,
+    "lng": -57.838105
+  },
+  {
+    "codigo": "6177",
+    "nombre": "NECOCHEA",
+    "domicilio": "Calle 64 Nº 3000",
+    "localidad": "Necochea",
+    "partido": "Necochea",
+    "lat": -38.552872,
+    "lng": -58.743315
+  },
+  {
+    "codigo": "6200",
+    "nombre": "VILLA MITRE",
+    "domicilio": "Alberdi 1462",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.727669,
+    "lng": -62.246472
+  },
+  {
+    "codigo": "6201",
+    "nombre": "PUNTA ALTA",
+    "domicilio": "Bernardo de Irigoyen 645",
+    "localidad": "Punta Alta",
+    "partido": "Coronel Rosales",
+    "lat": -38.880986,
+    "lng": -62.073435
+  },
+  {
+    "codigo": "6202",
+    "nombre": "ALMAFUERTE",
+    "domicilio": "Almafuerte 750",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.719784,
+    "lng": -62.284418
+  },
+  {
+    "codigo": "6205",
+    "nombre": "TRES ARROYOS",
+    "domicilio": "Colón 199",
+    "localidad": "Tres Arroyos",
+    "partido": "Tres Arroyos",
+    "lat": -38.379204,
+    "lng": -60.275007
+  },
+  {
+    "codigo": "6206",
+    "nombre": "TRIBUNALES BAHIA BLANCA",
+    "domicilio": "Estomba 32",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.718244,
+    "lng": -62.267109
+  },
+  {
+    "codigo": "6207",
+    "nombre": "BARRIO UNIVERSITARIO",
+    "domicilio": "Av. Alem 979",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.704622,
+    "lng": -62.267877
+  },
+  {
+    "codigo": "6228",
+    "nombre": "CENTRO",
+    "domicilio": "Hipólito Yrigoyen 128/132",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.69008,
+    "lng": -62.232802
+  },
+  {
+    "codigo": "6229",
+    "nombre": "BAHIA BLANCA",
+    "domicilio": "Chiclana Esquina Undiano",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.723417,
+    "lng": -62.259722
+  },
+  {
+    "codigo": "6232",
+    "nombre": "INGENIERO WHITE",
+    "domicilio": "Av. San Martín 3666",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.72036,
+    "lng": -62.260395
+  },
+  {
+    "codigo": "6245",
+    "nombre": "CORONEL DORREGO",
+    "domicilio": "San Martín 602",
+    "localidad": "Coronel Dorrego",
+    "partido": "Coronel Dorrego",
+    "lat": -38.716565,
+    "lng": -61.290145
+  },
+  {
+    "codigo": "6256",
+    "nombre": "CABILDO",
+    "domicilio": "La Plata Esquina Pringles",
+    "localidad": "Bahía Blanca",
+    "partido": "Bahía Blanca",
+    "lat": -38.485084,
+    "lng": -61.892839
+  },
+  {
+    "codigo": "6301",
+    "nombre": "CHILLAR",
+    "domicilio": "M.T.Cortázar 1100",
+    "localidad": "Chillar",
+    "partido": "Azul",
+    "lat": -37.310872,
+    "lng": -59.984716
+  },
+  {
+    "codigo": "6302",
+    "nombre": "TANDIL",
+    "domicilio": "9 de Julio 403 esquina Belgrano",
+    "localidad": "Tandil",
+    "partido": "Tandil",
+    "lat": -37.328187,
+    "lng": -59.13364
+  },
+  {
+    "codigo": "6304",
+    "nombre": "TRIBUNALES AZUL",
+    "domicilio": "Humberto 1º 525",
+    "localidad": "Azul",
+    "partido": "Azul",
+    "lat": -34.620533,
+    "lng": -58.373307
+  },
+  {
+    "codigo": "6328",
+    "nombre": "AZUL",
+    "domicilio": "San Martín 499",
+    "localidad": "Azul",
+    "partido": "Azul",
+    "lat": -36.778756,
+    "lng": -59.862668
+  },
+  {
+    "codigo": "6345",
+    "nombre": "CACHARI",
+    "domicilio": "Av. San Martín 1640",
+    "localidad": "Cacharí",
+    "partido": "Azul",
+    "lat": -36.37737,
+    "lng": -59.505619
+  },
+  {
+    "codigo": "6350",
+    "nombre": "GENERAL ALVEAR",
+    "domicilio": "San Martín 802",
+    "localidad": "General Alvear",
+    "partido": "General Alvear",
+    "lat": -36.021374,
+    "lng": -60.015352
+  },
+  {
+    "codigo": "6358",
+    "nombre": "GONZALES CHAVES",
+    "domicilio": "Bartolomé Mitre 299",
+    "localidad": "Adolfo Gonzales Chaves",
+    "partido": "Adolfo Gonzales Chaves",
+    "lat": -38.032323,
+    "lng": -60.098303
+  },
+  {
+    "codigo": "6361",
+    "nombre": "BARKER",
+    "domicilio": "Ordaz 550",
+    "localidad": "Barker",
+    "partido": "Benito Juarez",
+    "lat": -37.640073,
+    "lng": -59.3905
+  },
+  {
+    "codigo": "6376",
+    "nombre": "DE LA GARMA",
+    "domicilio": "Dr. Víctor H. Barrera 297",
+    "localidad": "De La Garma",
+    "partido": "Adolfo Gonzales Chaves",
+    "lat": -37.963846,
+    "lng": -60.414055
+  },
+  {
+    "codigo": "6379",
+    "nombre": "OLAVARRIA",
+    "domicilio": "Vicente López 3006",
+    "localidad": "Olavarría",
+    "partido": "Olavarria",
+    "lat": -36.891851,
+    "lng": -60.321158
+  },
+  {
+    "codigo": "6406",
+    "nombre": "25 DE MAYO",
+    "domicilio": "Calle 9 Nº 901 Esquina 28",
+    "localidad": "25 De Mayo",
+    "partido": "25 De Mayo",
+    "lat": -35.431864,
+    "lng": -60.170512
+  },
+  {
+    "codigo": "6424",
+    "nombre": "ALBERTI",
+    "domicilio": "Av. Vacarezza 202",
+    "localidad": "Alberti",
+    "partido": "Alberti",
+    "lat": -35.030533,
+    "lng": -60.27986
+  },
+  {
+    "codigo": "6435",
+    "nombre": "BRAGADO",
+    "domicilio": "Av. Pellegrini 1399",
+    "localidad": "Bragado",
+    "partido": "Bragado",
+    "lat": -35.116725,
+    "lng": -60.488233
+  },
+  {
+    "codigo": "6436",
+    "nombre": "DUDIGNAC",
+    "domicilio": "Av. Belgrano S/Nº",
+    "localidad": "Dudignac",
+    "partido": "9 De Julio",
+    "lat": -35.649211,
+    "lng": -60.71109
+  },
+  {
+    "codigo": "6441",
+    "nombre": "CHACABUCO",
+    "domicilio": "Av. Alsina y Rivadavia",
+    "localidad": "Chacabuco",
+    "partido": "Chacabuco",
+    "lat": -34.643392,
+    "lng": -60.469533
+  },
+  {
+    "codigo": "6443",
+    "nombre": "CHIVILCOY",
+    "domicilio": "C.Pellegrini 52 y Rivadavia",
+    "localidad": "Chivilcoy",
+    "partido": "Chivilcoy",
+    "lat": -34.895221,
+    "lng": -60.019104
+  },
+  {
+    "codigo": "6478",
+    "nombre": "9 DE JULIO",
+    "domicilio": "Av. Mitre 1305",
+    "localidad": "9 De Julio",
+    "partido": "9 De Julio",
+    "lat": -35.444532,
+    "lng": -60.884131
+  },
+  {
+    "codigo": "6500",
+    "nombre": "SAN PEDRO",
+    "domicilio": "Bartolomé Mitre 800",
+    "localidad": "San Pedro",
+    "partido": "San Pedro",
+    "lat": -33.678456,
+    "lng": -59.665413
+  },
+  {
+    "codigo": "6531",
+    "nombre": "BARADERO",
+    "domicilio": "Laprida 1036",
+    "localidad": "Baradero",
+    "partido": "Baradero",
+    "lat": -33.80856,
+    "lng": -59.501105
+  },
+  {
+    "codigo": "6532",
+    "nombre": "ARRECIFES",
+    "domicilio": "Ricardo Gutierrez 399",
+    "localidad": "Arrecifes",
+    "partido": "Arrecifes",
+    "lat": -34.064086,
+    "lng": -60.10603
+  },
+  {
+    "codigo": "6544",
+    "nombre": "COLON",
+    "domicilio": "Calle 47 Nº 1048",
+    "localidad": "Colon",
+    "partido": "Colon",
+    "lat": -33.891175,
+    "lng": -61.097529
+  },
+  {
+    "codigo": "6546",
+    "nombre": "CAPITAN SARMIENTO",
+    "domicilio": "Bartolomé Mitre y Mármol",
+    "localidad": "Capitan Sarmiento",
+    "partido": "Capitan Sarmiento",
+    "lat": -34.173589,
+    "lng": -59.790986
+  },
+  {
     "codigo": "6570",
     "nombre": "RAMALLO",
     "domicilio": "Eva Perón 904",
@@ -1501,6 +1321,24 @@
     "partido": "Ramallo",
     "lat": -33.48732,
     "lng": -60.005149
+  },
+  {
+    "codigo": "6572",
+    "nombre": "SALTO",
+    "domicilio": "Buenos Aires Esquina Alvear",
+    "localidad": "Salto",
+    "partido": "Salto",
+    "lat": -34.291999,
+    "lng": -60.254973
+  },
+  {
+    "codigo": "6584",
+    "nombre": "PERGAMINO",
+    "domicilio": "San Nicolás y Pueyrredón",
+    "localidad": "Pergamino",
+    "partido": "Pergamino",
+    "lat": -33.893913,
+    "lng": -60.572821
   },
   {
     "codigo": "6590",
@@ -1512,6 +1350,339 @@
     "lng": -60.732995
   },
   {
+    "codigo": "6599",
+    "nombre": "SAN NICOLAS",
+    "domicilio": "Bartolomé Mitre 201",
+    "localidad": "San Nicolas De Los Arroyos",
+    "partido": "San Nicolas",
+    "lat": -33.330362,
+    "lng": -60.219138
+  },
+  {
+    "codigo": "6639",
+    "nombre": "CARLOS TEJEDOR",
+    "domicilio": "Alberto H. Almirón 201 Esquina Garré",
+    "localidad": "Carlos Tejedor",
+    "partido": "Carlos Tejedor",
+    "lat": -35.398528,
+    "lng": -62.425234
+  },
+  {
+    "codigo": "6657",
+    "nombre": "GENERAL VILLEGAS",
+    "domicilio": "Belgrano 424/430",
+    "localidad": "General Villegas",
+    "partido": "General Villegas",
+    "lat": -35.034123,
+    "lng": -63.019603
+  },
+  {
+    "codigo": "6662",
+    "nombre": "JUNIN",
+    "domicilio": "Bartolomé Mitre 52",
+    "localidad": "Junin",
+    "partido": "Junin",
+    "lat": -34.594214,
+    "lng": -60.945388
+  },
+  {
+    "codigo": "6665",
+    "nombre": "LINCOLN",
+    "domicilio": "Bartolomé Mitre 125",
+    "localidad": "Lincoln",
+    "partido": "Lincoln",
+    "lat": -34.868226,
+    "lng": -61.527685
+  },
+  {
+    "codigo": "6704",
+    "nombre": "TRENQUE LAUQUEN",
+    "domicilio": "Boulevard Villegas 500",
+    "localidad": "Trenque Lauquen",
+    "partido": "Trenque Lauquen",
+    "lat": -35.972803,
+    "lng": -62.733366
+  },
+  {
+    "codigo": "6734",
+    "nombre": "BOLIVAR",
+    "domicilio": "Av. San Martín 601",
+    "localidad": "San Carlos De Bolivar",
+    "partido": "Bolivar",
+    "lat": -36.231397,
+    "lng": -61.112721
+  },
+  {
+    "codigo": "6738",
+    "nombre": "CARLOS CASARES",
+    "domicilio": "San Martín y Rivadavia",
+    "localidad": "Carlos Casares",
+    "partido": "Carlos Casares",
+    "lat": -35.625103,
+    "lng": -61.364928
+  },
+  {
+    "codigo": "6760",
+    "nombre": "HENDERSON",
+    "domicilio": "Florida 501",
+    "localidad": "Henderson",
+    "partido": "Hipolito Yrigoyen",
+    "lat": -36.301379,
+    "lng": -61.717211
+  },
+  {
+    "codigo": "6782",
+    "nombre": "PEHUAJO",
+    "domicilio": "Hipólito Yrigoyen 500",
+    "localidad": "Pehuajo",
+    "partido": "Pehuajo",
+    "lat": -35.811027,
+    "lng": -61.897937
+  },
+  {
+    "codigo": "6816",
+    "nombre": "LAPRIDA",
+    "domicilio": "Av. San Martín 1102",
+    "localidad": "Laprida",
+    "partido": "Laprida",
+    "lat": -37.54429,
+    "lng": -60.799972
+  },
+  {
+    "codigo": "6823",
+    "nombre": "CARHUE",
+    "domicilio": "San Martín Esquina Mitre",
+    "localidad": "Carhue",
+    "partido": "Adolfo Alsina",
+    "lat": -37.179297,
+    "lng": -62.758019
+  },
+  {
+    "codigo": "6824",
+    "nombre": "DAIREAUX",
+    "domicilio": "Av. Julio A. Roca Esquina Rivadavia",
+    "localidad": "Daireaux",
+    "partido": "Daireaux",
+    "lat": -36.600311,
+    "lng": -61.747689
+  },
+  {
+    "codigo": "6846",
+    "nombre": "CORONEL PRINGLES",
+    "domicilio": "Bartolomé Mitre 901 Esquina Stegman",
+    "localidad": "Coronel Pringles",
+    "partido": "Coronel Pringles",
+    "lat": -37.986355,
+    "lng": -61.353796
+  },
+  {
+    "codigo": "6847",
+    "nombre": "CORONEL SUAREZ",
+    "domicilio": "Belgrano Esquina Alsina 99",
+    "localidad": "Coronel Suarez",
+    "partido": "Coronel Suarez",
+    "lat": -37.459987,
+    "lng": -61.931712
+  },
+  {
+    "codigo": "6851",
+    "nombre": "GENERAL LAMADRID",
+    "domicilio": "Bartolomé Mitre 599",
+    "localidad": "General Lamadrid",
+    "partido": "General Lamadrid",
+    "lat": -37.248275,
+    "lng": -61.260954
+  },
+  {
+    "codigo": "6859",
+    "nombre": "GUAMINI",
+    "domicilio": "Freyre 99",
+    "localidad": "Guaminí",
+    "partido": "Guamini",
+    "lat": -37.012623,
+    "lng": -62.418261
+  },
+  {
+    "codigo": "6892",
+    "nombre": "RIVERA",
+    "domicilio": "Tucumán 1",
+    "localidad": "Rivera",
+    "partido": "Adolfo Alsina",
+    "lat": -37.159926,
+    "lng": -63.24506
+  },
+  {
+    "codigo": "6902",
+    "nombre": "MAR DE AJO",
+    "domicilio": "Hipólito Yrigoyen 303/09",
+    "localidad": "Mar De Ajó",
+    "partido": "Partido De La Costa",
+    "lat": -36.731818,
+    "lng": -56.675139
+  },
+  {
+    "codigo": "6904",
+    "nombre": "PINAMAR",
+    "domicilio": "Rivadavia 944 entre Av. Shaw y M.Polo",
+    "localidad": "Pinamar",
+    "partido": "Pinamar",
+    "lat": -37.11057,
+    "lng": -56.86624
+  },
+  {
+    "codigo": "6908",
+    "nombre": "CASTELLI",
+    "domicilio": "Maipú 2 y Av. 25 de Mayo",
+    "localidad": "Castelli",
+    "partido": "Castelli",
+    "lat": -36.091792,
+    "lng": -57.80798
+  },
+  {
+    "codigo": "6927",
+    "nombre": "AYACUCHO",
+    "domicilio": "9 de Julio 1121",
+    "localidad": "Ayacucho",
+    "partido": "Ayacucho",
+    "lat": -37.151769,
+    "lng": -58.488849
+  },
+  {
+    "codigo": "6942",
+    "nombre": "CHASCOMUS",
+    "domicilio": "Libres del Sur 149",
+    "localidad": "Chascomus",
+    "partido": "Chascomus",
+    "lat": -35.574863,
+    "lng": -58.014334
+  },
+  {
+    "codigo": "6949",
+    "nombre": "DOLORES",
+    "domicilio": "Belgrano 235 y Rico 102",
+    "localidad": "Dolores",
+    "partido": "Dolores",
+    "lat": -36.317681,
+    "lng": -57.676265
+  },
+  {
+    "codigo": "6952",
+    "nombre": "GENERAL MADARIAGA",
+    "domicilio": "Avellaneda 199 Esquina Sarmiento",
+    "localidad": "General Juan Madariaga",
+    "partido": "General Madariaga",
+    "lat": -36.995145,
+    "lng": -57.139038
+  },
+  {
+    "codigo": "6990",
+    "nombre": "VILLA GESELL",
+    "domicilio": "Av. 3 (San Martín) Nº 751",
+    "localidad": "Villa Gesell",
+    "partido": "Villa Gesell",
+    "lat": -37.275993,
+    "lng": -56.984149
+  },
+  {
+    "codigo": "7003",
+    "nombre": "NORBERTO DE LA RIESTRA",
+    "domicilio": "Belgrano 365",
+    "localidad": "Norberto De La Riestra",
+    "partido": "25 De Mayo",
+    "lat": -35.273404,
+    "lng": -59.770747
+  },
+  {
+    "codigo": "7004",
+    "nombre": "PEDERNALES",
+    "domicilio": "Sarmiento S/Nº esquina Yapeyú",
+    "localidad": "Pedernales",
+    "partido": "25 De Mayo",
+    "lat": -35.266232,
+    "lng": -59.632791
+  },
+  {
+    "codigo": "7012",
+    "nombre": "GENERAL LAS HERAS",
+    "domicilio": "25 de Mayo Esquina Villamayor",
+    "localidad": "General Las Heras",
+    "partido": "General Las Heras",
+    "lat": -34.927915,
+    "lng": -58.945536
+  },
+  {
+    "codigo": "7013",
+    "nombre": "MONTE",
+    "domicilio": "Alem Nº 605 e Hipólito Yrigoyen",
+    "localidad": "San Miguel Del Monte",
+    "partido": "Monte",
+    "lat": -35.441399,
+    "lng": -58.804624
+  },
+  {
+    "codigo": "7019",
+    "nombre": "SAN VICENTE",
+    "domicilio": "25 de Mayo 210/214",
+    "localidad": "San Vicente",
+    "partido": "San Vicente",
+    "lat": -35.022639,
+    "lng": -58.421261
+  },
+  {
+    "codigo": "7025",
+    "nombre": "GENERAL BELGRANO",
+    "domicilio": "Julio Llanos y Av. San Martín",
+    "localidad": "General Belgrano",
+    "partido": "General Belgrano",
+    "lat": -35.76702,
+    "lng": -58.494597
+  },
+  {
+    "codigo": "7031",
+    "nombre": "BRANDSEN",
+    "domicilio": "Pedro J. Ferrari Esquina Las Heras",
+    "localidad": "Coronel Brandsen",
+    "partido": "Brandsen",
+    "lat": -35.179899,
+    "lng": -58.229887
+  },
+  {
+    "codigo": "7037",
+    "nombre": "CAÑUELAS",
+    "domicilio": "Libertad 702",
+    "localidad": "Cañuelas",
+    "partido": "Cañuelas",
+    "lat": -35.054424,
+    "lng": -58.760813
+  },
+  {
+    "codigo": "7064",
+    "nombre": "LAS FLORES",
+    "domicilio": "Av. San Martín y Gral. Paz",
+    "localidad": "Las Flores",
+    "partido": "Las Flores",
+    "lat": -34.589567,
+    "lng": -58.51828
+  },
+  {
+    "codigo": "7067",
+    "nombre": "LOBOS",
+    "domicilio": "9 de Julio y Rivadavia",
+    "localidad": "Lobos",
+    "partido": "Lobos",
+    "lat": -35.184894,
+    "lng": -59.096229
+  },
+  {
+    "codigo": "7072",
+    "nombre": "NAVARRO",
+    "domicilio": "Calle 24 Nº 301",
+    "localidad": "Navarro",
+    "partido": "Navarro",
+    "lat": -35.005511,
+    "lng": -59.279176
+  },
+  {
     "codigo": "7092",
     "nombre": "SALADILLO",
     "domicilio": "Av. Belgrano 3207",
@@ -1521,13 +1692,103 @@
     "lng": -59.78072
   },
   {
-    "codigo": "6572",
-    "nombre": "SALTO",
-    "domicilio": "Buenos Aires Esquina Alvear",
-    "localidad": "Salto",
-    "partido": "Salto",
-    "lat": -34.291999,
-    "lng": -60.254973
+    "codigo": "7101",
+    "nombre": "MARCOS PAZ",
+    "domicilio": "Sarmiento 2132",
+    "localidad": "Marcos Paz",
+    "partido": "Marcos Paz",
+    "lat": -34.783889,
+    "lng": -58.839328
+  },
+  {
+    "codigo": "7102",
+    "nombre": "GARIN",
+    "domicilio": "M. Belgrano 555",
+    "localidad": "Garin",
+    "partido": "Escobar",
+    "lat": -34.813588,
+    "lng": -58.203273
+  },
+  {
+    "codigo": "7103",
+    "nombre": "ZARATE",
+    "domicilio": "Independencia 802 Esquina J.L. de Atucha",
+    "localidad": "Zarate",
+    "partido": "Zarate",
+    "lat": -34.098181,
+    "lng": -59.023288
+  },
+  {
+    "codigo": "7134",
+    "nombre": "CAPILLA DEL SEÑOR",
+    "domicilio": "Esteban Urcelay 502 Esquina M. Casco",
+    "localidad": "Capilla Del Señor",
+    "partido": "Exaltacion De La Cruz",
+    "lat": -34.292457,
+    "lng": -59.100543
+  },
+  {
+    "codigo": "7136",
+    "nombre": "CAMPANA",
+    "domicilio": "Av. Ing. A. Roca 98",
+    "localidad": "Campana",
+    "partido": "Campana",
+    "lat": -34.158482,
+    "lng": -58.958562
+  },
+  {
+    "codigo": "7137",
+    "nombre": "GENERAL RODRIGUEZ",
+    "domicilio": "Av. San Martín 205",
+    "localidad": "General Rodriguez",
+    "partido": "General Rodriguez",
+    "lat": -34.607267,
+    "lng": -58.950511
+  },
+  {
+    "codigo": "7140",
+    "nombre": "CARMEN DE ARECO",
+    "domicilio": "Belgrano Esquina San Martín",
+    "localidad": "Carmen De Areco",
+    "partido": "Carmen De Areco",
+    "lat": -34.377116,
+    "lng": -59.822294
+  },
+  {
+    "codigo": "7159",
+    "nombre": "ESCOBAR",
+    "domicilio": "Eugenia Tapia de Cruz 510",
+    "localidad": "Belen De Escobar",
+    "partido": "Escobar",
+    "lat": -34.346181,
+    "lng": -58.793527
+  },
+  {
+    "codigo": "7169",
+    "nombre": "LUJAN",
+    "domicilio": "San Martín 498 Esquina Colón",
+    "localidad": "Lujan",
+    "partido": "Lujan",
+    "lat": -34.565406,
+    "lng": -59.115338
+  },
+  {
+    "codigo": "7175",
+    "nombre": "MERCEDES",
+    "domicilio": "Av. 29 Nº 521",
+    "localidad": "Mercedes",
+    "partido": "Mercedes",
+    "lat": -34.659884,
+    "lng": -59.434695
+  },
+  {
+    "codigo": "7185",
+    "nombre": "PILAR",
+    "domicilio": "Av. Rivadavia Esquina L. López",
+    "localidad": "Pilar",
+    "partido": "Pilar",
+    "lat": -34.649161,
+    "lng": -58.630685
   },
   {
     "codigo": "7193",
@@ -1546,257 +1807,5 @@
     "partido": "San Antonio De Areco",
     "lat": -34.244078,
     "lng": -59.47441
-  },
-  {
-    "codigo": "5095",
-    "nombre": "SAN FERNANDO",
-    "domicilio": "Constitución 899",
-    "localidad": "San Fernando",
-    "partido": "San Fernando",
-    "lat": -34.439936,
-    "lng": -58.558376
-  },
-  {
-    "codigo": "5065",
-    "nombre": "BECCAR",
-    "domicilio": "Av. Centenario 1940/52",
-    "localidad": "Beccar",
-    "partido": "San Isidro",
-    "lat": -34.46036,
-    "lng": -58.52814
-  },
-  {
-    "codigo": "5012",
-    "nombre": "BOULOGNE SUR MER",
-    "domicilio": "Bulnes 21",
-    "localidad": "Boulogne Sur Mer",
-    "partido": "San Isidro",
-    "lat": -34.511311,
-    "lng": -58.567424
-  },
-  {
-    "codigo": "5151",
-    "nombre": "MARTINEZ",
-    "domicilio": "Av. Santa Fé 1527",
-    "localidad": "Martinez",
-    "partido": "San Isidro",
-    "lat": -34.486038,
-    "lng": -58.502949
-  },
-  {
-    "codigo": "5096",
-    "nombre": "SAN ISIDRO",
-    "domicilio": "9 de Julio 302",
-    "localidad": "San Isidro",
-    "partido": "San Isidro",
-    "lat": -34.46961,
-    "lng": -58.511478
-  },
-  {
-    "codigo": "5037",
-    "nombre": "VILLA ADELINA",
-    "domicilio": "Paraná 6647",
-    "localidad": "Villa Adelina",
-    "partido": "San Isidro",
-    "lat": -34.526765,
-    "lng": -58.549945
-  },
-  {
-    "codigo": "5014",
-    "nombre": "BELLA VISTA",
-    "domicilio": "Senador Morón 1276",
-    "localidad": "Bella Vista",
-    "partido": "San Miguel",
-    "lat": -34.562127,
-    "lng": -58.681447
-  },
-  {
-    "codigo": "5055",
-    "nombre": "SAN MIGUEL",
-    "domicilio": "Sarmiento 1343",
-    "localidad": "San Miguel",
-    "partido": "San Miguel",
-    "lat": -34.545197,
-    "lng": -58.710197
-  },
-  {
-    "codigo": "6599",
-    "nombre": "SAN NICOLAS",
-    "domicilio": "Bartolomé Mitre 201",
-    "localidad": "San Nicolas De Los Arroyos",
-    "partido": "San Nicolas",
-    "lat": -33.330362,
-    "lng": -60.219138
-  },
-  {
-    "codigo": "6500",
-    "nombre": "SAN PEDRO",
-    "domicilio": "Bartolomé Mitre 800",
-    "localidad": "San Pedro",
-    "partido": "San Pedro",
-    "lat": -33.678456,
-    "lng": -59.665413
-  },
-  {
-    "codigo": "7019",
-    "nombre": "SAN VICENTE",
-    "domicilio": "25 de Mayo 210/214",
-    "localidad": "San Vicente",
-    "partido": "San Vicente",
-    "lat": -35.022639,
-    "lng": -58.421261
-  },
-  {
-    "codigo": "6302",
-    "nombre": "TANDIL",
-    "domicilio": "9 de Julio 403 esquina Belgrano",
-    "localidad": "Tandil",
-    "partido": "Tandil",
-    "lat": -37.328187,
-    "lng": -59.13364
-  },
-  {
-    "codigo": "5064",
-    "nombre": "DON TORCUATO",
-    "domicilio": "Angel T. De Alvear 708",
-    "localidad": "Don Torcuato",
-    "partido": "Tigre",
-    "lat": -34.498531,
-    "lng": -58.639986
-  },
-  {
-    "codigo": "5008",
-    "nombre": "GENERAL PACHECO",
-    "domicilio": "Hipólito Yrigoyen 714",
-    "localidad": "General Pacheco",
-    "partido": "Tigre",
-    "lat": -34.459006,
-    "lng": -58.631493
-  },
-  {
-    "codigo": "5138",
-    "nombre": "TIGRE",
-    "domicilio": "Av. Cazón 1279 Esquina Albarellos",
-    "localidad": "Tigre",
-    "partido": "Tigre",
-    "lat": -34.425066,
-    "lng": -58.57709
-  },
-  {
-    "codigo": "6704",
-    "nombre": "TRENQUE LAUQUEN",
-    "domicilio": "Boulevard Villegas 500",
-    "localidad": "Trenque Lauquen",
-    "partido": "Trenque Lauquen",
-    "lat": -35.972803,
-    "lng": -62.733366
-  },
-  {
-    "codigo": "6205",
-    "nombre": "TRES ARROYOS",
-    "domicilio": "Colón 199",
-    "localidad": "Tres Arroyos",
-    "partido": "Tres Arroyos",
-    "lat": -38.379204,
-    "lng": -60.275007
-  },
-  {
-    "codigo": "5003",
-    "nombre": "CASEROS",
-    "domicilio": "Urquiza 4719/25",
-    "localidad": "Caseros",
-    "partido": "Tres De Febrero",
-    "lat": -34.648268,
-    "lng": -58.571736
-  },
-  {
-    "codigo": "5034",
-    "nombre": "CIUDADELA",
-    "domicilio": "Av. Rivadavia 12802",
-    "localidad": "Ciudadela",
-    "partido": "Tres De Febrero",
-    "lat": -34.640466,
-    "lng": -58.543803
-  },
-  {
-    "codigo": "5028",
-    "nombre": "JOSE INGENIEROS",
-    "domicilio": "Eduardo Comesaña 2520",
-    "localidad": "Jose Ingenieros",
-    "partido": "Tres De Febrero",
-    "lat": -34.619332,
-    "lng": -58.533473
-  },
-  {
-    "codigo": "5035",
-    "nombre": "SANTOS LUGARES",
-    "domicilio": "Av. La Plata 3722",
-    "localidad": "Santos Lugares",
-    "partido": "Tres De Febrero",
-    "lat": -34.599181,
-    "lng": -58.545767
-  },
-  {
-    "codigo": "5154",
-    "nombre": "CARAPACHAY",
-    "domicilio": "Independencia 2992 Esquina Ituzaingó",
-    "localidad": "Carapachay",
-    "partido": "Vicente Lopez",
-    "lat": -34.528087,
-    "lng": -58.536265
-  },
-  {
-    "codigo": "5024",
-    "nombre": "FLORIDA",
-    "domicilio": "Av. San Martín 2870/80",
-    "localidad": "Florida",
-    "partido": "Vicente Lopez",
-    "lat": -34.528724,
-    "lng": -58.493526
-  },
-  {
-    "codigo": "5153",
-    "nombre": "MUNRO",
-    "domicilio": "Av. Vélez Sarfield 4448",
-    "localidad": "Munro",
-    "partido": "Vicente Lopez",
-    "lat": -34.529309,
-    "lng": -58.521668
-  },
-  {
-    "codigo": "5080",
-    "nombre": "OLIVOS",
-    "domicilio": "Av. Maipú 2598",
-    "localidad": "Olivos",
-    "partido": "Vicente Lopez",
-    "lat": -34.511579,
-    "lng": -58.490463
-  },
-  {
-    "codigo": "5174",
-    "nombre": "VICENTE LOPEZ",
-    "domicilio": "Av. Maipú 741",
-    "localidad": "Vicente Lopez",
-    "partido": "Vicente Lopez",
-    "lat": -34.531094,
-    "lng": -58.479568
-  },
-  {
-    "codigo": "6990",
-    "nombre": "VILLA GESELL",
-    "domicilio": "Av. 3 (San Martín) Nº 751",
-    "localidad": "Villa Gesell",
-    "partido": "Villa Gesell",
-    "lat": -37.275993,
-    "lng": -56.984149
-  },
-  {
-    "codigo": "7103",
-    "nombre": "ZARATE",
-    "domicilio": "Independencia 802 Esquina J.L. de Atucha",
-    "localidad": "Zarate",
-    "partido": "Zarate",
-    "lat": -34.098181,
-    "lng": -59.023288
   }
 ]
