@@ -227,22 +227,23 @@ with col_hdr2:
         else:
             st.session_state["sucursal_sel"] = SUCURSAL_DEFAULT
 
-    idx_default = todas_keys.index(st.session_state["sucursal_sel"]) if st.session_state["sucursal_sel"] in todas_keys else None
-
-    st.caption(f"📍 {st.session_state['sucursal_sel']}")
-    with st.expander("Cambiar sucursal", expanded=False):
-        suc_sel = st.selectbox(
-            "Sucursal",
-            todas_keys,
-            label_visibility="collapsed",
-            index=idx_default,
-            placeholder="Buscá por nombre o código...",
-            key="suc_picker",
-        )
-        if suc_sel and suc_sel != st.session_state.get("sucursal_sel"):
-            _guardar_config({"sucursal_sel": suc_sel})
-            st.session_state["sucursal_sel"] = suc_sel
-            st.rerun()
+    busq_suc = st.text_input(
+        "suc_input",
+        placeholder="Sucursal o código de ubicación...",
+        label_visibility="collapsed",
+        key="suc_search",
+    )
+    if busq_suc:
+        coincidencias = [k for k in todas_keys if busq_suc.lower() in k.lower()]
+        for opcion in coincidencias[:6]:
+            if st.button(opcion, key=f"suc_btn_{opcion}", use_container_width=True):
+                _guardar_config({"sucursal_sel": opcion})
+                st.session_state["sucursal_sel"] = opcion
+                st.rerun()
+        if not coincidencias:
+            st.caption("Sin coincidencias")
+    else:
+        st.caption(f"📍 {st.session_state['sucursal_sel']}")
 
 SUC = SUCURSALES[st.session_state["sucursal_sel"]]
 SUCURSAL_LAT = SUC["lat"]
