@@ -533,7 +533,7 @@ with tab_descubrir:
 
     if st.button("🔍 Buscar comercios ahora", width="stretch"):
         from services.prospector import buscar_comercios
-        from utils.geo import clasificar_zona
+        from utils.geo import zona_desde_direccion
         from services.normalizer import migrar_batch
         from services.channel_classifier import clasificar_batch
 
@@ -559,7 +559,7 @@ with tab_descubrir:
 
         nuevos = buscar_comercios(SUCURSAL_LAT, SUCURSAL_LNG, radio, min_reseñas=min_reseñas, rubros_filtro=types_buscar)
         for c in nuevos:
-            c["zona"] = clasificar_zona(c["lat"], c["lng"])
+            c["zona"] = zona_desde_direccion(c.get("direccion", ""), c["lat"], c["lng"])
 
         perrito_placeholder.empty()
         st.success(f"✅ {len(nuevos)} comercios encontrados")
@@ -782,10 +782,10 @@ with tab_bandeja:
             fc1, fc2 = st.columns(2)
             with fc1:
                 canales_disp = sorted(set(l.get("primary_channel", "") for l in leads if l.get("primary_channel")))
-                f_canal = st.multiselect("Canal", canales_disp, default=canales_disp, key=f"f_canal_{_fk}")
+                f_canal = st.multiselect("Canal", canales_disp, default=[], key=f"f_canal_{_fk}")
             with fc2:
                 rubros_disp = sorted(set(l.get("rubro_operativo", "Otro") for l in leads))
-                f_rubro = st.multiselect("Rubro", rubros_disp, default=rubros_disp, key=f"f_rubro_{_fk}")
+                f_rubro = st.multiselect("Rubro", rubros_disp, default=[], key=f"f_rubro_{_fk}")
 
             fc5, fc6, fc7, fc8 = st.columns(4)
             with fc5:

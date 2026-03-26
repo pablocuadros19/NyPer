@@ -24,7 +24,6 @@ def clasificar_zona(lat, lng):
     Clasifica la zona aproximada según coordenadas.
     Zonas de la sucursal 5155: Villa Ballester, San Andrés, J.L. Suárez, Chilavert.
     """
-    # Centros aproximados de cada zona
     zonas = {
         "Villa Ballester": (-34.5525, -58.5564),
         "San Andrés": (-34.5430, -58.5280),
@@ -42,3 +41,21 @@ def clasificar_zona(lat, lng):
             zona_cercana = nombre
 
     return zona_cercana
+
+
+def zona_desde_direccion(direccion, lat=None, lng=None):
+    """
+    Extrae la localidad/zona desde el campo vicinity de Google Places.
+    El vicinity viene como "Calle 123, Localidad" — el último componente es la zona.
+    Fallback a clasificar_zona si no hay dirección útil.
+    """
+    if direccion:
+        partes = [p.strip() for p in direccion.split(",") if p.strip()]
+        if len(partes) >= 2:
+            return partes[-1]
+        elif len(partes) == 1:
+            return partes[0]
+    # fallback solo para 5155 / coordenadas conocidas
+    if lat is not None and lng is not None:
+        return clasificar_zona(lat, lng)
+    return ""
