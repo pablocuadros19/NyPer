@@ -122,10 +122,12 @@ st.markdown("""
   div[data-testid="stMetric"]{background:#f7f9fc;border:1px solid #e0e5ec;border-radius:10px;padding:1rem}
   div[data-testid="stMetric"] label{color:#666!important;font-size:.75rem!important;text-transform:uppercase}
   div[data-testid="stMetric"] div[data-testid="stMetricValue"]{color:#00A651!important;font-size:1.8rem!important;font-weight:700!important}
-  .stButton>button{background:linear-gradient(135deg,#00A651,#00a34d);color:#fff!important;border:none;font-weight:600;border-radius:8px}
-  .stButton>button:hover{background:linear-gradient(135deg,#00a34d,#00A651);box-shadow:0 4px 15px rgba(0,132,61,.25)}
-  .stDownloadButton>button{background:#ffffff!important;color:#00A651!important;border:2px solid #00A651!important;font-weight:600}
-  .stDownloadButton>button:hover{background:#f0f9f4!important}
+  .stButton>button{background:linear-gradient(180deg,#00A651 0%,#008a44 100%);color:#fff!important;border:1px solid #007a3d!important;font-weight:600;border-radius:8px;box-shadow:0 3px 8px rgba(0,166,81,.25),inset 0 1px 0 rgba(255,255,255,.15);transition:all 0.15s ease}
+  .stButton>button:hover{background:linear-gradient(180deg,#00b85c 0%,#00A651 100%);box-shadow:0 5px 12px rgba(0,166,81,.35),inset 0 1px 0 rgba(255,255,255,.2);transform:translateY(-1px)}
+  .stButton>button:active{transform:translateY(1px);box-shadow:inset 0 2px 4px rgba(0,0,0,.15)!important}
+  .stDownloadButton>button{background:linear-gradient(180deg,#f7f9fc 0%,#e8ecf1 100%)!important;color:#00A651!important;border:1px solid #d0d5dd!important;font-weight:600;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.9);transition:all 0.15s ease}
+  .stDownloadButton>button:hover{background:linear-gradient(180deg,#e8f5ee 0%,#d4edda 100%)!important;border-color:#00A651!important;box-shadow:0 3px 8px rgba(0,166,81,.15),inset 0 1px 0 rgba(255,255,255,.9);transform:translateY(-1px)}
+  .stDownloadButton>button:active{transform:translateY(1px);box-shadow:inset 0 2px 4px rgba(0,0,0,.1)!important}
   .stProgress>div>div{background:#e0e5ec!important}
   .stProgress>div>div>div{background:linear-gradient(90deg,#00A651,#00B8D4)!important}
   .stTabs [data-baseweb="tab-list"]{background:#ffffff;border-bottom:2px solid #e0e5ec;border-radius:0;padding:0;gap:.5rem}
