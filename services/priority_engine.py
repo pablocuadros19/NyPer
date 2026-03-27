@@ -42,6 +42,7 @@ def calcular_prioridad(lead):
     canal_claro = canal in ("whatsapp", "llamada", "mail")
     rubro_relevante = rubro in RUBROS_ALTA_DEMANDA
     cercano = distance_km <= 2
+    proveedor_estado = lead.get("es_proveedor_estado", False)
 
     if contactable and vigente and canal_claro and not duplicado:
         razones = ["contactable", "vigente", f"canal: {canal}"]
@@ -51,7 +52,15 @@ def calcular_prioridad(lead):
             razones.append("rubro prioritario")
         if cercano:
             razones.append("cercano a sucursal")
+        if proveedor_estado:
+            monto = lead.get("licitarg_monto_fmt", "")
+            razones.append(f"proveedor del estado {monto}".strip())
         return "A", " · ".join(razones)
+
+    # Proveedor del estado siempre sube a A si es contactable
+    if proveedor_estado and contactable and not duplicado:
+        monto = lead.get("licitarg_monto_fmt", "")
+        return "A", f"proveedor del estado {monto} · contactable".strip()
 
     # B: contactable pero algo falta
     if contactable and not duplicado:
@@ -62,7 +71,13 @@ def calcular_prioridad(lead):
             razones.append(f"contacto {calidad}")
         if not canal_claro:
             razones.append("canal indirecto")
+        if proveedor_estado:
+            razones.append("proveedor del estado")
         return "B", " · ".join(razones)
+
+    # Proveedor del estado sube a B incluso sin contacto
+    if proveedor_estado and not duplicado:
+        return "B", "proveedor del estado · buscar contacto"
 
     # C: requiere visita o vigente pero sin contacto remoto
     if requires_visit or (vigente and not contactable):

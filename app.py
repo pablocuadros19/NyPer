@@ -722,20 +722,36 @@ with tab_enriquecer:
         con_cuit = sum(1 for l in leads if l.get("cuit_estado") == "resuelto")
         st.caption(f"Leads con CUIT: {con_cuit} / {len(leads)}")
 
-        col_d1, col_d2, col_d3 = st.columns(3)
+        col_d1, col_d2, col_d3, col_d4 = st.columns(4)
 
         with col_d1:
             if st.button("🔍 Resolver CUITs", width="stretch"):
                 from services.deep_enrichment import resolver_cuits
+                from services.licitarg_enricher import enriquecer_licitarg_batch
                 barra = st.progress(0)
                 def prog_cuit(a, t):
                     barra.progress(min(a/t, 1.0), text=f"CUITs: {a}/{t}")
                 with st.spinner("Cruzando con Registro de Sociedades..."):
                     leads, resueltos = resolver_cuits(leads, callback=prog_cuit)
+                # Enriquecimiento LICITARG automático después de resolver CUITs (es local, instantáneo)
+                leads, prov_estado = enriquecer_licitarg_batch(leads)
                 barra.empty()
                 guardar_leads(leads, SUCURSAL_CODIGO)
                 st.session_state["leads"] = leads
-                st.success(f"✅ {resueltos} CUITs resueltos")
+                msg = f"✅ {resueltos} CUITs resueltos"
+                if prov_estado:
+                    msg += f" · {prov_estado} proveedores del estado detectados"
+                st.success(msg)
+
+        with col_d4:
+            con_licitarg = sum(1 for l in leads if l.get("es_proveedor_estado"))
+            if st.button(f"📋 Estado ({con_licitarg})", width="stretch", help="Cruzar con base de proveedores del estado (LICITARG)"):
+                from services.licitarg_enricher import enriquecer_licitarg_batch
+                with st.spinner("Cruzando con base LICITARG..."):
+                    leads, matches = enriquecer_licitarg_batch(leads)
+                guardar_leads(leads, SUCURSAL_CODIGO)
+                st.session_state["leads"] = leads
+                st.success(f"✅ {matches} proveedores del estado encontrados")
 
         with col_d2:
             if st.button("🏛 Consultar ARCA", width="stretch"):

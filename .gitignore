@@ -1,6 +1,9 @@
 # Datos sensibles — nunca subir
 data/*
 !data/sucursales.json
+!data/licitarg/
+data/licitarg/*
+!data/licitarg/*.parquet
 
 # Credenciales
 .env

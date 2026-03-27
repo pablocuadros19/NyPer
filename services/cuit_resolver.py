@@ -11,7 +11,7 @@ import csv
 import json
 import unicodedata
 
-REGISTRO_CSV = "data/registro_sociedades.csv"
+REGISTRO_CSV = r"C:\LICITARG\data\raw\sociedades\sociedades-ba-caba.csv"
 REGISTRO_ZONA = "data/registro_zona.json"
 
 # Localidades de la zona de cobertura

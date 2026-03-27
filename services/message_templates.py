@@ -5,6 +5,12 @@ Centraliza todos los textos de contacto comercial por familia de rubro.
 
 # ── Mapeo rubro_operativo → familia ──────────────────────────────────────────
 
+# ── Función para detectar si el lead es proveedor del estado ─────────────────
+
+def _es_proveedor_estado(lead):
+    return lead.get("es_proveedor_estado", False)
+
+
 FAMILIA_RUBRO = {
     # gastronomia
     "Restaurante": "gastronomia",
@@ -69,6 +75,15 @@ FAMILIA_RUBRO = {
 # ── Templates WhatsApp ───────────────────────────────────────────────────────
 
 WHATSAPP_TEMPLATES = {
+    "proveedor_estado": (
+        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque vimos que tu empresa figura como proveedora del Estado, "
+        "con contratos adjudicados en el sector público. "
+        "Desde el banco trabajamos con empresas que operan con el Estado, "
+        "acompañando con capital de trabajo, garantías y financiamiento de contratos. "
+        "Quería presentarme y dejar abierto este canal. "
+        "Si te interesa, con gusto te cuento más por acá. Gracias."
+    ),
     "generico": (
         "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
         "Te escribo porque vi tu actividad y quería presentarme. "
@@ -124,6 +139,7 @@ WHATSAPP_TEMPLATES = {
 # ── Templates Email ──────────────────────────────────────────────────────────
 
 EMAIL_ASUNTOS = {
+    "proveedor_estado": "Financiamiento para proveedores del Estado – {nombre_empresa}",
     "generico": "Contacto desde sucursal {sucursal_nombre} – {nombre_empresa}",
     "comercio": "Acompañamiento comercial para {nombre_empresa}",
     "gastronomia": "Propuesta para {nombre_empresa} desde suc. {sucursal_nombre}",
@@ -134,6 +150,19 @@ EMAIL_ASUNTOS = {
 }
 
 EMAIL_CUERPOS = {
+    "proveedor_estado": (
+        "Hola, buenas tardes.\n\n"
+        "Mi nombre es {nombre_usuario} y me contacto desde la sucursal {sucursal_nombre}.\n\n"
+        "Tomamos conocimiento de que {nombre_empresa} opera como proveedora del Estado, "
+        "con contratos adjudicados en el sector público. "
+        "Desde el banco acompañamos a empresas en esa situación con productos específicos: "
+        "capital de trabajo para ejecución de contratos, garantías de cumplimiento, "
+        "financiamiento de certificaciones y líneas de crédito preferencial.\n\n"
+        "Quería presentarme y quedar a disposición para evaluar juntos si hay algo "
+        "que podamos hacer por la empresa.\n\n"
+        "Si les resulta más cómodo, con gusto puedo acercarme personalmente.\n\n"
+        "Saludos,\n{nombre_usuario}"
+    ),
     "generico": (
         "Hola, buenas tardes.\n\n"
         "Mi nombre es {nombre_usuario} y me contacto desde la sucursal {sucursal_nombre} "
@@ -232,8 +261,12 @@ def generar_mensaje(lead, canal, sucursal_nombre="", nombre_usuario=""):
         whatsapp: {"texto": str}
         email: {"asunto": str, "cuerpo": str}
     """
-    rubro = lead.get("rubro_operativo", "")
-    familia = _resolver_familia(rubro)
+    # Proveedor del estado tiene template propio, siempre prioritario
+    if _es_proveedor_estado(lead):
+        familia = "proveedor_estado"
+    else:
+        rubro = lead.get("rubro_operativo", "")
+        familia = _resolver_familia(rubro)
 
     # Fallbacks seguros
     nombre_empresa = lead.get("business_name_raw") or lead.get("nombre") or "su actividad"
