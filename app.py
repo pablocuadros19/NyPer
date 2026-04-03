@@ -107,8 +107,8 @@ st.markdown("""
   .stApp,.main,.block-container{background:#ffffff!important;color:#1a1a2e!important;font-family:'Montserrat',sans-serif!important}
   header[data-testid="stHeader"]{background:#ffffff!important}
   div[data-testid="stDecoration"]{display:none!important}
-  section[data-testid="stSidebar"]{background:#f7f9fc!important;border-right:1px solid #e0e5ec}
-  section[data-testid="stSidebar"] *{color:#1a1a2e!important}
+  section[data-testid="stSidebar"]{display:none!important}
+  button[data-testid="stSidebarCollapsedControl"]{display:none!important}
   div[data-baseweb="select"]>div{background:#f7f9fc!important;border-color:#d0d5dd!important;color:#1a1a2e!important}
   div[data-baseweb="popover"]>div,div[data-baseweb="menu"]{background:#ffffff!important;border:1px solid #e0e5ec!important}
   div[data-baseweb="menu"] li{background:#ffffff!important;color:#1a1a2e!important}
@@ -208,6 +208,370 @@ st.markdown("""
 
 # ── Selector de sucursal ──────────────────────────────────────────────────────
 
+# ── Autenticación ─────────────────────────────────────────────────────────────
+from services.db import inicializar_db
+from services.auth import requiere_auth, es_admin
+
+inicializar_db()
+usuario = requiere_auth()
+
+# ── Bienvenida post-login (aparece 3 seg y se va) ───────────────────────────
+if st.session_state.get("bienvenida_pendiente"):
+    import random as _random, time as _time
+    _frase = _random.choice([
+        "Cada gestión cuenta.",
+        "A hacer la diferencia.",
+        "El territorio espera.",
+        "Otro día para sumar valor.",
+        "Vamos con todo.",
+        "Un prospecto más cerca.",
+        "La sucursal necesita de vos.",
+    ])
+    _logo_bienvenida = f'<img src="data:image/png;base64,{_NYPER_LOGO_B64}" style="height:120px;margin-bottom:2rem">' if _NYPER_LOGO_B64 else ''
+    st.markdown(f"""
+    <style>
+    @keyframes nyp-fadeInUp {{
+        0% {{ opacity:0; transform:translateY(30px) }}
+        100% {{ opacity:1; transform:translateY(0) }}
+    }}
+    </style>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:70vh;text-align:center;font-family:'Montserrat',sans-serif">
+        <div style="opacity:0;animation:nyp-fadeInUp 1s ease-out forwards">{_logo_bienvenida}</div>
+        <h1 style="font-size:2.5rem;font-weight:700;color:#1a1a2e;margin:0;opacity:0;animation:nyp-fadeInUp 1.5s ease-out forwards;animation-delay:.3s">Hola, {usuario['nombre']}</h1>
+        <p style="font-size:1.1rem;color:#555;margin-top:1rem;font-weight:400;opacity:0;animation:nyp-fadeInUp 2s ease-out forwards;animation-delay:.8s">{_frase}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    _time.sleep(3)
+    del st.session_state["bienvenida_pendiente"]
+    st.rerun()
+
+# ── Barra superior: usuario + cerrar sesión ──────────────────────────────────
+def _cerrar_sesion():
+    _token = st.query_params.get("s")
+    if _token:
+        storage_set(f"session_{_token}", {})
+        del st.query_params["s"]
+    for _k in ["usuario", "modulo_activo", "bienvenida_pendiente"]:
+        st.session_state.pop(_k, None)
+    st.rerun()
+
+_top_cols = st.columns([1, 5, 2, 1]) if st.session_state.get("modulo_activo") else st.columns([6, 2, 1])
+if st.session_state.get("modulo_activo"):
+    with _top_cols[0]:
+        if st.button("← Inicio", key="btn_volver"):
+            del st.session_state["modulo_activo"]
+            st.rerun()
+    with _top_cols[2]:
+        st.markdown(f"<p style='text-align:right;margin:0;padding-top:.4rem;font-family:Montserrat,sans-serif;font-size:.85rem;color:#555'>👤 {usuario['nombre']} {usuario['apellido']}</p>", unsafe_allow_html=True)
+    with _top_cols[3]:
+        if st.button("Cerrar sesión", key="btn_logout"):
+            _cerrar_sesion()
+else:
+    with _top_cols[1]:
+        st.markdown(f"<p style='text-align:right;margin:0;padding-top:.4rem;font-family:Montserrat,sans-serif;font-size:.85rem;color:#555'>👤 {usuario['nombre']} {usuario['apellido']}</p>", unsafe_allow_html=True)
+    with _top_cols[2]:
+        if st.button("Cerrar sesión", key="btn_logout_land"):
+            _cerrar_sesion()
+
+# ── Landing — elegir módulo ──────────────────────────────────────────────────
+if not st.session_state.get("modulo_activo"):
+    _logo_landing = f'<img src="data:image/png;base64,{_NYPER_LOGO_B64}" style="height:180px">' if _NYPER_LOGO_B64 else '<h1 style="font-size:3rem;font-weight:900;color:#00A651;margin:0">NyPer</h1>'
+    _perrito_landing = f'<img src="data:image/png;base64,{_PERRITO_NYP_B64}" style="height:100px;margin-left:1.5rem">' if _PERRITO_NYP_B64 else ''
+    st.markdown(f"""
+    <div style="text-align:center;padding:3rem 1rem 1rem;font-family:'Montserrat',sans-serif">
+        <div style="display:flex;align-items:center;justify-content:center">{_logo_landing}{_perrito_landing}</div>
+        <p style="font-size:1rem;color:#555;letter-spacing:3px;text-transform:uppercase;margin-top:.5rem">Inteligencia Comercial Territorial</p>
+        <div style="width:60px;height:3px;background:linear-gradient(90deg,#00A651,#00B8D4);margin:1rem auto;border-radius:2px"></div>
+        <p style="font-size:.95rem;color:#666;margin-top:.5rem">¿Qué querés hacer hoy, {usuario['nombre']}?</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""<style>
+    .main .stButton > button {
+        font-size: 1.3rem !important;
+        padding: 1.2rem 2rem !important;
+        min-height: 70px !important;
+    }
+    </style>""", unsafe_allow_html=True)
+
+    _lc1, _lc2 = st.columns(2)
+    with _lc1:
+        st.markdown("""
+        <div style="background:#f7f9fc;border:1px solid #e0e5ec;border-radius:14px;padding:2rem 1.5rem;text-align:center;font-family:'Montserrat',sans-serif;margin-bottom:1rem">
+            <div style="font-size:3rem;margin-bottom:1rem">🔍</div>
+            <h3 style="font-size:1.1rem;font-weight:700;color:#1a1a2e;margin:0 0 .5rem">Buscar Clientes</h3>
+            <p style="font-size:.85rem;color:#555;line-height:1.6;margin:0">Descubrir, enriquecer y gestionar<br>prospectos en tu zona</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Buscar Clientes", key="landing_nyper", use_container_width=True):
+            st.session_state["modulo_activo"] = "nyper"
+            st.rerun()
+    with _lc2:
+        st.markdown("""
+        <div style="background:#f7f9fc;border:1px solid #e0e5ec;border-radius:14px;padding:2rem 1.5rem;text-align:center;font-family:'Montserrat',sans-serif;margin-bottom:1rem">
+            <div style="font-size:3rem;margin-bottom:1rem">📋</div>
+            <h3 style="font-size:1.1rem;font-weight:700;color:#1a1a2e;margin:0 0 .5rem">Mi Cartera</h3>
+            <p style="font-size:.85rem;color:#555;line-height:1.6;margin:0">Tu cartera personal de clientes<br>y contactos del territorio</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Mi Cartera", key="landing_cartera", use_container_width=True):
+            st.session_state["modulo_activo"] = "cartera"
+            st.rerun()
+
+    st.markdown(f"""
+    <div style="text-align:center;margin-top:2rem;padding:1rem 0;border-top:1px solid #e0e5ec">
+        <p style="font-size:.75rem;color:#999;font-family:'Montserrat',sans-serif">NyPer v4.0 · {usuario['nombre']} {usuario['apellido']}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    st.stop()
+
+# ── Módulo Cartera ───────────────────────────────────────────────────────────
+if st.session_state.get("modulo_activo") == "cartera":
+    from services.db import (
+        listar_cartera, guardar_cliente_cartera,
+        actualizar_cliente_cartera, eliminar_cliente_cartera, importar_cartera_excel,
+        importar_informe_roles, listar_usuarios, CRITERIOS_COMERCIALES,
+    )
+
+    col_hdr_c1, col_hdr_c2 = st.columns([3, 1])
+    with col_hdr_c1:
+        st.markdown(f"""
+        <div class="hdr-mark" style="display:none"></div>
+        <div class="hdr-content">
+          {_NYPER_LOGO_HTML}
+          <p>Mi Cartera</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    _mi_email_c = usuario["email"]
+    _es_admin_c = usuario.get("rol") == "admin"
+
+    # Admin puede ver todas las carteras
+    if _es_admin_c:
+        _usuarios_c = listar_usuarios()
+        _emails_c = [_mi_email_c] + [u["email"] for u in _usuarios_c if u["email"] != _mi_email_c and u["activo"]]
+        _nombres_c = {u["email"]: f"{u['nombre']} {u['apellido']}" for u in _usuarios_c}
+        _nombres_c[_mi_email_c] = f"{usuario['nombre']} {usuario['apellido']}"
+        _ver_email = st.selectbox(
+            "Ver cartera de",
+            _emails_c,
+            format_func=lambda e: f"{_nombres_c.get(e, e)} (yo)" if e == _mi_email_c else _nombres_c.get(e, e),
+            key="cartera_ver_de",
+        )
+    else:
+        _ver_email = _mi_email_c
+
+    clientes = listar_cartera(_ver_email)
+
+    # KPIs
+    kc1, kc2, kc3 = st.columns(3)
+    kc1.metric("Total clientes", len(clientes))
+    _rubros_c = {}
+    for c in clientes:
+        r = c.get("rubro", "") or "Sin rubro"
+        _rubros_c[r] = _rubros_c.get(r, 0) + 1
+    _top_rubro = max(_rubros_c, key=_rubros_c.get) if _rubros_c else "—"
+    kc2.metric("Rubro principal", _top_rubro)
+    kc3.metric("Rubros distintos", len(_rubros_c))
+
+    # ── Carga manual ─────────────────────────────────────────────────────────
+    with st.expander("➕ Agregar cliente manual", expanded=False):
+        mc1, mc2 = st.columns(2)
+        with mc1:
+            _c_nombre = st.text_input("Nombre / Razón Social *", key="c_nombre")
+            _c_cuit = st.text_input("CUIT", key="c_cuit")
+            _c_rubro = st.text_input("Rubro", key="c_rubro")
+            _c_subrubro = st.text_input("Subrubro", key="c_subrubro")
+            _c_telefono = st.text_input("Teléfono", key="c_telefono")
+        with mc2:
+            _c_mail = st.text_input("Email", key="c_mail")
+            _c_dir = st.text_input("Dirección", key="c_dir")
+            _c_loc = st.text_input("Localidad", key="c_loc")
+            _c_obs = st.text_area("Observaciones", height=120, key="c_obs")
+        if st.button("Guardar cliente", key="btn_guardar_cliente", use_container_width=True):
+            if not _c_nombre.strip():
+                st.error("El nombre es obligatorio.")
+            else:
+                guardar_cliente_cartera(_ver_email if _es_admin_c else _mi_email_c, {
+                    "nombre_razon_social": _c_nombre.strip(),
+                    "cuit": _c_cuit.strip(),
+                    "rubro": _c_rubro.strip(),
+                    "subrubro": _c_subrubro.strip(),
+                    "telefono": _c_telefono.strip(),
+                    "mail": _c_mail.strip(),
+                    "direccion": _c_dir.strip(),
+                    "localidad": _c_loc.strip(),
+                    "observaciones": _c_obs.strip(),
+                })
+                st.success(f"Cliente '{_c_nombre.strip()}' guardado.")
+                st.rerun()
+
+    # ── Importar Informe Roles (pisa todo, muestra diff) ────────────────────
+    _afiliado_usr = usuario.get("codigo_afiliado", "")
+    with st.expander("📊 Importar Informe Roles", expanded=False):
+        if not _afiliado_usr:
+            st.warning("No tenés código de afiliado configurado. Pedile al admin que lo cargue en tu usuario.")
+        else:
+            st.caption(f"Afiliado: **{_afiliado_usr}** · Reemplaza toda la cartera con los datos del informe.")
+        _archivo_roles = st.file_uploader("Informe Roles (.xlsb / .xlsx)", type=["xlsb", "xlsx", "xls"], key="roles_upload")
+        if _archivo_roles and _afiliado_usr:
+            if st.button("Importar y reemplazar", key="btn_importar_roles", use_container_width=True, type="primary"):
+                _target_email = _ver_email if _es_admin_c else _mi_email_c
+                _target_afiliado = _afiliado_usr
+                # Si admin ve otro usuario, usar afiliado de ese usuario
+                if _es_admin_c and _ver_email != _mi_email_c:
+                    _u_target = [u for u in listar_usuarios() if u["email"] == _ver_email]
+                    _target_afiliado = _u_target[0].get("codigo_afiliado", "") if _u_target else ""
+                _diff = importar_informe_roles(_target_email, _archivo_roles, _target_afiliado)
+                st.session_state["_ultimo_diff_roles"] = _diff
+                st.rerun()
+
+    # Mostrar diff si acaba de importar
+    _diff_roles = st.session_state.pop("_ultimo_diff_roles", None)
+    if _diff_roles:
+        st.success(f"Importados {_diff_roles['importados']} clientes.")
+        if _diff_roles["clientes_nuevos"]:
+            st.markdown(f"**Clientes nuevos ({len(_diff_roles['clientes_nuevos'])}):** {', '.join(_diff_roles['clientes_nuevos'][:10])}")
+        if _diff_roles["clientes_perdidos"]:
+            st.warning(f"**Clientes que salieron ({len(_diff_roles['clientes_perdidos'])}):** {', '.join(_diff_roles['clientes_perdidos'][:10])}")
+        if _diff_roles["cambios_criterios"]:
+            st.markdown("**Cambios en criterios:**")
+            for _cc in _diff_roles["cambios_criterios"]:
+                _sub = ", ".join(CRITERIOS_COMERCIALES.get(k, k) for k in _cc["subieron"])
+                _baj = ", ".join(CRITERIOS_COMERCIALES.get(k, k) for k in _cc["bajaron"])
+                _linea = f"• **{_cc['nombre']}**"
+                if _sub:
+                    _linea += f" — subieron: {_sub}"
+                if _baj:
+                    _linea += f" — bajaron: {_baj}"
+                st.markdown(_linea)
+        elif not _diff_roles["clientes_nuevos"] and not _diff_roles["clientes_perdidos"]:
+            st.info("Sin cambios respecto a la cartera anterior.")
+        # Recargar clientes después de importar
+        clientes = listar_cartera(_ver_email)
+
+    # ── Importar Excel genérico (agrega) ─────────────────────────────────────
+    with st.expander("📥 Agregar desde Excel", expanded=False):
+        _archivo = st.file_uploader("Excel (.xlsx)", type=["xlsx", "xls"], key="cartera_upload")
+        if _archivo:
+            _df_imp = pd.read_excel(_archivo, dtype=str)
+            st.dataframe(_df_imp.head(5), use_container_width=True)
+            st.caption(f"{len(_df_imp)} filas detectadas")
+            if st.button("Agregar a cartera", key="btn_importar_cartera", use_container_width=True):
+                _count = importar_cartera_excel(_ver_email if _es_admin_c else _mi_email_c, _df_imp)
+                st.success(f"{_count} clientes agregados.")
+                st.rerun()
+
+    # ── Tabla de clientes ────────────────────────────────────────────────────
+    st.divider()
+    if not clientes:
+        st.info("No hay clientes en la cartera. Importá el informe roles o agregá prospectos desde Buscar Clientes.")
+    else:
+        import json as _json
+
+        # Buscador
+        _busq_c = st.text_input("Buscar", placeholder="Nombre, CUIT, rubro...", key="cartera_buscar", label_visibility="collapsed")
+        if _busq_c:
+            _qc = _busq_c.lower()
+            clientes = [c for c in clientes if
+                _qc in (c.get("nombre_razon_social", "") or "").lower()
+                or _qc in (c.get("cuit", "") or "").lower()
+                or _qc in (c.get("rubro", "") or "").lower()
+                or _qc in (c.get("localidad", "") or "").lower()
+            ]
+
+        st.caption(f"{len(clientes)} clientes")
+
+        for cli in clientes:
+            # Parsear criterios
+            try:
+                _crits = _json.loads(cli.get("criterios_json", "{}"))
+            except (_json.JSONDecodeError, TypeError):
+                _crits = {}
+            _cumple = sum(1 for v in _crits.values() if v)
+            _total_crit = len(CRITERIOS_COMERCIALES)
+
+            with st.container(border=True):
+                cc1, cc2, cc3 = st.columns([3, 2, 1])
+                with cc1:
+                    _nombre_cli = cli['nombre_razon_social']
+                    st.markdown(f"**{_nombre_cli}**")
+                    _detalles = []
+                    if cli.get("cuit"):
+                        _detalles.append(f"CUIT: {cli['cuit']}")
+                    if cli.get("rubro"):
+                        _detalles.append(cli["rubro"])
+                    if cli.get("localidad"):
+                        _detalles.append(cli["localidad"])
+                    st.caption(" · ".join(_detalles) if _detalles else "")
+                with cc2:
+                    if cli.get("telefono"):
+                        st.markdown(f"📞 {cli['telefono']}")
+                    if cli.get("mail"):
+                        st.markdown(f"📧 {cli['mail']}")
+                    if cli.get("direccion"):
+                        st.caption(f"📍 {cli['direccion']}")
+                with cc3:
+                    # Scoring criterios
+                    if _crits:
+                        _color_score = "#00A651" if _cumple >= _total_crit * 0.5 else "#e53e3e"
+                        st.markdown(f'<div style="text-align:center;padding:.5rem"><span style="font-size:1.5rem;font-weight:700;color:{_color_score}">{_cumple}/{_total_crit}</span><br><span style="font-size:.7rem;color:#666">criterios</span></div>', unsafe_allow_html=True)
+
+                # Criterios como badges
+                if _crits:
+                    _badges = ""
+                    for _ck, _cl in CRITERIOS_COMERCIALES.items():
+                        if _crits.get(_ck):
+                            _badges += f'<span style="background:#e8f5ee;color:#00A651;padding:2px 8px;border-radius:12px;font-size:.7rem;font-weight:600;margin:2px">{_cl}</span> '
+                        else:
+                            _badges += f'<span style="background:#fff0f0;color:#e53e3e;padding:2px 8px;border-radius:12px;font-size:.7rem;font-weight:600;margin:2px">{_cl}</span> '
+                    st.markdown(f'<div style="margin-top:4px;line-height:2">{_badges}</div>', unsafe_allow_html=True)
+
+            # Editar en expander
+            with st.expander(f"Editar {cli['nombre_razon_social']}", expanded=False):
+                ec1, ec2 = st.columns(2)
+                _cid = cli["id"]
+                with ec1:
+                    _en = st.text_input("Nombre", value=cli["nombre_razon_social"], key=f"ce_nom_{_cid}")
+                    _ec = st.text_input("CUIT", value=cli.get("cuit", ""), key=f"ce_cuit_{_cid}")
+                    _er = st.text_input("Rubro", value=cli.get("rubro", ""), key=f"ce_rub_{_cid}")
+                    _et = st.text_input("Teléfono", value=cli.get("telefono", ""), key=f"ce_tel_{_cid}")
+                with ec2:
+                    _em = st.text_input("Email", value=cli.get("mail", ""), key=f"ce_mail_{_cid}")
+                    _ed = st.text_input("Dirección", value=cli.get("direccion", ""), key=f"ce_dir_{_cid}")
+                    _el = st.text_input("Localidad", value=cli.get("localidad", ""), key=f"ce_loc_{_cid}")
+                    _eo = st.text_area("Observaciones", value=cli.get("observaciones", ""), key=f"ce_obs_{_cid}", height=80)
+
+                # Editar criterios manualmente
+                st.markdown("**Criterios comerciales:**")
+                _crit_cols = st.columns(3)
+                _crit_editados = {}
+                for idx, (_ck, _cl) in enumerate(CRITERIOS_COMERCIALES.items()):
+                    with _crit_cols[idx % 3]:
+                        _crit_editados[_ck] = st.checkbox(_cl, value=_crits.get(_ck, False), key=f"ce_crit_{_ck}_{_cid}")
+
+                bc1, bc2 = st.columns(2)
+                with bc1:
+                    if st.button("Guardar cambios", key=f"ce_save_{_cid}", use_container_width=True):
+                        actualizar_cliente_cartera(_cid, {
+                            "nombre_razon_social": _en, "cuit": _ec, "rubro": _er,
+                            "telefono": _et, "mail": _em, "direccion": _ed,
+                            "localidad": _el, "observaciones": _eo,
+                            "criterios_json": _json.dumps(_crit_editados, ensure_ascii=False),
+                        })
+                        st.success("Actualizado.")
+                        st.rerun()
+                with bc2:
+                    if st.button("Eliminar", key=f"ce_del_{_cid}", use_container_width=True):
+                        eliminar_cliente_cartera(_cid)
+                        st.rerun()
+
+    st.stop()
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MÓDULO NYPER — Buscar Clientes
+# ══════════════════════════════════════════════════════════════════════════════
+
 col_hdr1, col_hdr2 = st.columns([3, 2])
 with col_hdr1:
     st.markdown(f"""
@@ -257,26 +621,10 @@ SUCURSAL_DIR = SUC["dir"]
 SUCURSAL_CODIGO = st.session_state["sucursal_sel"].split(" — ")[0]
 RADIO_KM = 2
 
-# Nombre del operador (persiste en config.json)
-if "nombre_usuario" not in st.session_state:
-    _cfg_usr = _cargar_config()
-    st.session_state["nombre_usuario"] = _cfg_usr.get("nombre_usuario", "")
+# Nombre del operador — viene del sistema de auth
+st.session_state["nombre_usuario"] = f"{usuario['nombre']} {usuario['apellido']}"
 
-_col_dir, _col_nombre = st.columns([3, 2])
-with _col_dir:
-    st.caption(f"📍 {SUCURSAL_DIR} · {SUC.get('partido', '')} ({SUCURSAL_LAT:.4f}, {SUCURSAL_LNG:.4f})")
-with _col_nombre:
-    _nombre_usr = st.text_input(
-        "Tu nombre",
-        value=st.session_state["nombre_usuario"],
-        placeholder="Tu nombre (para mensajes)",
-        key="input_nombre_usr",
-        label_visibility="collapsed",
-    )
-    st.caption("Se usa para firmar los mensajes de WhatsApp y mail.")
-    if _nombre_usr != st.session_state.get("nombre_usuario"):
-        st.session_state["nombre_usuario"] = _nombre_usr
-        _guardar_config({"nombre_usuario": _nombre_usr})
+st.caption(f"📍 {SUCURSAL_DIR} · {SUC.get('partido', '')} ({SUCURSAL_LAT:.4f}, {SUCURSAL_LNG:.4f}) · 👤 {st.session_state['nombre_usuario']}")
 
 
 # ── Helpers de persistencia ───────────────────────────────────────────────────
@@ -476,6 +824,94 @@ with tab_inicio:
     </div>
     """, unsafe_allow_html=True)
 
+    # ── Panel de administración (solo admin) ─────────────────────────────────
+    if es_admin():
+        st.divider()
+        with st.expander("🔧 Administración", expanded=False):
+            admin_tab1, admin_tab2 = st.tabs(["Usuarios", "Reasignar gestores"])
+
+            with admin_tab1:
+                # Crear usuario
+                st.markdown("##### Crear usuario")
+                ac1, ac2 = st.columns(2)
+                with ac1:
+                    nuevo_nombre = st.text_input("Nombre", key="admin_nombre")
+                    nuevo_email = st.text_input("Email @bpba.com.ar", key="admin_email")
+                    nuevo_rol = st.selectbox("Rol", ["usuario", "admin"], key="admin_rol")
+                with ac2:
+                    nuevo_apellido = st.text_input("Apellido", key="admin_apellido")
+                    nuevo_pw = st.text_input("Contraseña", type="password", key="admin_pw")
+                    nuevo_color = st.color_picker("Color", "#3b82f6", key="admin_color")
+                    nuevo_afiliado = st.text_input("Código afiliado (ej: P047071)", key="admin_afiliado")
+                if st.button("Crear usuario", key="btn_crear_usr"):
+                    from services.auth import validar_dominio
+                    from services.db import crear_usuario, actualizar_usuario as _upd_usr
+                    if not nuevo_nombre or not nuevo_apellido or not nuevo_email or not nuevo_pw:
+                        st.error("Completá todos los campos.")
+                    elif not validar_dominio(nuevo_email):
+                        st.error("Solo emails @bpba.com.ar")
+                    else:
+                        ok = crear_usuario(nuevo_email.strip().lower(), nuevo_nombre.strip(), nuevo_apellido.strip(), nuevo_pw, nuevo_rol, nuevo_color)
+                        if ok and nuevo_afiliado.strip():
+                            _upd_usr(nuevo_email.strip().lower(), codigo_afiliado=nuevo_afiliado.strip().upper())
+                        if ok:
+                            st.success(f"Usuario {nuevo_email} creado.")
+                        else:
+                            st.error("Ya existe un usuario con ese email.")
+
+                # Listar usuarios
+                st.markdown("##### Usuarios registrados")
+                from services.db import listar_usuarios, actualizar_usuario
+                usuarios_lista = listar_usuarios()
+                for u in usuarios_lista:
+                    uc1, uc2, uc3 = st.columns([3, 1, 1])
+                    with uc1:
+                        _color_dot = f'<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:{u["color"]};margin-right:6px"></span>'
+                        _afil = f' · Afiliado: {u.get("codigo_afiliado", "")}' if u.get("codigo_afiliado") else ""
+                        st.markdown(f'{_color_dot} **{u["nombre"]} {u["apellido"]}** · {u["email"]} · {u["rol"]}{_afil}', unsafe_allow_html=True)
+                    with uc2:
+                        _estado_txt = "Activo" if u["activo"] else "Inactivo"
+                        st.caption(_estado_txt)
+                    with uc3:
+                        if u["email"] != usuario["email"]:
+                            _label = "Desactivar" if u["activo"] else "Activar"
+                            if st.button(_label, key=f"toggle_{u['email']}"):
+                                actualizar_usuario(u["email"], activo=0 if u["activo"] else 1)
+                                st.rerun()
+
+            with admin_tab2:
+                st.markdown("##### Reasignar gestores")
+                leads_all = st.session_state.get("leads", [])
+                prospectos_con_owner = [l for l in leads_all if l.get("en_prospectos") and l.get("owner_email")]
+                if not prospectos_con_owner:
+                    st.info("No hay prospectos asignados.")
+                else:
+                    from services.db import listar_usuarios, reasignar_ownership
+                    _usuarios_db = listar_usuarios()
+                    _emails_activos = [u["email"] for u in _usuarios_db if u["activo"]]
+                    _nombres_map = {u["email"]: f"{u['nombre']} {u['apellido']}" for u in _usuarios_db}
+                    _colores_map = {u["email"]: u["color"] for u in _usuarios_db}
+                    for lp in prospectos_con_owner:
+                        _lk = lp.get("lead_id", "")
+                        rc1, rc2, rc3 = st.columns([3, 2, 1])
+                        with rc1:
+                            st.markdown(f"**{lp.get('business_name_raw', '—')}**")
+                            st.caption(f"Gestor actual: {lp.get('owner_nombre', '')}")
+                        with rc2:
+                            nuevo_owner = st.selectbox(
+                                "Nuevo gestor", _emails_activos,
+                                format_func=lambda e: _nombres_map.get(e, e),
+                                key=f"reasig_{_lk}",
+                            )
+                        with rc3:
+                            if st.button("Reasignar", key=f"btn_reasig_{_lk}"):
+                                reasignar_ownership(_lk, SUCURSAL_CODIGO, nuevo_owner)
+                                lp["owner_email"] = nuevo_owner
+                                lp["owner_nombre"] = _nombres_map.get(nuevo_owner, nuevo_owner)
+                                lp["owner_color"] = _colores_map.get(nuevo_owner, "#3b82f6")
+                                guardar_leads(leads_all, SUCURSAL_CODIGO)
+                                st.session_state["leads"] = leads_all
+                                st.rerun()
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -521,8 +957,8 @@ with tab_descubrir:
         min_reseñas = st.slider("Mínimo de reseñas", 0, 50, 5)
     with col_b:
         st.caption(f"Centro: {SUCURSAL_DIR}")
-        guardar_anterior = st.checkbox("Guardar base anterior en historial", value=True)
-        agregar_a_base = st.checkbox("Agregar a base existente (no reemplazar)", value=False)
+        guardar_anterior = True
+        agregar_a_base = True
 
     rubros_sel = st.multiselect(
         "Rubros a buscar",
@@ -567,22 +1003,33 @@ with tab_descubrir:
         st.success(f"✅ {len(nuevos)} comercios encontrados")
         nuevos = migrar_batch(nuevos, SUCURSAL_LAT, SUCURSAL_LNG)
         clasificar_batch(nuevos)
+        # Cruzar automáticamente con base Cuenta DNI
+        from services.cuentadni_scraper import cruzar_leads_con_cuentadni
+        _total_cdni, _matches_cdni = cruzar_leads_con_cuentadni(nuevos)
+        if _matches_cdni:
+            st.info(f"💳 {_matches_cdni} comercios ya tienen Cuenta DNI")
         nuevos.sort(key=_score_contacto, reverse=True)
 
-        if agregar_a_base and leads_actuales:
-            place_ids_existentes = {l.get("source_place_id", "") for l in leads_actuales}
-            realmente_nuevos = [n for n in nuevos if n.get("source_place_id") not in place_ids_existentes]
-            leads_actuales.extend(realmente_nuevos)
-            st.info(f"➕ {len(realmente_nuevos)} leads nuevos agregados")
-            st.session_state["leads"] = leads_actuales
-        else:
-            # Preservar prospectos de búsquedas anteriores antes de reemplazar
-            todos_guardados = cargar_leads(SUCURSAL_CODIGO)
-            prospectos_guardados = [l for l in todos_guardados if l.get("en_prospectos")]
-            ids_nuevos = {l.get("source_place_id", "") for l in nuevos}
-            prospectos_a_preservar = [l for l in prospectos_guardados
-                                      if l.get("source_place_id", "") not in ids_nuevos]
-            st.session_state["leads"] = nuevos + prospectos_a_preservar
+        # Merge: leads nuevos actualizan existentes, preservando datos enriquecidos
+        existentes_por_id = {l.get("source_place_id", ""): l for l in leads_actuales if l.get("source_place_id")}
+        actualizados = 0
+        agregados = 0
+        for nuevo in nuevos:
+            pid = nuevo.get("source_place_id", "")
+            if pid and pid in existentes_por_id:
+                # Actualizar datos base del lead, preservar enriquecimiento
+                viejo = existentes_por_id[pid]
+                for k, v in nuevo.items():
+                    if v:  # solo pisar si el nuevo tiene dato
+                        viejo[k] = v
+                actualizados += 1
+            else:
+                leads_actuales.append(nuevo)
+                if pid:
+                    existentes_por_id[pid] = nuevo
+                agregados += 1
+        st.info(f"➕ {agregados} nuevos · 🔄 {actualizados} actualizados")
+        st.session_state["leads"] = leads_actuales
 
         guardar_leads(st.session_state["leads"], SUCURSAL_CODIGO)
         leads_res = st.session_state["leads"]
@@ -816,6 +1263,12 @@ with tab_bandeja:
             with fc8:
                 f_dup = st.selectbox("Duplicados", ["Ocultar duplicados", "Mostrar todos", "Solo duplicados"], key=f"f_dup_{_fk}")
 
+            fc9, fc10 = st.columns(2)
+            with fc9:
+                f_cdni = st.selectbox("Cuenta DNI", ["Todos", "Con Cuenta DNI", "Sin Cuenta DNI"], key=f"f_cdni_{_fk}")
+            with fc10:
+                f_dueno = st.selectbox("Gestor", ["Todos", "Mis leads", "Sin asignar"], key=f"f_dueno_{_fk}")
+
         # Aplicar filtros
         filtrados = leads[:]
         if f_canal:
@@ -836,6 +1289,14 @@ with tab_bandeja:
             filtrados = [l for l in filtrados if not l.get("duplicate_flag") or l.get("master_record_flag")]
         elif f_dup == "Solo duplicados":
             filtrados = [l for l in filtrados if l.get("duplicate_flag")]
+        if f_cdni == "Con Cuenta DNI":
+            filtrados = [l for l in filtrados if l.get("tiene_cuenta_dni")]
+        elif f_cdni == "Sin Cuenta DNI":
+            filtrados = [l for l in filtrados if not l.get("tiene_cuenta_dni")]
+        if f_dueno == "Mis leads":
+            filtrados = [l for l in filtrados if l.get("owner_email") == usuario["email"]]
+        elif f_dueno == "Sin asignar":
+            filtrados = [l for l in filtrados if not l.get("owner_email")]
 
         # Mapa (arriba, protagonista)
         try:
@@ -880,12 +1341,13 @@ with tab_bandeja:
             st.error(f"Error cargando mapa: {e}")
 
         # KPIs
-        c1, c2, c3, c4, c5 = st.columns(5)
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
         c1.metric("Mostrando", len(filtrados))
         c2.metric("Contactables", sum(1 for l in filtrados if l.get("contact_available")))
         c3.metric("WhatsApp", sum(1 for l in filtrados if l.get("whatsapp_probable")))
         c4.metric("Con email", sum(1 for l in filtrados if l.get("email_primary")))
         c5.metric("Para visita", sum(1 for l in filtrados if l.get("requires_visit")))
+        c6.metric("Cuenta DNI", sum(1 for l in filtrados if l.get("tiene_cuenta_dni")))
 
         # Tabla
         CANAL_EMOJI = {"whatsapp": "💬", "llamada": "📞", "mail": "✉️", "redes": "📱", "visita": "🚶", "sin_canal": "❓"}
@@ -900,6 +1362,8 @@ with tab_bandeja:
                 "Email": l.get("email_primary", ""),
                 "Web": "✅" if l.get("website") else "",
                 "IG": "✅" if l.get("instagram_url") else "",
+                "CDNI": "💳" if l.get("tiene_cuenta_dni") else "",
+                "Gestor": l.get("owner_nombre", ""),
                 "Rating": l.get("rating", ""),
             } for l in filtrados])
 
@@ -1084,7 +1548,7 @@ with tab_prospectos:
 
         # Filtros colapsados
         with st.expander("Filtros", expanded=False):
-            pf1, pf2 = st.columns(2)
+            pf1, pf2, pf3 = st.columns(3)
             with pf1:
                 f_est = st.multiselect(
                     "Estado",
@@ -1095,17 +1559,22 @@ with tab_prospectos:
                 )
             with pf2:
                 rubros_pr = sorted(set(l.get("rubro_operativo", "Otro") for l in prospectos))
-                # Inicializar solo si no existe o si tiene rubros que ya no están disponibles
                 _sel_actual = st.session_state.get("pr_f_rubro", [])
                 if not _sel_actual or not all(r in rubros_pr for r in _sel_actual):
                     st.session_state["pr_f_rubro"] = rubros_pr
                 f_rub_pr = st.multiselect("Rubro", rubros_pr, default=rubros_pr, key="pr_f_rubro")
+            with pf3:
+                f_owner = st.selectbox("Gestor", ["Todos", "Mis prospectos", "Sin asignar"], key="pr_f_owner")
 
         prospectos_filtrados = [
             l for l in prospectos
             if l.get("prospecto_estado", "por_contactar") in f_est
             and l.get("rubro_operativo", "Otro") in f_rub_pr
         ]
+        if f_owner == "Mis prospectos":
+            prospectos_filtrados = [l for l in prospectos_filtrados if l.get("owner_email") == usuario["email"]]
+        elif f_owner == "Sin asignar":
+            prospectos_filtrados = [l for l in prospectos_filtrados if not l.get("owner_email")]
 
         # Aplicar búsqueda
         if busq_pr:
@@ -1138,9 +1607,23 @@ with tab_prospectos:
                         if foto_url:
                             st.image(foto_url, width=100)
 
-                        # Encabezado
+                        # Ownership check
+                        _owner_email = lead.get("owner_email", "")
+                        _mi_email = usuario["email"]
+                        _es_mio = _owner_email == _mi_email or not _owner_email
+                        _puede_editar = _es_mio or es_admin()
+
+                        # Encabezado + badge dueño
                         st.markdown(f"**{lead.get('business_name_raw', '—')}**")
-                        st.caption(f"{lead.get('rubro_operativo', '')} · {lead.get('zona', '')}")
+                        _caption_extra = f"{lead.get('rubro_operativo', '')} · {lead.get('zona', '')}"
+                        st.caption(_caption_extra)
+                        if _owner_email:
+                            _o_nombre = lead.get("owner_nombre", "")
+                            _o_color = lead.get("owner_color", "#3b82f6")
+                            if _owner_email == _mi_email:
+                                st.markdown(f'<span style="background:{_o_color};color:#fff;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600">📌 Mío</span>', unsafe_allow_html=True)
+                            else:
+                                st.markdown(f'<span style="background:{_o_color};color:#fff;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600">🔒 {_o_nombre}</span>', unsafe_allow_html=True)
 
                         # Datos de contacto con links de acción
                         from urllib.parse import quote as _quote
@@ -1185,9 +1668,17 @@ with tab_prospectos:
                             format_func=lambda x: ESTADOS_PROSPECTO[x],
                             index=list(ESTADOS_PROSPECTO.keys()).index(estado_actual),
                             key=f"pr_estado_{lead_key}",
+                            disabled=not _puede_editar,
                         )
-                        if nuevo_estado != estado_actual:
+                        if nuevo_estado != estado_actual and _puede_editar:
                             lead["prospecto_estado"] = nuevo_estado
+                            # Ownership: al contactar, se asigna dueño
+                            if nuevo_estado in ("contactado", "interesado") and not lead.get("owner_email"):
+                                from services.db import registrar_ownership
+                                registrar_ownership(lead_key, SUCURSAL_CODIGO, _mi_email)
+                                lead["owner_email"] = _mi_email
+                                lead["owner_nombre"] = f"{usuario['nombre']} {usuario['apellido']}"
+                                lead["owner_color"] = usuario.get("color", "#3b82f6")
                             guardar_leads(leads, SUCURSAL_CODIGO)
                             st.session_state["leads"] = leads
 
@@ -1200,29 +1691,61 @@ with tab_prospectos:
                             height=80,
                             key=f"pr_nota_{lead_key}",
                             label_visibility="collapsed",
+                            disabled=not _puede_editar,
                         )
-                        if nota != nota_actual:
+                        if nota != nota_actual and _puede_editar:
                             lead["prospecto_notas"] = nota
                             guardar_leads(leads, SUCURSAL_CODIGO)
                             st.session_state["leads"] = leads
 
-                        # Quitar de prospectos
-                        if st.button("✖ Quitar de Prospectos", key=f"pr_quitar_{lead_key}"):
-                            lead["en_prospectos"] = False
-                            lead["prospecto_estado"] = ""
-                            guardar_leads(leads, SUCURSAL_CODIGO)
-                            st.session_state["leads"] = leads
-                            st.rerun()
+                        # Pasar a Mi Cartera (solo gestor, estados avanzados)
+                        if _es_mio and _owner_email and estado_actual in ("contactado", "interesado") and not lead.get("en_cartera"):
+                            if st.button("📋 Pasar a Mi Cartera", key=f"pr_cartera_{lead_key}", use_container_width=True):
+                                from services.db import guardar_cliente_cartera
+                                datos_cartera = {
+                                    "nombre_razon_social": lead.get("business_name_raw", ""),
+                                    "cuit": lead.get("cuit", ""),
+                                    "rubro": lead.get("rubro_operativo", ""),
+                                    "telefono": lead.get("phone_raw", ""),
+                                    "mail": lead.get("email_primary", ""),
+                                    "direccion": lead.get("address_norm", "") or lead.get("address_raw", ""),
+                                    "localidad": lead.get("zona", ""),
+                                    "observaciones": lead.get("prospecto_notas", ""),
+                                }
+                                guardar_cliente_cartera(_mi_email, datos_cartera)
+                                lead["en_cartera"] = True
+                                guardar_leads(leads, SUCURSAL_CODIGO)
+                                st.session_state["leads"] = leads
+                                st.success("Agregado a Mi Cartera")
+                                st.rerun()
+                        elif lead.get("en_cartera"):
+                            st.markdown('<span style="background:#e8f5ee;color:#00A651;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600">✅ En cartera</span>', unsafe_allow_html=True)
+
+                        # Quitar de prospectos (solo gestor o admin)
+                        if _puede_editar:
+                            if st.button("✖ Quitar de Prospectos", key=f"pr_quitar_{lead_key}"):
+                                lead["en_prospectos"] = False
+                                lead["prospecto_estado"] = ""
+                                if lead.get("owner_email"):
+                                    from services.db import eliminar_ownership
+                                    eliminar_ownership(lead_key, SUCURSAL_CODIGO)
+                                lead.pop("owner_email", None)
+                                lead.pop("owner_nombre", None)
+                                lead.pop("owner_color", None)
+                                guardar_leads(leads, SUCURSAL_CODIGO)
+                                st.session_state["leads"] = leads
+                                st.rerun()
 
         # KPIs al final
         st.divider()
         st.markdown("#### Resumen")
-        c1, c2, c3, c4, c5 = st.columns(5)
+        c1, c2, c3, c4, c5, c6 = st.columns(6)
         c1.metric("Total", len(prospectos))
-        c2.metric("Por contactar", sum(1 for l in prospectos if l.get("prospecto_estado") == "por_contactar"))
-        c3.metric("Contactados", sum(1 for l in prospectos if l.get("prospecto_estado") == "contactado"))
-        c4.metric("Interesados", sum(1 for l in prospectos if l.get("prospecto_estado") == "interesado"))
-        c5.metric("No interesados", sum(1 for l in prospectos if l.get("prospecto_estado") == "no_interesado"))
+        c2.metric("Míos", sum(1 for l in prospectos if l.get("owner_email") == usuario["email"]))
+        c3.metric("Por contactar", sum(1 for l in prospectos if l.get("prospecto_estado") == "por_contactar"))
+        c4.metric("Contactados", sum(1 for l in prospectos if l.get("prospecto_estado") == "contactado"))
+        c5.metric("Interesados", sum(1 for l in prospectos if l.get("prospecto_estado") == "interesado"))
+        c6.metric("No interesados", sum(1 for l in prospectos if l.get("prospecto_estado") == "no_interesado"))
 
 
 # ══════════════════════════════════════════════════════════════════════════════
