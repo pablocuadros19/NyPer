@@ -4,7 +4,10 @@ folium
 requests
 pandas
 openpyxl
+pyxlsb
 python-dotenv
 httpx
 beautifulsoup4
 supabase
+altair
+fpdf2
