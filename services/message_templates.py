@@ -76,8 +76,8 @@ FAMILIA_RUBRO = {
 
 WHATSAPP_TEMPLATES = {
     "proveedor_estado": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vimos que tu empresa figura como proveedora del Estado, "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque vimos que figuran como proveedora del Estado, "
         "con contratos adjudicados en el sector público. "
         "Desde el banco trabajamos con empresas que operan con el Estado, "
         "acompañando con capital de trabajo, garantías y financiamiento de contratos. "
@@ -85,50 +85,50 @@ WHATSAPP_TEMPLATES = {
         "Si te interesa, con gusto te cuento más por acá. Gracias."
     ),
     "generico": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
         "Te escribo porque vi tu actividad y quería presentarme. "
         "Me encuentro trabajando en la vinculación y el desarrollo de actividades de la zona, "
         "y quería dejar abierto este canal por cualquier necesidad que pueda surgir. "
         "Si te interesa, seguimos por acá. Gracias."
     ),
     "comercio": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vi tu comercio y quería ponerme en contacto. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque quería ponerme en contacto. "
         "Trabajo en la vinculación y desarrollo de comercios de la zona, "
         "y quería presentarme para quedar a disposición. "
         "Si te interesa, seguimos por acá. Gracias."
     ),
     "gastronomia": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vi tu comercio y quería acercarme. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque quería acercarme. "
         "Trabajo en el acompañamiento de actividades gastronómicas de la zona, "
         "y quería presentarme y dejar abierto este canal. "
         "Si te interesa, te cuento más por acá. Gracias."
     ),
     "profesional_servicios": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vi tu actividad y quería ponerme en contacto. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque quería ponerme en contacto. "
         "Trabajo en la vinculación con actividades profesionales y de servicios de la zona, "
         "y quería presentarme para quedar a disposición. "
         "Si te interesa, seguimos por acá. Gracias."
     ),
     "salud_educacion_institucional": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vi tu institución y quería presentarme. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque quería presentarme. "
         "Trabajo en el acompañamiento a instituciones y organizaciones de la zona, "
         "y quería dejar abierto este canal de contacto. "
         "Si te interesa, con gusto seguimos por acá. Gracias."
     ),
     "educacion": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vi tu institución y quería presentarme. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque quería presentarme. "
         "Trabajo en la vinculación con instituciones educativas de la zona, "
         "acompañando distintas necesidades de la comunidad educativa. "
         "Si te interesa, con gusto seguimos por acá. Gracias."
     ),
     "empresa_general": (
-        "Hola, ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
-        "Te escribo porque vi tu comercio y quería ponerme en contacto. "
+        "Hola \"{nombre_empresa}\", ¿cómo estás? Mi nombre es {nombre_usuario}, de la sucursal {sucursal_nombre}. "
+        "Te escribo porque quería ponerme en contacto. "
         "Trabajo en la vinculación y desarrollo de negocios de la zona, "
         "y quería presentarme para quedar a disposición. "
         "Si te interesa, seguimos por acá. Gracias."

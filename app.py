@@ -828,7 +828,7 @@ with tab_inicio:
     if es_admin():
         st.divider()
         with st.expander("🔧 Administración", expanded=False):
-            admin_tab1, admin_tab2 = st.tabs(["Usuarios", "Reasignar gestores"])
+            admin_tab1, admin_tab2, admin_tab3 = st.tabs(["Usuarios", "Reasignar gestores", "Configuración"])
 
             with admin_tab1:
                 # Crear usuario
@@ -913,6 +913,15 @@ with tab_inicio:
                                 st.session_state["leads"] = leads_all
                                 st.rerun()
 
+            with admin_tab3:
+                st.markdown("##### Configuración general")
+                _cfg_actual = _cargar_config()
+                _max_pr = _cfg_actual.get("max_prospectos_por_usuario", 30)
+                _nuevo_max = st.number_input("Máx. prospectos por usuario", min_value=5, max_value=200, value=_max_pr, step=5, key="admin_max_pr")
+                if _nuevo_max != _max_pr:
+                    _guardar_config({"max_prospectos_por_usuario": _nuevo_max})
+                    st.success(f"Límite actualizado a {_nuevo_max} prospectos por usuario.")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 1: DESCUBRIR
@@ -977,7 +986,7 @@ with tab_descubrir:
         from services.normalizer import migrar_batch
         from services.channel_classifier import clasificar_batch
         from services.contact_enricher import enriquecer_contacto
-        from services.cuentadni_scraper import cruzar_leads_con_cuentadni
+        # from services.cuentadni_scraper import cruzar_leads_con_cuentadni
         from services.deduper import detectar_duplicados
 
         if leads_actuales:
@@ -1010,10 +1019,10 @@ with tab_descubrir:
         nuevos = migrar_batch(nuevos, SUCURSAL_LAT, SUCURSAL_LNG)
         clasificar_batch(nuevos)
 
-        # Cruce Cuenta DNI
-        _total_cdni, _matches_cdni = cruzar_leads_con_cuentadni(nuevos)
-        if _matches_cdni:
-            st.info(f"💳 {_matches_cdni} comercios ya tienen Cuenta DNI")
+        # Cruce Cuenta DNI — desactivado temporalmente
+        # _total_cdni, _matches_cdni = cruzar_leads_con_cuentadni(nuevos)
+        # if _matches_cdni:
+        #     st.info(f"💳 {_matches_cdni} comercios ya tienen Cuenta DNI")
 
         # Merge con base existente
         existentes_por_id = {l.get("source_place_id", ""): l for l in leads_actuales if l.get("source_place_id")}
@@ -1248,10 +1257,8 @@ with tab_bandeja:
             with fc8:
                 f_dup = st.selectbox("Duplicados", ["Mostrar todos", "Ocultar duplicados", "Solo duplicados"], key=f"f_dup_{_fk}")
 
-            fc9, fc10 = st.columns(2)
+            fc9, _fc10 = st.columns(2)
             with fc9:
-                f_cdni = st.selectbox("Cuenta DNI", ["Todos", "Con Cuenta DNI", "Sin Cuenta DNI"], key=f"f_cdni_{_fk}")
-            with fc10:
                 f_dueno = st.selectbox("Gestor", ["Todos", "Mis leads", "Sin asignar"], key=f"f_dueno_{_fk}")
 
         # Aplicar filtros
@@ -1274,10 +1281,6 @@ with tab_bandeja:
             filtrados = [l for l in filtrados if not l.get("duplicate_flag") or l.get("master_record_flag")]
         elif f_dup == "Solo duplicados":
             filtrados = [l for l in filtrados if l.get("duplicate_flag")]
-        if f_cdni == "Con Cuenta DNI":
-            filtrados = [l for l in filtrados if l.get("tiene_cuenta_dni")]
-        elif f_cdni == "Sin Cuenta DNI":
-            filtrados = [l for l in filtrados if not l.get("tiene_cuenta_dni")]
         if f_dueno == "Mis leads":
             filtrados = [l for l in filtrados if l.get("owner_email") == usuario["email"]]
         elif f_dueno == "Sin asignar":
@@ -1332,7 +1335,7 @@ with tab_bandeja:
         c3.metric("WhatsApp", sum(1 for l in filtrados if l.get("whatsapp_probable")))
         c4.metric("Con email", sum(1 for l in filtrados if l.get("email_primary")))
         c5.metric("Para visita", sum(1 for l in filtrados if l.get("requires_visit")))
-        c6.metric("Cuenta DNI", sum(1 for l in filtrados if l.get("tiene_cuenta_dni")))
+        c6.metric("Prospectos", sum(1 for l in filtrados if l.get("en_prospectos")))
 
         # Tabla
         CANAL_EMOJI = {"whatsapp": "💬", "llamada": "📞", "mail": "✉️", "redes": "📱", "visita": "🚶", "sin_canal": "❓"}
@@ -1357,7 +1360,6 @@ with tab_bandeja:
                 "Email": l.get("email_primary", ""),
                 "Web": "✅" if l.get("website") else "",
                 "IG": "✅" if l.get("instagram_url") else "",
-                "CDNI": "💳" if l.get("tiene_cuenta_dni") else "",
                 "Rating": l.get("rating", ""),
             } for l in filtrados])
 
@@ -1383,6 +1385,18 @@ with tab_bandeja:
                 st.warning(f"🔒 {len(_tomados)} lead(s) ya tomados por otro gestor: {_nombres_tomados}")
             if _ya_mios:
                 st.info(f"📌 {len(_ya_mios)} lead(s) ya están en tus prospectos.")
+
+            # Límite de prospectos por usuario
+            _max_prospectos = _cargar_config().get("max_prospectos_por_usuario", 30)
+            _mis_prospectos_actual = sum(1 for l in leads if l.get("en_prospectos") and l.get("owner_email") == usuario["email"])
+            _disponibles = max(0, _max_prospectos - _mis_prospectos_actual)
+
+            if _libres and _disponibles == 0:
+                st.error(f"Alcanzaste el límite de {_max_prospectos} prospectos. Liberá algunos antes de agregar nuevos.")
+                _libres = []
+            elif _libres and len(_libres) > _disponibles:
+                st.warning(f"Solo podés agregar {_disponibles} más (límite: {_max_prospectos}). Se tomarán los primeros {_disponibles}.")
+                _libres = _libres[:_disponibles]
 
             if _libres:
                 if st.button(f"🎯 Agregar {len(_libres)} lead(s) a Prospectos", type="primary"):
