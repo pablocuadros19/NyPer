@@ -953,37 +953,43 @@ with tab_descubrir:
 
     col_a, col_b = st.columns(2)
     with col_a:
-        radio = st.slider("Radio de búsqueda (km)", 1, 10, int(RADIO_KM))
+        radio = st.slider("Radio de búsqueda (km)", 1, 3, min(int(RADIO_KM), 3))
         min_reseñas = st.slider("Mínimo de reseñas", 0, 50, 5)
     with col_b:
         st.caption(f"Centro: {SUCURSAL_DIR}")
-        guardar_anterior = True
-        agregar_a_base = True
 
     rubros_sel = st.multiselect(
-        "Rubros a buscar",
+        "Rubros a buscar *",
         list(RUBROS_DISPONIBLES.keys()),
-        default=list(RUBROS_DISPONIBLES.keys()),
+        default=[],
         key="rubros_busqueda",
+        placeholder="Elegí al menos un rubro",
     )
+
+    if not rubros_sel:
+        st.warning("Seleccioná al menos un rubro para buscar.")
 
     st.divider()
 
-    if st.button("🔍 Buscar comercios ahora", width="stretch"):
+    if st.button("🔍 Buscar y enriquecer comercios", width="stretch", disabled=not rubros_sel):
         from services.prospector import buscar_comercios
         from utils.geo import zona_desde_direccion
         from services.normalizer import migrar_batch
         from services.channel_classifier import clasificar_batch
+        from services.contact_enricher import enriquecer_contacto
+        from services.cuentadni_scraper import cruzar_leads_con_cuentadni
+        from services.deduper import detectar_duplicados
 
-        if guardar_anterior and leads_actuales:
+        if leads_actuales:
             guardar_historial(leads_actuales)
 
         # Armar lista de types de Google Places según rubros seleccionados
         types_buscar = []
         for rubro_nombre in rubros_sel:
             types_buscar.extend(RUBROS_DISPONIBLES.get(rubro_nombre, []))
-        types_buscar = list(set(types_buscar)) if types_buscar else None
+        types_buscar = list(set(types_buscar))
 
+        # ── Paso 1: Descubrir ────────────────────────────────────────────────
         perrito_placeholder = st.empty()
         if _PERRITO_HTML:
             perrito_placeholder.markdown(f"""
@@ -1003,24 +1009,22 @@ with tab_descubrir:
         st.success(f"✅ {len(nuevos)} comercios encontrados")
         nuevos = migrar_batch(nuevos, SUCURSAL_LAT, SUCURSAL_LNG)
         clasificar_batch(nuevos)
-        # Cruzar automáticamente con base Cuenta DNI
-        from services.cuentadni_scraper import cruzar_leads_con_cuentadni
+
+        # Cruce Cuenta DNI
         _total_cdni, _matches_cdni = cruzar_leads_con_cuentadni(nuevos)
         if _matches_cdni:
             st.info(f"💳 {_matches_cdni} comercios ya tienen Cuenta DNI")
-        nuevos.sort(key=_score_contacto, reverse=True)
 
-        # Merge: leads nuevos actualizan existentes, preservando datos enriquecidos
+        # Merge con base existente
         existentes_por_id = {l.get("source_place_id", ""): l for l in leads_actuales if l.get("source_place_id")}
         actualizados = 0
         agregados = 0
         for nuevo in nuevos:
             pid = nuevo.get("source_place_id", "")
             if pid and pid in existentes_por_id:
-                # Actualizar datos base del lead, preservar enriquecimiento
                 viejo = existentes_por_id[pid]
                 for k, v in nuevo.items():
-                    if v:  # solo pisar si el nuevo tiene dato
+                    if v:
                         viejo[k] = v
                 actualizados += 1
             else:
@@ -1030,57 +1034,12 @@ with tab_descubrir:
                 agregados += 1
         st.info(f"➕ {agregados} nuevos · 🔄 {actualizados} actualizados")
         st.session_state["leads"] = leads_actuales
+        guardar_leads(leads_actuales, SUCURSAL_CODIGO)
 
-        guardar_leads(st.session_state["leads"], SUCURSAL_CODIGO)
-        leads_res = st.session_state["leads"]
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Total", len(leads_res))
-        c2.metric("Contactables", sum(1 for l in leads_res if l.get("contact_available")))
-        c3.metric("Con WhatsApp", sum(1 for l in leads_res if l.get("whatsapp_probable")))
-        c4.metric("Con email", sum(1 for l in leads_res if l.get("email_primary")))
-        st.success("Andá a **Enriquecer** para completar datos de contacto.")
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB 2: ENRIQUECER
-# ══════════════════════════════════════════════════════════════════════════════
-
-with tab_enriquecer:
-    st.markdown("### Enriquecimiento de datos")
-    leads = st.session_state.get("leads", [])
-
-    if not leads:
-        st.warning("No hay leads. Primero descubrí comercios.")
-    else:
-        sin_tel = sum(1 for l in leads if not l.get("phone_norm"))
-        contactables = sum(1 for l in leads if l.get("contact_available"))
-
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Contactables", contactables)
-        c2.metric("Sin teléfono", sin_tel)
-        c3.metric("Sin email", sum(1 for l in leads if not l.get("email_primary")))
-        c4.metric("Sin redes", sum(1 for l in leads if not l.get("instagram_url") and not l.get("facebook_url")))
-
-        st.divider()
-
-        # ── Contacto (aplica sobre TODOS los leads)
-        st.markdown("#### 1. Enriquecer contacto — aplica a todos sin importar CUIT")
-        st.caption("Google Places Details + scraping básico de website para email y redes sociales.")
-
-        col_a, col_b = st.columns(2)
-        with col_a:
-            solo_sin_tel = st.checkbox("Solo leads sin teléfono", value=True)
-            workers_c = st.select_slider("Velocidad (workers)", [1, 2, 3, 5], value=3)
-        with col_b:
-            n_candidatos = sin_tel if solo_sin_tel else len(leads)
-            st.caption(f"Leads a procesar: {n_candidatos}")
-
-        if st.button("⚡ Enriquecer contacto", width="stretch"):
-            from services.contact_enricher import enriquecer_contacto
-            from services.channel_classifier import clasificar_batch
-
-            candidatos = [l for l in leads if not l.get("phone_norm")] if solo_sin_tel else leads
-            total_c = len(candidatos)
+        # ── Paso 2: Enriquecer contacto (solo los nuevos sin telefono) ───────
+        candidatos = [l for l in leads_actuales if not l.get("phone_norm")]
+        total_c = len(candidatos)
+        if total_c > 0:
             col_prog, col_perro = st.columns([3, 1])
             with col_prog:
                 barra = st.progress(0)
@@ -1096,33 +1055,59 @@ with tab_enriquecer:
                     </div>
                     """, unsafe_allow_html=True)
 
-            # Secuencial con progreso visible (threads no actualizan bien Streamlit)
             for idx, lead in enumerate(candidatos):
                 enriquecer_contacto(lead)
                 progreso = (idx + 1) / total_c
                 barra.progress(min(progreso, 1.0))
                 estado.info(f"Enriqueciendo contacto: {idx + 1}/{total_c} ({progreso:.0%})")
-                # Guardar parcial cada 50 leads
                 if (idx + 1) % 50 == 0:
-                    guardar_leads(leads, SUCURSAL_CODIGO)
+                    guardar_leads(leads_actuales, SUCURSAL_CODIGO)
 
             barra.empty()
             estado.empty()
             perrito_ph.empty()
-            clasificar_batch(leads)
-            from services.deduper import detectar_duplicados
-            leads, _, _ = detectar_duplicados(leads)
-            leads.sort(key=_score_contacto, reverse=True)
-            guardar_leads(leads, SUCURSAL_CODIGO)
-            st.session_state["leads"] = leads
-            nuevos_tel = sum(1 for l in leads if l.get("phone_norm"))
-            nuevos_cont = sum(1 for l in leads if l.get("contact_available"))
-            st.success(f"✅ Con teléfono: {nuevos_tel} | Contactables: {nuevos_cont}")
+
+        # ── Paso 3: Clasificar, dedup, guardar ───────────────────────────────
+        clasificar_batch(leads_actuales)
+        leads_actuales, _, _ = detectar_duplicados(leads_actuales)
+        leads_actuales.sort(key=_score_contacto, reverse=True)
+        guardar_leads(leads_actuales, SUCURSAL_CODIGO)
+        st.session_state["leads"] = leads_actuales
+
+        # Resultado final
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Total", len(leads_actuales))
+        c2.metric("Contactables", sum(1 for l in leads_actuales if l.get("contact_available")))
+        c3.metric("Con WhatsApp", sum(1 for l in leads_actuales if l.get("whatsapp_probable")))
+        c4.metric("Con email", sum(1 for l in leads_actuales if l.get("email_primary")))
+        st.success("Listo. Revisá los resultados en **Bandeja**.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 2: ENRIQUECER
+# ══════════════════════════════════════════════════════════════════════════════
+
+with tab_enriquecer:
+    st.markdown("### Enriquecimiento profundo")
+    st.caption("El enriquecimiento de contacto básico (teléfono, email, redes) ya se ejecuta automáticamente al buscar comercios.")
+    leads = st.session_state.get("leads", [])
+
+    if not leads:
+        st.warning("No hay leads. Primero buscá comercios en **Descubrir**.")
+    else:
+        sin_tel = sum(1 for l in leads if not l.get("phone_norm"))
+        contactables = sum(1 for l in leads if l.get("contact_available"))
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Contactables", contactables)
+        c2.metric("Sin teléfono", sin_tel)
+        c3.metric("Sin email", sum(1 for l in leads if not l.get("email_primary")))
+        c4.metric("Sin redes", sum(1 for l in leads if not l.get("instagram_url") and not l.get("facebook_url")))
 
         st.divider()
 
         # ── Rastreo profundo de websites
-        st.markdown("#### 2. Rastrear websites")
+        st.markdown("#### 1. Rastrear websites")
         con_web = sum(1 for l in leads if l.get("website"))
         ya_rastreados = sum(1 for l in leads if l.get("website_rastreado"))
         pendientes_web = con_web - ya_rastreados
@@ -1165,7 +1150,7 @@ with tab_enriquecer:
         st.divider()
 
         # ── Enriquecimiento profundo (CUIT / ARCA / BCRA)
-        st.markdown("#### 3. Enriquecimiento profundo (opcional)")
+        st.markdown("#### 2. CUIT / ARCA / BCRA (opcional)")
         con_cuit = sum(1 for l in leads if l.get("cuit_estado") == "resuelto")
         st.caption(f"Leads con CUIT: {con_cuit} / {len(leads)}")
 
@@ -1261,7 +1246,7 @@ with tab_bandeja:
             with fc7:
                 f_vigente = st.selectbox("Vigente", ["Todos", "Sí", "No"], key=f"f_vig_{_fk}")
             with fc8:
-                f_dup = st.selectbox("Duplicados", ["Ocultar duplicados", "Mostrar todos", "Solo duplicados"], key=f"f_dup_{_fk}")
+                f_dup = st.selectbox("Duplicados", ["Mostrar todos", "Ocultar duplicados", "Solo duplicados"], key=f"f_dup_{_fk}")
 
             fc9, fc10 = st.columns(2)
             with fc9:
@@ -1353,7 +1338,17 @@ with tab_bandeja:
         CANAL_EMOJI = {"whatsapp": "💬", "llamada": "📞", "mail": "✉️", "redes": "📱", "visita": "🚶", "sin_canal": "❓"}
 
         if filtrados:
+            def _estado_lead(l):
+                if not l.get("en_prospectos"):
+                    return ""
+                if l.get("owner_email") == usuario["email"]:
+                    return "📌 Mío"
+                if l.get("owner_email"):
+                    return f"🔒 {l.get('owner_nombre', '')}"
+                return "⭐ Prospecto"
+
             df_bandeja = pd.DataFrame([{
+                "Estado": _estado_lead(l),
                 "Nombre": l.get("business_name_raw", ""),
                 "Rubro": l.get("rubro_operativo", ""),
                 "Zona": l.get("zona", ""),
@@ -1363,7 +1358,6 @@ with tab_bandeja:
                 "Web": "✅" if l.get("website") else "",
                 "IG": "✅" if l.get("instagram_url") else "",
                 "CDNI": "💳" if l.get("tiene_cuenta_dni") else "",
-                "Gestor": l.get("owner_nombre", ""),
                 "Rating": l.get("rating", ""),
             } for l in filtrados])
 
@@ -1379,14 +1373,33 @@ with tab_bandeja:
             leads_sel = [filtrados[i] for i in indices_sel if i < len(filtrados)]
 
         if leads_sel:
-            if st.button(f"🎯 Agregar {len(leads_sel)} lead(s) a Prospectos", type="primary"):
-                ahora = datetime.now().isoformat()
-                for lead in leads_sel:
-                    if not lead.get("en_prospectos"):
+            # Separar libres de tomados por otro
+            _libres = [l for l in leads_sel if not l.get("en_prospectos")]
+            _ya_mios = [l for l in leads_sel if l.get("en_prospectos") and l.get("owner_email") == usuario["email"]]
+            _tomados = [l for l in leads_sel if l.get("en_prospectos") and l.get("owner_email") and l.get("owner_email") != usuario["email"]]
+
+            if _tomados:
+                _nombres_tomados = ", ".join(l.get("business_name_raw", "?") for l in _tomados[:5])
+                st.warning(f"🔒 {len(_tomados)} lead(s) ya tomados por otro gestor: {_nombres_tomados}")
+            if _ya_mios:
+                st.info(f"📌 {len(_ya_mios)} lead(s) ya están en tus prospectos.")
+
+            if _libres:
+                if st.button(f"🎯 Agregar {len(_libres)} lead(s) a Prospectos", type="primary"):
+                    from services.db import registrar_ownership
+                    ahora = datetime.now().isoformat()
+                    for lead in _libres:
                         lead["en_prospectos"] = True
                         lead["prospecto_estado"] = "por_contactar"
                         lead["prospecto_fecha"] = ahora
                         lead["prospecto_notas"] = ""
+                        # Asignar ownership inmediatamente
+                        lead["owner_email"] = usuario["email"]
+                        lead["owner_nombre"] = f"{usuario['nombre']} {usuario['apellido']}"
+                        lead["owner_color"] = usuario.get("color", "#3b82f6")
+                        lead_key = lead.get("lead_id", "")
+                        if lead_key:
+                            registrar_ownership(lead_key, SUCURSAL_CODIGO, usuario["email"])
                         place_id = lead.get("source_place_id", "")
                         if place_id and not lead.get("google_photo_url"):
                             try:
@@ -1396,9 +1409,9 @@ with tab_bandeja:
                                     lead["google_photo_url"] = detalle["google_photo_url"]
                             except Exception:
                                 pass
-                guardar_leads(leads, SUCURSAL_CODIGO)
-                st.session_state["leads"] = leads
-                st.success(f"✅ {len(leads_sel)} lead(s) agregados a Prospectos.")
+                    guardar_leads(leads, SUCURSAL_CODIGO)
+                    st.session_state["leads"] = leads
+                    st.success(f"✅ {len(_libres)} lead(s) agregados a tus Prospectos.")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1546,7 +1559,7 @@ with tab_prospectos:
             label_visibility="collapsed",
         )
 
-        # Filtros colapsados
+        # Filtros colapsados — todos desactivados por default (vacío = sin filtro)
         with st.expander("Filtros", expanded=False):
             pf1, pf2, pf3 = st.columns(3)
             with pf1:
@@ -1554,23 +1567,21 @@ with tab_prospectos:
                     "Estado",
                     options=list(ESTADOS_PROSPECTO.keys()),
                     format_func=lambda x: ESTADOS_PROSPECTO[x],
-                    default=["por_contactar", "contactado", "interesado"],
+                    default=[],
                     key="pr_f_estado",
+                    placeholder="Todos",
                 )
             with pf2:
                 rubros_pr = sorted(set(l.get("rubro_operativo", "Otro") for l in prospectos))
-                _sel_actual = st.session_state.get("pr_f_rubro", [])
-                if not _sel_actual or not all(r in rubros_pr for r in _sel_actual):
-                    st.session_state["pr_f_rubro"] = rubros_pr
-                f_rub_pr = st.multiselect("Rubro", rubros_pr, default=rubros_pr, key="pr_f_rubro")
+                f_rub_pr = st.multiselect("Rubro", rubros_pr, default=[], key="pr_f_rubro", placeholder="Todos")
             with pf3:
-                f_owner = st.selectbox("Gestor", ["Todos", "Mis prospectos", "Sin asignar"], key="pr_f_owner")
+                f_owner = st.selectbox("Gestor", ["Mis prospectos", "Todos", "Sin asignar"], key="pr_f_owner")
 
-        prospectos_filtrados = [
-            l for l in prospectos
-            if l.get("prospecto_estado", "por_contactar") in f_est
-            and l.get("rubro_operativo", "Otro") in f_rub_pr
-        ]
+        prospectos_filtrados = prospectos[:]
+        if f_est:
+            prospectos_filtrados = [l for l in prospectos_filtrados if l.get("prospecto_estado", "por_contactar") in f_est]
+        if f_rub_pr:
+            prospectos_filtrados = [l for l in prospectos_filtrados if l.get("rubro_operativo", "Otro") in f_rub_pr]
         if f_owner == "Mis prospectos":
             prospectos_filtrados = [l for l in prospectos_filtrados if l.get("owner_email") == usuario["email"]]
         elif f_owner == "Sin asignar":
