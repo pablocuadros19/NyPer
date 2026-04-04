@@ -1,10 +1,12 @@
 """
-Base de datos SQLite para NyPer.
+Base de datos para NyPer.
+Backend primario: Supabase (persiste en la nube).
+Fallback: SQLite local (para desarrollo sin Supabase).
 Tablas: usuarios, ownership, cartera.
-Archivo: data/nyper.db
 """
 
 import os
+import json
 import sqlite3
 from datetime import datetime
 
@@ -14,8 +16,40 @@ _DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "nyp
 _ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "pablo.cuadros@bpba.com.ar")
 
 
+# ── Backend detection ───────────────────────────────────────────────────────
+
+try:
+    from supabase import create_client
+except ImportError:
+    create_client = None
+
+
 @st.cache_resource
-def _get_conn():
+def _get_supabase():
+    if create_client is None:
+        return None
+    url = ""
+    key = ""
+    try:
+        url = st.secrets.get("SUPABASE_URL", "") or os.getenv("SUPABASE_URL", "")
+        key = st.secrets.get("SUPABASE_KEY", "") or os.getenv("SUPABASE_KEY", "")
+    except Exception:
+        url = os.getenv("SUPABASE_URL", "")
+        key = os.getenv("SUPABASE_KEY", "")
+    if not url or not key:
+        return None
+    try:
+        return create_client(url, key)
+    except Exception:
+        return None
+
+
+def _usa_supabase() -> bool:
+    return _get_supabase() is not None
+
+
+@st.cache_resource
+def _get_sqlite():
     os.makedirs(os.path.dirname(_DB_PATH), exist_ok=True)
     conn = sqlite3.connect(_DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
@@ -24,9 +58,37 @@ def _get_conn():
     return conn
 
 
+# ── Inicialización ──────────────────────────────────────────────────────────
+
 def inicializar_db():
-    """Crea tablas si no existen. Inserta admin seed si la tabla está vacía."""
-    conn = _get_conn()
+    """Crea tablas e inserta admin seed."""
+    if _usa_supabase():
+        _inicializar_supabase()
+    else:
+        _inicializar_sqlite()
+
+
+def _inicializar_supabase():
+    sb = _get_supabase()
+    # Las tablas se crean con el SQL script, solo verificar admin seed
+    try:
+        result = sb.table("usuarios").select("email").eq("email", _ADMIN_EMAIL).execute()
+        if not result.data:
+            from services.auth import _hash_password, _generar_salt
+            salt = _generar_salt()
+            pw_hash = _hash_password("nyper2026", salt)
+            sb.table("usuarios").insert({
+                "email": _ADMIN_EMAIL, "nombre": "Pablo", "apellido": "Cuadros",
+                "password_hash": pw_hash, "salt": salt, "rol": "admin",
+                "color": "#00A651", "activo": 1, "codigo_afiliado": "",
+                "created_at": datetime.now().isoformat(),
+            }).execute()
+    except Exception:
+        pass
+
+
+def _inicializar_sqlite():
+    conn = _get_sqlite()
     conn.executescript("""
         CREATE TABLE IF NOT EXISTS usuarios (
             email TEXT PRIMARY KEY,
@@ -41,7 +103,6 @@ def inicializar_db():
             created_at TEXT NOT NULL,
             last_login TEXT
         );
-
         CREATE TABLE IF NOT EXISTS ownership (
             lead_id TEXT NOT NULL,
             sucursal_codigo TEXT NOT NULL,
@@ -51,7 +112,6 @@ def inicializar_db():
             PRIMARY KEY (lead_id, sucursal_codigo),
             FOREIGN KEY (owner_email) REFERENCES usuarios(email)
         );
-
         CREATE TABLE IF NOT EXISTS cartera (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             owner_email TEXT NOT NULL,
@@ -72,8 +132,7 @@ def inicializar_db():
         );
     """)
     conn.commit()
-
-    # Migración: agregar columnas nuevas si no existen
+    # Migraciones
     try:
         conn.execute("SELECT nivel_paquete FROM cartera LIMIT 1")
     except sqlite3.OperationalError:
@@ -85,7 +144,6 @@ def inicializar_db():
     except sqlite3.OperationalError:
         conn.execute("ALTER TABLE usuarios ADD COLUMN codigo_afiliado TEXT DEFAULT ''")
         conn.commit()
-
     # Admin seed
     admin = conn.execute("SELECT email FROM usuarios WHERE email = ?", (_ADMIN_EMAIL,)).fetchone()
     if not admin:
@@ -99,10 +157,18 @@ def inicializar_db():
         conn.commit()
 
 
-# ── Usuarios ─────────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════════════════════
+# USUARIOS
+# ══════════════════════════════════════════════════════════════════════════════
 
 def obtener_usuario(email: str) -> dict | None:
-    row = _get_conn().execute("SELECT * FROM usuarios WHERE email = ?", (email,)).fetchone()
+    if _usa_supabase():
+        try:
+            r = _get_supabase().table("usuarios").select("*").eq("email", email).execute()
+            return r.data[0] if r.data else None
+        except Exception:
+            pass
+    row = _get_sqlite().execute("SELECT * FROM usuarios WHERE email = ?", (email,)).fetchone()
     return dict(row) if row else None
 
 
@@ -110,19 +176,37 @@ def crear_usuario(email: str, nombre: str, apellido: str, password: str, rol: st
     from services.auth import _hash_password, _generar_salt
     salt = _generar_salt()
     pw_hash = _hash_password(password, salt)
+    data = {
+        "email": email, "nombre": nombre, "apellido": apellido,
+        "password_hash": pw_hash, "salt": salt, "rol": rol,
+        "color": color, "activo": 1, "codigo_afiliado": "",
+        "created_at": datetime.now().isoformat(),
+    }
+    if _usa_supabase():
+        try:
+            _get_supabase().table("usuarios").insert(data).execute()
+            return True
+        except Exception:
+            return False
     try:
-        _get_conn().execute(
+        _get_sqlite().execute(
             "INSERT INTO usuarios (email, nombre, apellido, password_hash, salt, rol, color, activo, created_at) VALUES (?,?,?,?,?,?,?,?,?)",
-            (email, nombre, apellido, pw_hash, salt, rol, color, 1, datetime.now().isoformat()),
+            (email, nombre, apellido, pw_hash, salt, rol, color, 1, data["created_at"]),
         )
-        _get_conn().commit()
+        _get_sqlite().commit()
         return True
     except sqlite3.IntegrityError:
         return False
 
 
 def listar_usuarios() -> list[dict]:
-    rows = _get_conn().execute("SELECT email, nombre, apellido, rol, color, activo, codigo_afiliado, created_at, last_login FROM usuarios ORDER BY nombre").fetchall()
+    if _usa_supabase():
+        try:
+            r = _get_supabase().table("usuarios").select("email, nombre, apellido, rol, color, activo, codigo_afiliado, created_at, last_login").order("nombre").execute()
+            return r.data or []
+        except Exception:
+            pass
+    rows = _get_sqlite().execute("SELECT email, nombre, apellido, rol, color, activo, codigo_afiliado, created_at, last_login FROM usuarios ORDER BY nombre").fetchall()
     return [dict(r) for r in rows]
 
 
@@ -131,10 +215,16 @@ def actualizar_usuario(email: str, **campos) -> bool:
     campos_filtrados = {k: v for k, v in campos.items() if k in permitidos}
     if not campos_filtrados:
         return False
+    if _usa_supabase():
+        try:
+            _get_supabase().table("usuarios").update(campos_filtrados).eq("email", email).execute()
+            return True
+        except Exception:
+            pass
     sets = ", ".join(f"{k} = ?" for k in campos_filtrados)
     vals = list(campos_filtrados.values()) + [email]
-    _get_conn().execute(f"UPDATE usuarios SET {sets} WHERE email = ?", vals)
-    _get_conn().commit()
+    _get_sqlite().execute(f"UPDATE usuarios SET {sets} WHERE email = ?", vals)
+    _get_sqlite().commit()
     return True
 
 
@@ -142,23 +232,54 @@ def cambiar_password(email: str, nueva_password: str) -> bool:
     from services.auth import _hash_password, _generar_salt
     salt = _generar_salt()
     pw_hash = _hash_password(nueva_password, salt)
-    _get_conn().execute("UPDATE usuarios SET password_hash = ?, salt = ? WHERE email = ?", (pw_hash, salt, email))
-    _get_conn().commit()
+    if _usa_supabase():
+        try:
+            _get_supabase().table("usuarios").update({"password_hash": pw_hash, "salt": salt}).eq("email", email).execute()
+            return True
+        except Exception:
+            pass
+    _get_sqlite().execute("UPDATE usuarios SET password_hash = ?, salt = ? WHERE email = ?", (pw_hash, salt, email))
+    _get_sqlite().commit()
     return True
 
 
-# ── Ownership ────────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════════════════════
+# OWNERSHIP
+# ══════════════════════════════════════════════════════════════════════════════
 
 def registrar_ownership(lead_id: str, sucursal_codigo: str, owner_email: str, canal: str = ""):
-    _get_conn().execute(
+    data = {
+        "lead_id": lead_id, "sucursal_codigo": sucursal_codigo,
+        "owner_email": owner_email, "fecha_toma": datetime.now().isoformat(),
+        "canal": canal,
+    }
+    if _usa_supabase():
+        try:
+            _get_supabase().table("ownership").upsert(data).execute()
+            return
+        except Exception:
+            pass
+    _get_sqlite().execute(
         "INSERT OR REPLACE INTO ownership (lead_id, sucursal_codigo, owner_email, fecha_toma, canal) VALUES (?,?,?,?,?)",
-        (lead_id, sucursal_codigo, owner_email, datetime.now().isoformat(), canal),
+        (data["lead_id"], data["sucursal_codigo"], data["owner_email"], data["fecha_toma"], data["canal"]),
     )
-    _get_conn().commit()
+    _get_sqlite().commit()
 
 
 def obtener_owner(lead_id: str, sucursal_codigo: str) -> dict | None:
-    row = _get_conn().execute(
+    if _usa_supabase():
+        try:
+            sb = _get_supabase()
+            r = sb.table("ownership").select("*").eq("lead_id", lead_id).eq("sucursal_codigo", sucursal_codigo).execute()
+            if r.data:
+                o = r.data[0]
+                u = sb.table("usuarios").select("nombre, apellido, color").eq("email", o["owner_email"]).execute()
+                if u.data:
+                    o.update(u.data[0])
+                return o
+        except Exception:
+            pass
+    row = _get_sqlite().execute(
         "SELECT o.*, u.nombre, u.apellido, u.color FROM ownership o JOIN usuarios u ON o.owner_email = u.email WHERE o.lead_id = ? AND o.sucursal_codigo = ?",
         (lead_id, sucursal_codigo),
     ).fetchone()
@@ -167,7 +288,22 @@ def obtener_owner(lead_id: str, sucursal_codigo: str) -> dict | None:
 
 def listar_ownership_sucursal(sucursal_codigo: str) -> dict:
     """Retorna {lead_id: {owner_email, nombre, apellido, color, fecha_toma}}."""
-    rows = _get_conn().execute(
+    if _usa_supabase():
+        try:
+            sb = _get_supabase()
+            r = sb.table("ownership").select("*").eq("sucursal_codigo", sucursal_codigo).execute()
+            result = {}
+            if r.data:
+                emails = list(set(o["owner_email"] for o in r.data))
+                u_r = sb.table("usuarios").select("email, nombre, apellido, color").in_("email", emails).execute()
+                u_map = {u["email"]: u for u in (u_r.data or [])}
+                for o in r.data:
+                    o.update(u_map.get(o["owner_email"], {}))
+                    result[o["lead_id"]] = o
+            return result
+        except Exception:
+            pass
+    rows = _get_sqlite().execute(
         "SELECT o.lead_id, o.owner_email, o.fecha_toma, u.nombre, u.apellido, u.color FROM ownership o JOIN usuarios u ON o.owner_email = u.email WHERE o.sucursal_codigo = ?",
         (sucursal_codigo,),
     ).fetchall()
@@ -175,52 +311,101 @@ def listar_ownership_sucursal(sucursal_codigo: str) -> dict:
 
 
 def reasignar_ownership(lead_id: str, sucursal_codigo: str, nuevo_email: str):
-    _get_conn().execute(
+    ahora = datetime.now().isoformat()
+    if _usa_supabase():
+        try:
+            _get_supabase().table("ownership").update(
+                {"owner_email": nuevo_email, "fecha_toma": ahora}
+            ).eq("lead_id", lead_id).eq("sucursal_codigo", sucursal_codigo).execute()
+            return
+        except Exception:
+            pass
+    _get_sqlite().execute(
         "UPDATE ownership SET owner_email = ?, fecha_toma = ? WHERE lead_id = ? AND sucursal_codigo = ?",
-        (nuevo_email, datetime.now().isoformat(), lead_id, sucursal_codigo),
+        (nuevo_email, ahora, lead_id, sucursal_codigo),
     )
-    _get_conn().commit()
+    _get_sqlite().commit()
 
 
 def eliminar_ownership(lead_id: str, sucursal_codigo: str):
-    _get_conn().execute("DELETE FROM ownership WHERE lead_id = ? AND sucursal_codigo = ?", (lead_id, sucursal_codigo))
-    _get_conn().commit()
+    if _usa_supabase():
+        try:
+            _get_supabase().table("ownership").delete().eq("lead_id", lead_id).eq("sucursal_codigo", sucursal_codigo).execute()
+            return
+        except Exception:
+            pass
+    _get_sqlite().execute("DELETE FROM ownership WHERE lead_id = ? AND sucursal_codigo = ?", (lead_id, sucursal_codigo))
+    _get_sqlite().commit()
 
 
-# ── Cartera ──────────────────────────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════════════════════════
+# CARTERA
+# ══════════════════════════════════════════════════════════════════════════════
 
 def guardar_cliente_cartera(owner_email: str, datos: dict) -> int:
     ahora = datetime.now().isoformat()
-    cur = _get_conn().execute(
+    data = {
+        "owner_email": owner_email,
+        "nombre_razon_social": datos.get("nombre_razon_social", ""),
+        "cuit": datos.get("cuit", ""),
+        "rubro": datos.get("rubro", ""),
+        "subrubro": datos.get("subrubro", ""),
+        "telefono": datos.get("telefono", ""),
+        "mail": datos.get("mail", ""),
+        "direccion": datos.get("direccion", ""),
+        "localidad": datos.get("localidad", ""),
+        "observaciones": datos.get("observaciones", ""),
+        "nivel_paquete": datos.get("nivel_paquete", ""),
+        "criterios_json": datos.get("criterios_json", "{}"),
+        "created_at": ahora, "updated_at": ahora,
+    }
+    if _usa_supabase():
+        try:
+            r = _get_supabase().table("cartera").insert(data).execute()
+            return r.data[0]["id"] if r.data else 0
+        except Exception:
+            pass
+    cur = _get_sqlite().execute(
         """INSERT INTO cartera (owner_email, nombre_razon_social, cuit, rubro, subrubro, telefono, mail, direccion, localidad, observaciones, nivel_paquete, criterios_json, created_at, updated_at)
            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-        (
-            owner_email,
-            datos.get("nombre_razon_social", ""),
-            datos.get("cuit", ""),
-            datos.get("rubro", ""),
-            datos.get("subrubro", ""),
-            datos.get("telefono", ""),
-            datos.get("mail", ""),
-            datos.get("direccion", ""),
-            datos.get("localidad", ""),
-            datos.get("observaciones", ""),
-            datos.get("nivel_paquete", ""),
-            datos.get("criterios_json", "{}"),
-            ahora, ahora,
-        ),
+        (data["owner_email"], data["nombre_razon_social"], data["cuit"], data["rubro"],
+         data["subrubro"], data["telefono"], data["mail"], data["direccion"],
+         data["localidad"], data["observaciones"], data["nivel_paquete"],
+         data["criterios_json"], ahora, ahora),
     )
-    _get_conn().commit()
+    _get_sqlite().commit()
     return cur.lastrowid
 
 
 def listar_cartera(owner_email: str) -> list[dict]:
-    rows = _get_conn().execute("SELECT * FROM cartera WHERE owner_email = ? ORDER BY updated_at DESC", (owner_email,)).fetchall()
+    if _usa_supabase():
+        try:
+            r = _get_supabase().table("cartera").select("*").eq("owner_email", owner_email).order("updated_at", desc=True).execute()
+            return r.data or []
+        except Exception:
+            pass
+    rows = _get_sqlite().execute("SELECT * FROM cartera WHERE owner_email = ? ORDER BY updated_at DESC", (owner_email,)).fetchall()
     return [dict(r) for r in rows]
 
 
 def listar_cartera_todos() -> list[dict]:
-    rows = _get_conn().execute(
+    if _usa_supabase():
+        try:
+            sb = _get_supabase()
+            r = sb.table("cartera").select("*").order("updated_at", desc=True).execute()
+            if r.data:
+                emails = list(set(c["owner_email"] for c in r.data))
+                u_r = sb.table("usuarios").select("email, nombre, apellido, color").in_("email", emails).execute()
+                u_map = {u["email"]: u for u in (u_r.data or [])}
+                for c in r.data:
+                    u = u_map.get(c["owner_email"], {})
+                    c["owner_nombre"] = u.get("nombre", "")
+                    c["owner_apellido"] = u.get("apellido", "")
+                    c["owner_color"] = u.get("color", "#3b82f6")
+            return r.data or []
+        except Exception:
+            pass
+    rows = _get_sqlite().execute(
         "SELECT c.*, u.nombre as owner_nombre, u.apellido as owner_apellido, u.color as owner_color FROM cartera c JOIN usuarios u ON c.owner_email = u.email ORDER BY c.updated_at DESC"
     ).fetchall()
     return [dict(r) for r in rows]
@@ -232,21 +417,32 @@ def actualizar_cliente_cartera(id_cliente: int, datos: dict) -> bool:
     if not campos:
         return False
     campos["updated_at"] = datetime.now().isoformat()
+    if _usa_supabase():
+        try:
+            _get_supabase().table("cartera").update(campos).eq("id", id_cliente).execute()
+            return True
+        except Exception:
+            pass
     sets = ", ".join(f"{k} = ?" for k in campos)
     vals = list(campos.values()) + [id_cliente]
-    _get_conn().execute(f"UPDATE cartera SET {sets} WHERE id = ?", vals)
-    _get_conn().commit()
+    _get_sqlite().execute(f"UPDATE cartera SET {sets} WHERE id = ?", vals)
+    _get_sqlite().commit()
     return True
 
 
 def eliminar_cliente_cartera(id_cliente: int):
-    _get_conn().execute("DELETE FROM cartera WHERE id = ?", (id_cliente,))
-    _get_conn().commit()
+    if _usa_supabase():
+        try:
+            _get_supabase().table("cartera").delete().eq("id", id_cliente).execute()
+            return
+        except Exception:
+            pass
+    _get_sqlite().execute("DELETE FROM cartera WHERE id = ?", (id_cliente,))
+    _get_sqlite().commit()
 
 
 def importar_cartera_excel(owner_email: str, df) -> int:
-    """Importa DataFrame a la cartera del usuario (agrega). Retorna cantidad insertada."""
-    import pandas as pd
+    """Importa DataFrame a la cartera del usuario (agrega)."""
     count = 0
     for _, row in df.iterrows():
         datos = _mapear_fila_cartera(row, df.columns)
@@ -256,7 +452,8 @@ def importar_cartera_excel(owner_email: str, df) -> int:
     return count
 
 
-# Criterios comerciales del informe roles (columnas reales del banco)
+# ── Criterios comerciales del informe roles ─────────────────────────────────
+
 CRITERIOS_COMERCIALES = {
     "acreditacion_cupon": "Acreditación Cupón",
     "art_y_seguros": "ART y Seguros",
@@ -277,11 +474,9 @@ def _mapear_fila_cartera(row, columnas) -> dict:
     """Mapea una fila de Excel a campos de cartera con auto-detección de columnas."""
     import pandas as pd
     col_map = {}
-    criterios = {}
 
     for c in columnas:
         cl = str(c).strip().lower().replace(" ", "_").replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
-        # Campos base
         if cl in ("nombre", "razon_social", "razón_social", "nombre_razon_social", "empresa", "comercio", "cliente", "denominacion"):
             col_map["nombre_razon_social"] = c
         elif cl in ("cuit", "cuit/cuil", "cuil", "cuit_cuil"):
@@ -302,49 +497,11 @@ def _mapear_fila_cartera(row, columnas) -> dict:
             col_map["observaciones"] = c
         elif cl in ("paquete", "nivel", "nivel_paquete", "modulo", "tipo_paquete", "categoria_paquete"):
             col_map["nivel_paquete"] = c
-        # Criterios comerciales
-        elif "saldo" in cl and ("promedio" in cl or "prom" in cl):
-            criterios["saldo_promedio"] = c
-        elif "transferencia" in cl or "transf" in cl:
-            criterios["transferencias"] = c
-        elif "consumo" in cl or "tarjeta" in cl:
-            criterios["consumos_tc"] = c
-        elif "inversion" in cl or "inversión" in cl:
-            criterios["inversiones"] = c
-        elif "cupon" in cl or "cobro" in cl or "cupón" in cl:
-            criterios["cupones_cobros"] = c
-        elif "seguro" in cl:
-            criterios["seguros"] = c
-        elif "nomina" in cl or "empleado" in cl or "nómina" in cl:
-            criterios["nomina"] = c
-        elif "debito" in cl or "débito" in cl:
-            criterios["debitos_auto"] = c
-        elif "haber" in cl or "sueldo" in cl:
-            criterios["haberes"] = c
 
     datos = {}
     for campo_interno, col_excel in col_map.items():
         val = row.get(col_excel, "")
         datos[campo_interno] = "" if pd.isna(val) else str(val).strip()
-
-    # Extraer criterios como booleans
-    criterios_dict = {}
-    for crit_id, col_excel in criterios.items():
-        val = row.get(col_excel, "")
-        if pd.isna(val) or str(val).strip() == "":
-            criterios_dict[crit_id] = False
-        else:
-            sv = str(val).strip().lower()
-            criterios_dict[crit_id] = sv in ("si", "sí", "s", "1", "true", "x", "cumple", "ok", "✓", "✔")
-            # Si es numérico > 0, también es True
-            if not criterios_dict[crit_id]:
-                try:
-                    criterios_dict[crit_id] = float(val) > 0
-                except (ValueError, TypeError):
-                    pass
-    if criterios_dict:
-        import json
-        datos["criterios_json"] = json.dumps(criterios_dict, ensure_ascii=False)
 
     return datos
 
@@ -355,13 +512,10 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
     REEMPLAZA toda la cartera del usuario. Retorna reporte de cambios.
     """
     import pandas as pd
-    import json
 
-    # Leer hoja INFO_CARTERA del .xlsb
     try:
         df = pd.read_excel(archivo, sheet_name="INFO_CARTERA", header=None, dtype=str, engine="pyxlsb")
     except Exception:
-        # Fallback: intentar como xlsx normal
         df = pd.read_excel(archivo, sheet_name=0, header=None, dtype=str)
 
     # Encontrar fila de encabezados (buscar "CUIT")
@@ -377,11 +531,9 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
     if header_row is None:
         return {"importados": 0, "error": "No se encontró encabezado con CUIT"}
 
-    # Rearmar DataFrame con encabezados correctos
     df.columns = [str(v).strip() if str(v) != "nan" else f"col_{j}" for j, v in enumerate(df.iloc[header_row])]
     df = df.iloc[header_row + 1:].reset_index(drop=True)
 
-    # Filtrar por afiliado del usuario
     col_afiliado = None
     for c in df.columns:
         if "afiliado" in c.lower():
@@ -394,7 +546,6 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
         return {"importados": 0, "clientes_nuevos": [], "clientes_perdidos": [], "cambios_criterios": [],
                 "error": f"No se encontraron clientes para afiliado {codigo_afiliado}"}
 
-    # Mapeo de columnas del informe a campos de cartera
     _col_map = {}
     _crit_map = {}
     for c in df.columns:
@@ -406,10 +557,7 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
         elif "ACTIVIDAD" in cl or "DESC_ACTIVIDAD" in cl:
             _col_map["rubro"] = c
         elif cl == "RECIPROCIDAD":
-            _col_map["subrubro"] = c  # guardar reciprocidad en subrubro
-        elif cl == "GESTIONADO":
-            _col_map["observaciones_gestionado"] = c
-        # Criterios
+            _col_map["subrubro"] = c
         elif "ACREDITACION_CUPON" in cl or "ACREDITACION CUPON" in cl:
             _crit_map["acreditacion_cupon"] = c
         elif "ART" in cl and "SEGURO" in cl:
@@ -435,7 +583,7 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
         elif "PRESTAMO" in cl and "INVERSION" in cl:
             _crit_map["prestamos_inversion"] = c
 
-    # Snapshot anterior por CUIT
+    # Snapshot anterior
     anteriores = listar_cartera(owner_email)
     ant_por_cuit = {}
     for c in anteriores:
@@ -444,8 +592,14 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
             ant_por_cuit[cuit] = c
 
     # Borrar cartera actual
-    _get_conn().execute("DELETE FROM cartera WHERE owner_email = ?", (owner_email,))
-    _get_conn().commit()
+    if _usa_supabase():
+        try:
+            _get_supabase().table("cartera").delete().eq("owner_email", owner_email).execute()
+        except Exception:
+            pass
+    else:
+        _get_sqlite().execute("DELETE FROM cartera WHERE owner_email = ?", (owner_email,))
+        _get_sqlite().commit()
 
     # Importar nuevos
     nuevos_por_cuit = {}
@@ -458,7 +612,6 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
         rubro = str(row.get(_col_map.get("rubro", ""), "")).strip()
         reciprocidad = str(row.get(_col_map.get("subrubro", ""), "")).strip()
 
-        # Criterios: interpretar 0 como False, >0 como True
         criterios = {}
         for crit_id, col in _crit_map.items():
             val = row.get(col, "0")
@@ -479,7 +632,7 @@ def importar_informe_roles(owner_email: str, archivo, codigo_afiliado: str) -> d
             nuevos_por_cuit[cuit] = datos
         count += 1
 
-    # Generar diff
+    # Diff
     cuits_ant = set(ant_por_cuit.keys())
     cuits_new = set(nuevos_por_cuit.keys())
     clientes_nuevos = cuits_new - cuits_ant

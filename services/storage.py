@@ -1,7 +1,7 @@
 """
-Capa de persistencia centralizada.
-Intenta Supabase; si no está disponible, usa JSON local en data/.
-Cada clave se guarda como data/{key}.json con file locking para concurrencia.
+Capa de persistencia centralizada (key-value).
+Backend primario: Supabase (tabla nyper_storage).
+Fallback: JSON local en data/ con file locking.
 """
 import json
 import os
@@ -17,7 +17,7 @@ except ImportError:
 
 # File locking cross-platform
 try:
-    import msvcrt  # Windows
+    import msvcrt
 
     def _lock(f):
         msvcrt.locking(f.fileno(), msvcrt.LK_LOCK, 1)
@@ -28,7 +28,7 @@ try:
         except OSError:
             pass
 except ImportError:
-    import fcntl  # Linux/Mac
+    import fcntl
 
     def _lock(f):
         fcntl.flock(f.fileno(), fcntl.LOCK_EX)
@@ -41,11 +41,24 @@ except ImportError:
 def _get_client():
     if create_client is None:
         return None
-    url = st.secrets.get("SUPABASE_URL") or os.getenv("SUPABASE_URL", "")
-    key = st.secrets.get("SUPABASE_KEY") or os.getenv("SUPABASE_KEY", "")
+    url = ""
+    key = ""
+    try:
+        url = st.secrets.get("SUPABASE_URL", "") or os.getenv("SUPABASE_URL", "")
+        key = st.secrets.get("SUPABASE_KEY", "") or os.getenv("SUPABASE_KEY", "")
+    except Exception:
+        url = os.getenv("SUPABASE_URL", "")
+        key = os.getenv("SUPABASE_KEY", "")
     if not url or not key:
         return None
-    return create_client(url, key)
+    try:
+        return create_client(url, key)
+    except Exception:
+        return None
+
+
+def _usa_supabase() -> bool:
+    return _get_client() is not None
 
 
 def _local_path(key: str) -> str:
@@ -54,13 +67,13 @@ def _local_path(key: str) -> str:
 
 
 def storage_get(key: str, default=None):
-    """Lee un valor. Supabase si hay, si no JSON local."""
-    client = _get_client()
-    if client:
+    """Lee un valor. Supabase primario, JSON local fallback."""
+    if _usa_supabase():
         try:
-            result = client.table("nyper_storage").select("value").eq("key", key).execute()
+            result = _get_client().table("nyper_storage").select("value").eq("key", key).execute()
             if result.data:
                 return result.data[0]["value"]
+            return default
         except Exception:
             pass
 
@@ -81,38 +94,32 @@ def storage_get(key: str, default=None):
 
 
 def storage_set(key: str, value) -> bool:
-    """Guarda un valor. Escritura atómica (tmp + rename) con file locking."""
-    os.makedirs(_DATA_DIR, exist_ok=True)
-    path = _local_path(key)
-    try:
-        # Escribir a archivo temporal, después renombrar (atómico en mismo filesystem)
-        fd, tmp_path = tempfile.mkstemp(dir=_DATA_DIR, suffix=".tmp")
+    """Guarda un valor. Supabase primario, JSON local siempre como backup."""
+    # Supabase primario
+    if _usa_supabase():
         try:
-            with os.fdopen(fd, "w", encoding="utf-8") as f:
-                json.dump(value, f, ensure_ascii=False)
-            # En Windows, hay que borrar el destino antes de renombrar
-            if os.path.exists(path):
-                os.replace(tmp_path, path)
-            else:
-                os.rename(tmp_path, path)
-        except Exception:
-            # Limpiar temporal si falla
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)
-            raise
-    except OSError:
-        return False
-
-    # Intentar Supabase también
-    client = _get_client()
-    if client:
-        try:
-            client.table("nyper_storage").upsert({
+            _get_client().table("nyper_storage").upsert({
                 "key": key,
                 "value": value,
                 "updated_at": "now()"
             }).execute()
         except Exception:
             pass
+
+    # JSON local siempre (backup + funciona sin Supabase)
+    os.makedirs(_DATA_DIR, exist_ok=True)
+    path = _local_path(key)
+    try:
+        fd, tmp_path = tempfile.mkstemp(dir=_DATA_DIR, suffix=".tmp")
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(value, f, ensure_ascii=False)
+            os.replace(tmp_path, path)
+        except Exception:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+            raise
+    except OSError:
+        return False
 
     return True
