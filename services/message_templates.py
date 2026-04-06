@@ -247,6 +247,51 @@ def _resolver_familia(rubro_operativo):
     return FAMILIA_RUBRO.get(rubro_operativo, "generico")
 
 
+# ── Campañas especiales (botones adicionales, no reemplazan el default) ─────
+
+CAMPANAS_WHATSAPP = {
+    "gastronomia_cuentadni": {
+        "label": "🍝 Campaña Cuenta DNI",
+        "familias": ["gastronomia"],
+        "mensaje": (
+            "Hola! 😊 Soy {nombre_usuario} del Banco Provincia sucursal {sucursal_nombre_corto}.\n\n"
+            "Te escribo porque estamos sumando comercios del barrio a la campaña gastronómica de Cuenta DNI 🍝\n\n"
+            "👉 20% de reintegro de lunes a viernes\n"
+            "👉 25% los fines de semana\n"
+            "👉 El reintegro lo cubre el banco (sin costo para vos)\n"
+            "👉 Además te da visibilidad en la app y web del banco\n\n"
+            "💡 Podés adherirte directamente desde la app "
+            "(se abre una cuenta sin costo y no necesitás venir al banco)\n\n"
+            "Te dejo la info oficial 👇\n"
+            "https://www.bancoprovincia.com.ar/cuentadni/contenidos/cdniComercios\n\n"
+            "Si te interesa, te explico en 2 minutos cómo hacerlo 👍"
+        ),
+    },
+}
+
+
+def obtener_campanas_lead(lead, sucursal_nombre="", nombre_usuario=""):
+    """
+    Devuelve lista de campañas aplicables a un lead.
+    Cada item: {"label": str, "texto": str}
+    """
+    rubro = lead.get("rubro_operativo", "")
+    familia = _resolver_familia(rubro)
+
+    # Nombre corto de sucursal (sin "del Banco Provincia")
+    suc_corto = sucursal_nombre.title() if sucursal_nombre else "nuestra sucursal"
+
+    resultado = []
+    for _key, camp in CAMPANAS_WHATSAPP.items():
+        if familia in camp["familias"]:
+            texto = camp["mensaje"].format(
+                nombre_usuario=nombre_usuario or "",
+                sucursal_nombre_corto=suc_corto,
+            )
+            resultado.append({"label": camp["label"], "texto": texto})
+    return resultado
+
+
 def generar_mensaje(lead, canal, sucursal_nombre="", nombre_usuario=""):
     """
     Genera mensaje para WhatsApp o Email.

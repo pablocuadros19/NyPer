@@ -1664,6 +1664,12 @@ with tab_prospectos:
                                 _wa_num = phone_norm if phone_norm.startswith("54") else f"54{phone_norm}"
                                 _wa_url = f"https://wa.me/{_wa_num}?text={_quote(_wa_data['texto'])}"
                                 st.markdown(f"<a href='{_wa_url}' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' width='18' style='vertical-align:middle'></a> [{tel}]({_wa_url})", unsafe_allow_html=True)
+                                # Botones de campañas especiales
+                                from services.message_templates import obtener_campanas_lead as _get_camps
+                                _camps = _get_camps(lead, _suc_nombre, _usr_nombre)
+                                for _camp in _camps:
+                                    _camp_url = f"https://wa.me/{_wa_num}?text={_quote(_camp['texto'])}"
+                                    st.markdown(f"<a href='{_camp_url}' target='_blank' style='display:inline-block;background:linear-gradient(135deg,#00A651,#00a34d);color:#fff;padding:4px 12px;border-radius:8px;font-size:.78rem;font-weight:600;text-decoration:none;margin-top:4px'>{_camp['label']}</a>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"📞 `{tel}`")
                         if lead.get("email_primary"):

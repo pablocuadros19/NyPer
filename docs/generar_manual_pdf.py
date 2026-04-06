@@ -105,7 +105,7 @@ def generar():
     pdf.set_font("Helvetica", "", 10)
     pdf.set_text_color(120, 120, 120)
     pdf.cell(0, 7, "Inteligencia Comercial Territorial", align="C", new_x="LMARGIN", new_y="NEXT")
-    pdf.cell(0, 7, "Banco Provincia - v4.0 - Abril 2026", align="C", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 7, "Banco Provincia - v5.0 - Abril 2026", align="C", new_x="LMARGIN", new_y="NEXT")
 
     # ── 1. Acceso ────────────────────────────────────────────────────────────
     pdf.add_page()
@@ -126,7 +126,6 @@ def generar():
     pdf.p("Selecciona tu sucursal arriba. Elegis rubros (obligatorio), radio (max 3 km) y minimo de resenias. Presiona 'Buscar y enriquecer comercios'. En un solo paso NyPer:")
     pdf.item("Busca comercios en Google Places")
     pdf.item("Enriquece con telefono, email y redes sociales")
-    pdf.item("Cruza con base Cuenta DNI")
     pdf.item("Clasifica por canal de contacto y elimina duplicados")
     pdf.p("El perrito aparece mientras trabaja. Los resultados se guardan automaticamente.")
 
@@ -149,11 +148,13 @@ def generar():
         pdf.add_page()
 
     pdf.sub("Prospectos")
-    pdf.p("Tus prospectos en fichas con foto, datos de contacto y links directos (WhatsApp abre chat con mensaje, email abre mailto). Cada ficha tiene:")
+    pdf.p("Tus prospectos en fichas con foto, datos de contacto y links directos (WhatsApp abre chat con mensaje personalizado por rubro, email abre mailto). Cada ficha tiene:")
     pdf.item("Estado: Por contactar / Contactado / Interesado / No interesado")
     pdf.item("Nota libre para registrar observaciones")
     pdf.item("Boton 'Pasar a Mi Cartera' (cuando esta Contactado o Interesado)")
+    pdf.item("Boton de campania especial (ej: 'Campania Cuenta DNI' para gastronomia)")
     pdf.p("Por default ves solo tus prospectos. Podes cambiar el filtro a 'Todos' para ver los de la sucursal.")
+    pdf.nota("Hay un limite maximo de prospectos por usuario (configurable por el admin). Si llegas al limite, gestionas los que tenes antes de tomar nuevos.")
 
     pdf.sub("Exportar")
     pdf.p("Descarga Excel completo, por canal, o CSV de campania WhatsApp con links directos. Filtros previos por rubro, zona y calidad.")
@@ -192,6 +193,7 @@ def generar():
     pdf.item("Crear usuarios: email @bpba.com.ar, password, rol, color, codigo de afiliado.")
     pdf.item("Activar/desactivar usuarios.")
     pdf.item("Reasignar gestores de prospectos.")
+    pdf.item("Configuracion: limite maximo de prospectos por usuario.")
     pdf.p("El admin tambien puede ver la cartera de cualquier usuario en Mi Cartera.")
 
     # ── Footer ───────────────────────────────────────────────────────────────
@@ -201,7 +203,7 @@ def generar():
     pdf.ln(5)
     pdf.set_font("Helvetica", "I", 9)
     pdf.set_text_color(150, 150, 150)
-    pdf.cell(0, 7, "NyPer v4.0 - Banco Provincia - Desarrollado por Pablo Cuadros", align="C")
+    pdf.cell(0, 7, "NyPer v5.0 - Banco Provincia - Desarrollado por Pablo Cuadros", align="C")
 
     # Guardar
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

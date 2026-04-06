@@ -8,6 +8,6 @@ pyxlsb
 python-dotenv
 httpx
 beautifulsoup4
-supabase
+supabase==2.13.0
 altair
 fpdf2
