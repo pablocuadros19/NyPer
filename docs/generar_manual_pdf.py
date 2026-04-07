@@ -156,6 +156,9 @@ def generar():
     pdf.p("Por default ves solo tus prospectos. Podes cambiar el filtro a 'Todos' para ver los de la sucursal.")
     pdf.nota("Hay un limite maximo de prospectos por usuario (configurable por el admin). Si llegas al limite, gestionas los que tenes antes de tomar nuevos.")
 
+    pdf.sub("Importar prospectos desde Excel")
+    pdf.p("En la pestania Prospectos, despliega 'Importar prospectos desde Excel'. Subi un archivo .xlsx con columnas LOCAL (nombre del comercio) y WHATSAPP (telefono). Se importan como prospectos tuyos, listos para gestionar. Ideal para cargar rutas o listados de campania.")
+
     pdf.sub("Exportar")
     pdf.p("Descarga Excel completo, por canal, o CSV de campania WhatsApp con links directos. Filtros previos por rubro, zona y calidad.")
 

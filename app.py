@@ -1559,11 +1559,81 @@ ESTADOS_PROSPECTO = {
 
 with tab_prospectos:
     st.markdown("### Prospectos")
+
+    # ── Importar prospectos desde Excel ──────────────────────────────────────
+    with st.expander("📥 Importar prospectos desde Excel", expanded=False):
+        st.caption("Subí un Excel con columnas **LOCAL** y **WHATSAPP** (formato ruta gastronómica). Se agregan como prospectos tuyos.")
+        _import_file = st.file_uploader("Archivo Excel", type=["xlsx", "xls"], key="import_prospectos_xl")
+        if _import_file:
+            try:
+                import pandas as _pd_imp
+                _df_imp = _pd_imp.read_excel(_import_file)
+                # Normalizar nombres de columnas
+                _df_imp.columns = [c.strip().upper() for c in _df_imp.columns]
+                if "LOCAL" not in _df_imp.columns:
+                    st.error("El Excel debe tener una columna **LOCAL** con el nombre del comercio.")
+                else:
+                    st.dataframe(_df_imp.head(5), use_container_width=True)
+                    st.info(f"📋 {len(_df_imp)} comercios encontrados")
+                    _imp_rubro = st.text_input("Rubro para estos prospectos", value="Gastronomía", key="imp_rubro")
+                    if st.button(f"✅ Importar {len(_df_imp)} como prospectos", type="primary", key="btn_importar_xl"):
+                        leads = st.session_state.get("leads", [])
+                        _ahora = datetime.now().isoformat()
+                        _mi_email = usuario["email"]
+                        _mi_nombre = f"{usuario['nombre']} {usuario['apellido']}"
+                        _mi_color = usuario.get("color", "#3b82f6")
+                        _nombres_existentes = {l.get("business_name_raw", "").lower() for l in leads}
+                        _importados = 0
+                        _duplicados = 0
+                        from services.db import registrar_ownership
+                        for _, row in _df_imp.iterrows():
+                            _nombre_com = str(row.get("LOCAL", "")).strip()
+                            if not _nombre_com or _nombre_com.lower() in _nombres_existentes:
+                                _duplicados += 1
+                                continue
+                            _tel = str(row.get("WHATSAPP", "")).strip().replace(".0", "")
+                            _lid = f"imp_{_nombre_com.lower().replace(' ', '_')[:30]}_{len(leads)}"
+                            nuevo_lead = {
+                                "lead_id": _lid,
+                                "business_name_raw": _nombre_com,
+                                "phone_raw": _tel,
+                                "phone_norm": _tel,
+                                "whatsapp_probable": bool(_tel),
+                                "address_raw": "",
+                                "address_norm": "",
+                                "rubro_operativo": _imp_rubro,
+                                "canal_preferido": "whatsapp" if _tel else "visita",
+                                "email_primary": "",
+                                "website": "",
+                                "maps_url": "",
+                                "google_photo_url": "",
+                                "en_prospectos": True,
+                                "prospecto_estado": "por_contactar",
+                                "prospecto_fecha": _ahora,
+                                "prospecto_notas": f"Importado desde Excel ({row.get('PROMOCION', '')})",
+                                "owner_email": _mi_email,
+                                "owner_nombre": _mi_nombre,
+                                "owner_color": _mi_color,
+                            }
+                            leads.append(nuevo_lead)
+                            _nombres_existentes.add(_nombre_com.lower())
+                            registrar_ownership(_lid, SUCURSAL_CODIGO, _mi_email)
+                            _importados += 1
+                        st.session_state["leads"] = leads
+                        guardar_leads(leads, SUCURSAL_CODIGO)
+                        _msg_imp = f"✅ {_importados} prospectos importados"
+                        if _duplicados:
+                            _msg_imp += f" ({_duplicados} duplicados omitidos)"
+                        st.success(_msg_imp)
+                        st.rerun()
+            except Exception as e:
+                st.error(f"Error al leer el Excel: {e}")
+
     leads = st.session_state.get("leads", [])
     prospectos = [l for l in leads if l.get("en_prospectos")]
 
     if not prospectos:
-        st.info("No hay prospectos todavía. Seleccioná leads en **Bandeja** y presioná **Agregar a Prospectos**.")
+        st.info("No hay prospectos todavía. Seleccioná leads en **Bandeja**, presioná **Agregar a Prospectos**, o importá desde Excel.")
     else:
         # Buscador
         busq_pr = st.text_input(
@@ -1668,7 +1738,7 @@ with tab_prospectos:
                                 from services.message_templates import obtener_campanas_lead as _get_camps
                                 _camps = _get_camps(lead, _suc_nombre, _usr_nombre)
                                 for _camp in _camps:
-                                    _camp_url = f"https://wa.me/{_wa_num}?text={_quote(_camp['texto'])}"
+                                    _camp_url = f"https://wa.me/{_wa_num}?text={_quote(_camp['texto'], safe='')}"
                                     st.markdown(f"<a href='{_camp_url}' target='_blank' style='display:inline-block;background:linear-gradient(135deg,#00A651,#00a34d);color:#fff;padding:4px 12px;border-radius:8px;font-size:.78rem;font-weight:600;text-decoration:none;margin-top:4px'>{_camp['label']}</a>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"📞 `{tel}`")

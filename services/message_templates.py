@@ -254,17 +254,17 @@ CAMPANAS_WHATSAPP = {
         "label": "🍝 Campaña Cuenta DNI",
         "familias": ["gastronomia"],
         "mensaje": (
-            "Hola! 😊 Soy {nombre_usuario} del Banco Provincia sucursal {sucursal_nombre_corto}.\n\n"
-            "Te escribo porque estamos sumando comercios del barrio a la campaña gastronómica de Cuenta DNI 🍝\n\n"
-            "👉 20% de reintegro de lunes a viernes\n"
-            "👉 25% los fines de semana\n"
-            "👉 El reintegro lo cubre el banco (sin costo para vos)\n"
-            "👉 Además te da visibilidad en la app y web del banco\n\n"
-            "💡 Podés adherirte directamente desde la app "
-            "(se abre una cuenta sin costo y no necesitás venir al banco)\n\n"
-            "Te dejo la info oficial 👇\n"
+            "Hola! \U0001f60a Soy {nombre_usuario} del Banco Provincia (sucursal {sucursal_nombre_corto}).\n\n"
+            "Te escribo porque estamos sumando comercios del barrio a la campa\u00f1a gastron\u00f3mica de Cuenta DNI \U0001f35d\n\n"
+            "\U0001f449 20% de reintegro de lunes a viernes\n"
+            "\U0001f449 25% los fines de semana\n"
+            "\U0001f449 El reintegro lo cubre el banco (sin costo para vos)\n"
+            "\U0001f449 Adem\u00e1s te da visibilidad en la app y web del banco\n\n"
+            "\U0001f4a1 Pod\u00e9s adherirte directamente desde la app "
+            "(se abre una cuenta sin costo y no necesit\u00e1s venir al banco)\n\n"
+            "Te dejo la info oficial \U0001f447\n"
             "https://www.bancoprovincia.com.ar/cuentadni/contenidos/cdniComercios\n\n"
-            "Si te interesa, te explico en 2 minutos cómo hacerlo 👍"
+            "Si te interesa, te explico en 2 minutos c\u00f3mo hacerlo \U0001f44d"
         ),
     },
 }
