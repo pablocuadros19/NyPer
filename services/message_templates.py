@@ -13,6 +13,8 @@ def _es_proveedor_estado(lead):
 
 FAMILIA_RUBRO = {
     # gastronomia
+    "Gastronomía": "gastronomia",
+    "Gastronomia": "gastronomia",
     "Restaurante": "gastronomia",
     "Cafetería": "gastronomia",
     "Panadería": "gastronomia",
