@@ -1341,8 +1341,29 @@ with tab_bandeja:
         CANAL_EMOJI = {"whatsapp": "💬", "llamada": "📞", "mail": "✉️", "redes": "📱", "visita": "🚶", "sin_canal": "❓"}
 
         if filtrados:
+            # Cruce por teléfono: detectar leads de Bandeja que ya existen como prospectos importados
+            def _tel_key(tel):
+                """Últimos 8 dígitos del teléfono para cruce flexible."""
+                digits = "".join(c for c in str(tel) if c.isdigit())
+                return digits[-8:] if len(digits) >= 8 else digits
+
+            _prospectos_por_tel = {}
+            for _lp in leads:
+                if _lp.get("en_prospectos") and _lp.get("phone_norm"):
+                    _tk = _tel_key(_lp["phone_norm"])
+                    if _tk:
+                        _prospectos_por_tel[_tk] = _lp
+
             def _estado_lead(l):
                 if not l.get("en_prospectos"):
+                    # Cruce por teléfono con prospectos existentes (ej: importados desde Excel)
+                    _tk = _tel_key(l.get("phone_norm", ""))
+                    if _tk and _tk in _prospectos_por_tel:
+                        _match = _prospectos_por_tel[_tk]
+                        if _match.get("owner_email") == usuario["email"]:
+                            return f"📌 Ya importado"
+                        if _match.get("owner_email"):
+                            return f"🔒 {_match.get('owner_nombre', '')}"
                     return ""
                 if l.get("owner_email") == usuario["email"]:
                     return "📌 Mío"
@@ -1375,28 +1396,25 @@ with tab_bandeja:
             leads_sel = [filtrados[i] for i in indices_sel if i < len(filtrados)]
 
         if leads_sel:
-            # Separar libres de tomados por otro
-            _libres = [l for l in leads_sel if not l.get("en_prospectos")]
+            # Separar libres de tomados por otro (incluye cruce por teléfono con importados)
+            def _ya_tomado_por_tel(l):
+                """Chequea si un lead libre ya tiene match telefónico con un prospecto."""
+                _tk = _tel_key(l.get("phone_norm", ""))
+                return _tk and _tk in _prospectos_por_tel
+
+            _libres = [l for l in leads_sel if not l.get("en_prospectos") and not _ya_tomado_por_tel(l)]
             _ya_mios = [l for l in leads_sel if l.get("en_prospectos") and l.get("owner_email") == usuario["email"]]
+            _cruzados = [l for l in leads_sel if not l.get("en_prospectos") and _ya_tomado_por_tel(l)]
             _tomados = [l for l in leads_sel if l.get("en_prospectos") and l.get("owner_email") and l.get("owner_email") != usuario["email"]]
 
             if _tomados:
                 _nombres_tomados = ", ".join(l.get("business_name_raw", "?") for l in _tomados[:5])
                 st.warning(f"🔒 {len(_tomados)} lead(s) ya tomados por otro gestor: {_nombres_tomados}")
+            if _cruzados:
+                _nombres_cruzados = ", ".join(l.get("business_name_raw", "?") for l in _cruzados[:5])
+                st.warning(f"📌 {len(_cruzados)} lead(s) ya existen como prospectos (cruce por teléfono): {_nombres_cruzados}")
             if _ya_mios:
                 st.info(f"📌 {len(_ya_mios)} lead(s) ya están en tus prospectos.")
-
-            # Límite de prospectos por usuario
-            _max_prospectos = _cargar_config().get("max_prospectos_por_usuario", 30)
-            _mis_prospectos_actual = sum(1 for l in leads if l.get("en_prospectos") and l.get("owner_email") == usuario["email"])
-            _disponibles = max(0, _max_prospectos - _mis_prospectos_actual)
-
-            if _libres and _disponibles == 0:
-                st.error(f"Alcanzaste el límite de {_max_prospectos} prospectos. Liberá algunos antes de agregar nuevos.")
-                _libres = []
-            elif _libres and len(_libres) > _disponibles:
-                st.warning(f"Solo podés agregar {_disponibles} más (límite: {_max_prospectos}). Se tomarán los primeros {_disponibles}.")
-                _libres = _libres[:_disponibles]
 
             if _libres:
                 if st.button(f"🎯 Agregar {len(_libres)} lead(s) a Prospectos", type="primary"):
