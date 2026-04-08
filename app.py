@@ -1663,6 +1663,10 @@ with tab_prospectos:
             label_visibility="collapsed",
         )
 
+        # Toggle WA Business
+        _usar_wa_biz = st.checkbox("📲 Usar WhatsApp Business", value=False, key="pr_wa_biz",
+                                    help="Envía los mensajes por WhatsApp Business en lugar de WhatsApp normal")
+
         # Filtros colapsados — todos desactivados por default (vacío = sin filtro)
         with st.expander("Filtros", expanded=False):
             pf1, pf2, pf3 = st.columns(3)
@@ -1748,17 +1752,24 @@ with tab_prospectos:
 
                         tel = lead.get("phone_raw", "")
                         phone_norm = lead.get("phone_norm", "")
+                        # Función para armar URL según toggle WA/WA Business
+                        def _wa_link(num, texto):
+                            if _usar_wa_biz:
+                                return f"https://api.whatsapp.com/send?phone={num}&text={_quote(texto, safe='')}"
+                            return f"https://wa.me/{num}?text={_quote(texto)}"
+
                         if tel:
                             if lead.get("whatsapp_probable") and phone_norm:
                                 _wa_data = _gen_msg(lead, "whatsapp", _suc_nombre, _usr_nombre)
                                 _wa_num = phone_norm if phone_norm.startswith("54") else f"54{phone_norm}"
-                                _wa_url = f"https://wa.me/{_wa_num}?text={_quote(_wa_data['texto'])}"
-                                st.markdown(f"<a href='{_wa_url}' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' width='18' style='vertical-align:middle'></a> [{tel}]({_wa_url})", unsafe_allow_html=True)
+                                _wa_url = _wa_link(_wa_num, _wa_data['texto'])
+                                _wa_icon = "📲" if _usar_wa_biz else "<img src='https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg' width='18' style='vertical-align:middle'>"
+                                st.markdown(f"<a href='{_wa_url}' target='_blank'>{_wa_icon}</a> [{tel}]({_wa_url})", unsafe_allow_html=True)
                                 # Botones de campañas especiales
                                 from services.message_templates import obtener_campanas_lead as _get_camps
                                 _camps = _get_camps(lead, _suc_nombre, _usr_nombre)
                                 for _camp in _camps:
-                                    _camp_url = f"https://wa.me/{_wa_num}?text={_quote(_camp['texto'], safe='')}"
+                                    _camp_url = _wa_link(_wa_num, _camp['texto'])
                                     st.markdown(f"<a href='{_camp_url}' target='_blank' style='display:inline-block;background:linear-gradient(135deg,#00A651,#00a34d);color:#fff;padding:4px 12px;border-radius:8px;font-size:.78rem;font-weight:600;text-decoration:none;margin-top:4px'>{_camp['label']}</a>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"📞 `{tel}`")
