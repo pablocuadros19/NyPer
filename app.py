@@ -1582,13 +1582,15 @@ with tab_prospectos:
                         _mi_email = usuario["email"]
                         _mi_nombre = f"{usuario['nombre']} {usuario['apellido']}"
                         _mi_color = usuario.get("color", "#3b82f6")
-                        _nombres_existentes = {l.get("business_name_raw", "").lower() for l in leads}
+                        _nombres_existentes = {l.get("business_name_raw", "").lower().strip() for l in leads if l.get("business_name_raw")}
+                        _tels_existentes = {l.get("phone_norm", "").strip() for l in leads if l.get("phone_norm")}
                         _importados = 0
                         _duplicados = 0
                         from services.db import registrar_ownership
                         for _, row in _df_imp.iterrows():
                             _nombre_com = str(row.get("LOCAL", "")).strip()
-                            if not _nombre_com or _nombre_com.lower() in _nombres_existentes:
+                            _tel_check = str(row.get("WHATSAPP", "")).strip().replace(".0", "")
+                            if not _nombre_com or _nombre_com.lower() in _nombres_existentes or (_tel_check and _tel_check in _tels_existentes):
                                 _duplicados += 1
                                 continue
                             _tel = str(row.get("WHATSAPP", "")).strip().replace(".0", "")
